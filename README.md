@@ -27,5 +27,11 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 ## comandos git para actualizar el repositorio de github
+git status
+git add .
+git commit -m "mensaje del commit"
 git remote add origin https://github.com/Gilbert84/angularjs-vigimovil.git
 git push -u origin master
+git tag -a v0.0.1 -m "socket-io ok"
+git push --tags
+
