@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { SocketIoService } from '../../services/socket-io/socket-io.service';
 
@@ -20,25 +20,18 @@ export class DashboardComponent implements OnInit {
   };
 
 
-  constructor( private io: SocketIoService ) { }
+  constructor( private io: SocketIoService ) { 
+    
+
+  }
 
   ngOnInit() {
-    console.log('dashboard');
-
-    //this.io.sendMessage( this.usuario );
-
-    // this.socket
-    //     .getMessage()
-    //     .subscribe(msg => {
-    //       console.log('msg:', msg);
-    //     });
+    this.io
+    .getMessage()
+    .subscribe(msg => {
+      console.log('servidor:', msg);
+    });
   }
-
-  sendMsg() {
-    this.io.sendMessageUser(this.usuario);
-    //this.io.sendMessage(this.canalDispositivo,this.dispositivo);
-  }
-
 
 
 }
