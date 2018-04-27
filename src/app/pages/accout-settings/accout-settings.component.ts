@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/platform-browser';
 
 import { SettingsService } from '../../services/service.index';
@@ -10,7 +11,11 @@ import { SettingsService } from '../../services/service.index';
 })
 export class AccoutSettingsComponent implements OnInit {
 
-  constructor( public _ajustes: SettingsService ) { }
+  constructor( public _ajustes: SettingsService ,public router: Router) { }
+
+  cerrar(){
+    this.router.navigate(['/dashboard']);
+  }
 
   ngOnInit() {
     this.colocarCheck();

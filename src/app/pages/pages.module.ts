@@ -32,6 +32,7 @@ import { EmpresasComponent } from './empresas/empresas.component';
 import { OperariosComponent } from './operarios/operarios.component';
 import { OperarioComponent } from './operarios/operario.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
+import { DespachoComponent } from './despacho/despacho.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
         EmpresasComponent,
         OperariosComponent,
         OperarioComponent,
-        BusquedaComponent
+        BusquedaComponent,
+        DespachoComponent,
     ],
     exports: [
         DashboardComponent,
