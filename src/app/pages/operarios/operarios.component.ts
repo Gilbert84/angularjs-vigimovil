@@ -21,7 +21,11 @@ export class OperariosComponent implements OnInit {
 
   cargarOperarios() {
     this._operarioService.cargarOperarios()
-          .subscribe( operarios => this.operarios = operarios );
+          .subscribe( operarios => {
+            this.operarios = operarios 
+            console.log('operarios: ',operarios);
+            });
+            
   }
 
   buscarOperario( termino: string ) {

@@ -75,7 +75,10 @@ export class EmpresasComponent implements OnInit {
       }
 
       this._empresaService.crearEmpresa( valor )
-              .subscribe( () => this.cargarEmpresas() );
+              .subscribe( (resp) => {
+                this.cargarEmpresas() 
+                //console.log(resp);
+              });
 
     });
 

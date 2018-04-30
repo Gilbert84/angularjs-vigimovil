@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/url-servicios.config';
 import { UsuarioService } from '../usuario/usuario.service';
 import { Empresa } from '../../models/empresa.model';
+import { Observable } from 'rxjs/Observable';
 
 import swal from 'sweetalert';
 
@@ -51,7 +52,13 @@ export class EmpresaService {
     url += '?token=' + this._usuarioService.token;
 
     return this.http.post( url, { nombre } )
-              .map( (resp: any) => resp.empresa );
+              .map( (resp: any) =>{
+                return resp.empresa;
+              }  )
+              .catch( err => {
+                swal( err.error.mensaje, err.error.errors.message, 'error' );
+                return Observable.throw( err );
+              });;
 
   }
 

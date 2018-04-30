@@ -51,8 +51,9 @@ git status
 git add .
 git commit -m "cambios ok"
 git remote add origin https://github.com/Gilbert84/angularjs-vigimovil.git
+git push origin master
 
-## es obligatorio crear un tag para poder actualizar un repositorio con el mismo nombre
+## es obligatorio crear un tag para poder hacer un release del repositorio 
 ## LA VERSION de ir creciendo en la medida que se hagan los cambios
 
 git tag -a v0.0.1 -m "socket-io ok" 
