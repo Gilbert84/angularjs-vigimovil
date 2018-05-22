@@ -19,6 +19,8 @@ import { OperariosComponent } from './operarios/operarios.component';
 import { OperarioComponent } from './operarios/operario.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { VerificaTokenGuard } from '../services/guards/verifica-token.guard';
+import { DispositivosComponent } from './dispositivos/dispositivos.component';
+import { DispositivoComponent } from './dispositivos/dispositivo.component';
 
 
 const pagesRoutes: Routes = [
@@ -45,7 +47,9 @@ const pagesRoutes: Routes = [
     { path: 'despacho', component: DespachoComponent, data: { titulo: 'Gestion despacho' } },
     { path: 'empresas', component: EmpresasComponent, data: { titulo: 'Mantenimiento de Empresas' } },
     { path: 'operarios', component: OperariosComponent, data: { titulo: 'Mantenimiento de Operarios' } },
-    { path: 'operario/:id', component: OperarioComponent, data: { titulo: 'Actualizar Operario' } },
+    { path: 'operario/:id', component: OperarioComponent, data: { titulo: 'Mantenimiento Operario' } },
+    { path: 'dispositivos', component: DispositivosComponent, data: { titulo: 'Mantenimiento de Dispositivos' } },
+    { path: 'dispositivos/:id', component: DispositivoComponent, data: { titulo: 'Actualizar Dispositivo' } },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 

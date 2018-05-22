@@ -13,7 +13,7 @@ import { ModalUploadService } from '../../components/modal-upload/modal-upload.s
   styles: []
 })
 export class OperarioComponent implements OnInit {
-
+  titulo:string="Nuevo operario";
   empresas: Empresa[] = [];
   operario: Operario = new Operario('', '', '', '', '');
   empresa: Empresa = new Empresa('');
@@ -31,7 +31,11 @@ export class OperarioComponent implements OnInit {
       let id = params['id'];
 
       if ( id !== 'nuevo' ) {
+        this.titulo="Actualizar Operario";
         this.cargarOperario( id );
+      }else{
+        this.titulo="Nuevo Operario";
+        this.operario={};
       }
 
     });
@@ -69,7 +73,7 @@ export class OperarioComponent implements OnInit {
     if ( f.invalid ) {
       return;
     }
-
+    console.log('guardando operario');
     this._operarioService.guardarOperario( this.operario )
             .subscribe( operario => {
 

@@ -1,14 +1,26 @@
+<div class="align-self-center">
+        <h3 class="text-themecolor">  {{ titulo }} </h3>
+</div>
+
 <div class="row animated fadeIn">
 
     <div class="col-md-6">
         <div class="card card-body">
-            <h3 class="box-title m-b-0">Operario: {{ operario.nombre }}</h3>
+            <h3 class="box-title m-b-0">Operario: {{ operario.nombre }}</h3><hr>
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
                     <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarOperario(f)">
                         <div class="form-group">
                             <label>Nombre del Operario</label>
                             <input [(ngModel)]="operario.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del operario" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Asignar nombre de Usuario</label>
+                            <input [(ngModel)]="operario.alias" name="alias" type="text" class="form-control" placeholder="alias o nombre de usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <input [(ngModel)]="operario.password" name="password" type="password" class="form-control" placeholder="Contraseña" required>
                         </div>
 
                         <div class="form-group">
@@ -27,7 +39,11 @@
                           <i class="fa fa-save"></i>
                           Guardar
                         </button>
-                        <a routerLink="/operarios" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+                        <a routerLink="/operarios" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                        <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+                                <i class="fa fa-plus"></i>
+                                Nuevo Operario
+                        </button>
                     </form>
                 </div>
             </div>

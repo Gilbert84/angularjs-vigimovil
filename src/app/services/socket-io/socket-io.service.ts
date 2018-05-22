@@ -16,8 +16,27 @@ export class SocketIoService {
     ruta: 'san-feliz'
   };
 
-  constructor( private io: Socket ) {
-    console.log('constructor socket');
+  public server={
+    online:false,
+    mensaje:''
+  };
+
+  constructor( public io: Socket ) {
+    this.io.on('connect',()=>{
+      console.log('conectado');
+      this.server={
+        online:true,
+        mensaje:'En linea'
+      }
+
+    });
+    this.io.on('disconnect',()=>{
+      console.log('desconectado');
+      this.server={
+        online:false,
+        mensaje:'Fuera de linea'
+      }
+    });
     
   }
 

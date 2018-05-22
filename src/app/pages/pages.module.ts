@@ -33,6 +33,8 @@ import { OperariosComponent } from './operarios/operarios.component';
 import { OperarioComponent } from './operarios/operario.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { DespachoComponent } from './despacho/despacho.component';
+import { DispositivosComponent } from './dispositivos/dispositivos.component';
+import { DispositivoComponent } from './dispositivos/dispositivo.component';
 
 @NgModule({
     declarations: [
@@ -53,6 +55,8 @@ import { DespachoComponent } from './despacho/despacho.component';
         OperarioComponent,
         BusquedaComponent,
         DespachoComponent,
+        DispositivosComponent,
+        DispositivoComponent,
     ],
     exports: [
         DashboardComponent,

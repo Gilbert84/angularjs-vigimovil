@@ -1,21 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnChanges} from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
+import { Socket } from 'ng-socket-io';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styles: []
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent  {
 
   label: string = '';
+  servidor={
+    online:false,
+    mensaje:''
+  };
 
   constructor(
     private router: Router,
     public title: Title,
-    public meta: Meta
+    public meta: Meta,
+    private io:Socket
    ) {
+
+    this.io.on('connect',()=>{
+      this.servidor={
+        online:true,
+        mensaje:'En linea'
+      }
+
+    });
+    this.io.on('disconnect',()=>{
+      this.servidor={
+        online:false,
+        mensaje:'Fuera de linea'
+      }
+    });
 
     this.getDataRoute()
       .subscribe( data => {
@@ -31,6 +51,7 @@ export class BreadcrumbsComponent implements OnInit {
         this.meta.updateTag(metaTag);
 
       });
+      
 
   }
 
@@ -43,8 +64,5 @@ export class BreadcrumbsComponent implements OnInit {
 
   }
 
-
-  ngOnInit() {
-  }
 
 }

@@ -10,8 +10,22 @@
     </div>
 </div>
 
+<div class="row animated fadeIn" *ngIf="cargando">
 
-<div class="row">
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row animated fadeIn" *ngIf="!cargando">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -57,6 +71,14 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                    Anteriores
+                </button>
+  
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                    Siguientes
+                </button>
 
             </div>
         </div>

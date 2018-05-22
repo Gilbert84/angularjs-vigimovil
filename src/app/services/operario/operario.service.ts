@@ -16,15 +16,15 @@ export class OperarioService {
     public _usuarioService: UsuarioService
   ) { }
 
-  cargarOperarios() {
+  cargarOperarios( desde: number = 0) {
 
-    let url = URL_SERVICIOS + '/operario';
+    let url = URL_SERVICIOS + '/operario?desde='+ desde;
 
     return this.http.get( url )
               .map( (resp: any) => {
 
                 this.totalOperarios = resp.total;
-                return resp.operarios;
+                return resp;
               });
 
   }

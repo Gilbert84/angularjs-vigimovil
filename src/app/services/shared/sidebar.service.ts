@@ -35,6 +35,7 @@ export class SidebarService {
 
   cargarMenu() {
     this.menu = this._usuarioService.menu;
+    console.log(this.menu);
   }
 
 }

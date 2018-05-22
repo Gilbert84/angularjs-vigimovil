@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Operario } from '../../models/operario.model';
 import { OperarioService } from '../../services/service.index';
 
+
+declare var swal: any;
+
 @Component({
   selector: 'app-operarios',
   templateUrl: './operarios.component.html',
@@ -10,6 +13,14 @@ import { OperarioService } from '../../services/service.index';
 export class OperariosComponent implements OnInit {
 
   operarios: Operario[] = [];
+  desde: number = 0;
+
+  totalRegistros: number = 0;
+  cargando: boolean = true;
+  mostrar={
+    anterior:false,
+    siguiente:true
+  }
 
   constructor(
     public _operarioService: OperarioService
@@ -20,11 +31,16 @@ export class OperariosComponent implements OnInit {
   }
 
   cargarOperarios() {
-    this._operarioService.cargarOperarios()
-          .subscribe( operarios => {
-            this.operarios = operarios 
-            console.log('operarios: ',operarios);
-            });
+
+    this.cargando = true;
+
+    this._operarioService.cargarOperarios( this.desde )
+          .subscribe( (resp:any) => {
+            this.totalRegistros = resp.total;
+            this.operarios = resp.operarios 
+            this.cargando = false;
+            console.log('operarios: ',resp);
+          });
             
   }
 
@@ -43,6 +59,30 @@ export class OperariosComponent implements OnInit {
 
     this._operarioService.borrarOperario( operario._id )
             .subscribe( () =>  this.cargarOperarios() );
+
+  }
+
+  cambiarDesde( valor: number ) {
+
+    let desde = this.desde + valor;
+
+    if ( desde >= this.totalRegistros ) {
+      //no hay mas registros
+      this.mostrar.siguiente=false;
+      this.mostrar.anterior=true;
+      return;
+    }
+
+    if ( desde < 0 ) {
+      //primera pagina
+      this.mostrar.siguiente=true;
+      this.mostrar.anterior=false;
+      return;
+    }
+    this.mostrar.siguiente=true;
+    this.mostrar.anterior=true;
+    this.desde += valor;
+    this.cargarOperarios();
 
   }
 
