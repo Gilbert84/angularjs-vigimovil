@@ -1,7 +1,7 @@
 import { Component, OnInit ,OnChanges} from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
-import { Socket } from 'ng-socket-io';
+import { SocketIoService } from '../../services/service.index';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -20,22 +20,9 @@ export class BreadcrumbsComponent  {
     private router: Router,
     public title: Title,
     public meta: Meta,
-    private io:Socket
+    private socketIoService:SocketIoService
    ) {
 
-    this.io.on('connect',()=>{
-      this.servidor={
-        online:true,
-        mensaje:'En linea'
-      }
-
-    });
-    this.io.on('disconnect',()=>{
-      this.servidor={
-        online:false,
-        mensaje:'Fuera de linea'
-      }
-    });
 
     this.getDataRoute()
       .subscribe( data => {

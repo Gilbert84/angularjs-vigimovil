@@ -17,6 +17,15 @@ export class DispositivoService {
 
   }
 
+
+  obtenerDispositivo( id: string ) {
+
+    let url = URL_SERVICIOS + '/dispositivo/' + id;
+    return this.http.get( url )
+                .map( (resp: any) => resp.dispositivo );
+
+  }
+
   cargarDispositivos( desde : number= 0 ){
     
     let url = URL_SERVICIOS + '/dispositivo?desde='+desde;

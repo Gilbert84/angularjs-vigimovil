@@ -20,7 +20,10 @@ import { SocketIoModule } from 'ng-socket-io';
 import { config } from './config/socket-io.config';
 
 
-
+//angular material
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -28,6 +31,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
+import { AtencionTiketComponent } from './public/atencion-tiket/atencion-tiket.component';
+import { MarcadorDirective } from './directives/marcador.directive';
 
 
 @NgModule({
@@ -35,7 +40,9 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    PagesComponent
+    PagesComponent,
+    AtencionTiketComponent,
+    MarcadorDirective
   ],
   imports: [
     BrowserModule,
@@ -44,6 +51,9 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     ServiceModule,
     SharedModule,
+    BrowserAnimationsModule,
+    MatAutocompleteModule,
+    MatSnackBarModule,
     SocketIoModule.forRoot(config)
   ],
   providers: [],

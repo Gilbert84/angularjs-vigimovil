@@ -39,7 +39,6 @@ export class OperariosComponent implements OnInit {
             this.totalRegistros = resp.total;
             this.operarios = resp.operarios 
             this.cargando = false;
-            console.log('operarios: ',resp);
           });
             
   }

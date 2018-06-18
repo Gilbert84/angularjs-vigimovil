@@ -5,6 +5,15 @@ import { UsuarioService } from '../usuario/usuario.service';
 export class SidebarService {
 
   menu: any[] = [];
+  submenu: any[] = [
+      {
+      titulo: '',
+      icono: '',
+      submenu: [
+        { titulo: '', url: '/' }
+      ]
+    },  
+  ];
 
   // menu: any = [
   //   {
@@ -35,7 +44,14 @@ export class SidebarService {
 
   cargarMenu() {
     this.menu = this._usuarioService.menu;
-    console.log(this.menu);
+    //console.log(this.menu);
+    this.cargarSubMenu(this.menu['0']);
+  }
+
+  cargarSubMenu(submenu){
+    this.submenu=[];
+    this.submenu.push(submenu);
+    //console.log(this.submenu);
   }
 
 }

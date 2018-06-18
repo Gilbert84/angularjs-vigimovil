@@ -1,6 +1,7 @@
 import { SocketIoConfig } from 'ng-socket-io';
+import { URL_SERVICIOS } from './url-servicios.config';
 
 export const config: SocketIoConfig = {
-    url: 'http://localhost:3000'
+    url: URL_SERVICIOS
 };
 

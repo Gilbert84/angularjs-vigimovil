@@ -16,13 +16,12 @@ export class VehiculoService {
     public _usuarioService: UsuarioService
   ) { }
 
-  cargarVehiculos() {
+  cargarVehiculos(desde: number = 0) {
 
-    let url = URL_SERVICIOS + '/';
+    let url = URL_SERVICIOS + '/vehiculo?desde='+ desde;
 
     return this.http.get( url )
               .map( (resp: any) => {
-
                 this.totalVehiculos = resp.total;
                 return resp.vehiculos;
               });
@@ -62,7 +61,6 @@ export class VehiculoService {
   guardarVehiculo( vehiculo: Vehiculo ) {
 
     let url = URL_SERVICIOS + '/vehiculo';
-
     if ( vehiculo._id ) {
       // actualizando
       url += '/' + vehiculo._id;
@@ -70,7 +68,7 @@ export class VehiculoService {
 
       return this.http.put( url, vehiculo )
                 .map( (resp: any) => {
-                  swal('Vehiculo Actualizado', vehiculo.nombre, 'success');
+                  swal('Vehiculo Actualizado', vehiculo.placa, 'success');
                   return resp.vehiculo;
 
                 });
@@ -80,12 +78,10 @@ export class VehiculoService {
       url += '?token=' + this._usuarioService.token;
       return this.http.post( url, vehiculo )
               .map( (resp: any) => {
-                swal('Vehiculo Creado', vehiculo.nombre, 'success');
+                swal('Vehiculo Creado', vehiculo.placa, 'success');
                 return resp.vehiculo;
               });
     }
-
-
 
 
   }

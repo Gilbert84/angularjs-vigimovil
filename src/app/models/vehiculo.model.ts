@@ -1,9 +1,14 @@
-export interface Vehiculo {
-    nombre?: string,
-    alias?:string,
-    password?:string,
-    img?: string,
-    usuario?: string,
-    empresa?: string,
-    _id?: string
+export class Vehiculo {
+
+    constructor(
+        public _id?: string,
+        public placa?: string,
+        public modelo?:string,
+        public categoria?:string,
+        public capacidad?:string,
+        public img?: string,
+        public usuario?: string,
+        public empresa?: string,
+        public dispositivo?:string
+    ) { }
 }

@@ -42,12 +42,10 @@
                           <th></th>
                       </tr>
                   </thead>
-                  <h4 *ngIf="verdadero"> Jhony</h4>
-                  <h4 *ngIf="!verdadero"> Gilberto</h4>
                   <tbody>
                       <tr *ngFor="let dispositivo of dispositivos">
                           <td>
-                              <img [src]="dispositivo.img | imagen:'dispositivo'" class="img-50 img-circle">
+                                <img (click)="actualizarImagen( dispositivo )" [src]="dispositivo.img | imagen:'dispositivo'" class="img-50 pointer">
                           </td>
                           <td>
                               {{ dispositivo.nombre }}

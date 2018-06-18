@@ -3,6 +3,8 @@ import { Dispositivo } from '../../models/dispositivo.model';
 import { DispositivoService } from '../../services/service.index';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { ModalUploadService } from '../../components/service.components.index';
+
 
 @Component({
   selector: 'app-dispositivos',
@@ -23,6 +25,7 @@ export class DispositivosComponent implements OnInit {
 
   constructor(
                 private dispositivoService:DispositivoService,
+                public _modalUploadService: ModalUploadService,
                 public router: Router 
               ) { }
 
@@ -88,6 +91,12 @@ export class DispositivosComponent implements OnInit {
             .subscribe( dispositivo => {
               //this.router.navigate(['/dispositivos', dispositivo._id ]);
             });
+  }
+
+  actualizarImagen( dispositivo: Dispositivo ) {
+
+    this._modalUploadService.mostrarModal( 'dispositivos', dispositivo._id );
+
   }
 
 }

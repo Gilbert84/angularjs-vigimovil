@@ -1,0 +1,167 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+  
+                <input #input (keyup)="buscarMarcador( input.value )" type="text" class="form-control" placeholder="Buscar marcador...">
+  
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row animated fadeIn" *ngIf="cargando">
+  
+    <div class="col-sm-12">
+  
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+  </div>
+  
+  
+  <div class="row animated fadeIn" *ngIf="!cargando">
+    <div class="col-md-8" style="width: 100%;">
+        <div class="card">
+            <div class="card-body">
+  
+                <h3 class="card-title">Total Marcadores : ( <small>  {{marcadores.length}} </small> )</h3>
+
+                <agm-map
+                  (mapClick)="agregarMarcador( $event )"    
+                  [latitude]="lat" 
+                  [longitude]="lng"
+                  [zoom]="zoom"
+                  maxZoom="19"
+                  minZoom="13"
+                  mapTypeControl="true"
+                  streetViewControl="false"
+                  keyboardShortcuts="false"
+                  disableDoubleClickZoom="true">
+                  <agm-marker 
+                        *ngFor="let marcador of marcadores; let posicion = index" 
+                        [latitude]="marcador.lat" 
+                        [longitude]="marcador.lng"
+                        [label]="label"
+                        [iconUrl]="marcador.tipo.img | imagen:'tipo-marcadores'"
+                        [markerDraggable]="marcador.arrastable"
+                        (markerClick)="marcadorClick(marcador,posicion)"
+                        (dragEnd)="marcadorMovido(marcador,$event,posicion)">
+                        <agm-info-window>
+                            <strong>{{marcador.direccion}}</strong>
+                            <p>
+                            {{marcador.descripcion}}
+                            </p>
+                            <div class="text-center">
+                                <button  (click)="borrarMarcador(posicion)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                    Borrar
+                                </button>
+                            </div>   
+         
+                        </agm-info-window>
+
+                    </agm-marker>
+
+                    <!--<agm-direction 
+                        *ngIf="dir"
+                        (onChange)="actualizarDireccion($event)" 
+                        [origin]="dir.origin" 
+                        [destination]="dir.destination"
+                        [renderOptions]="renderOptions" 
+                        [waypoints]="waypoints">
+                    </agm-direction>-->
+                    <agm-direction 
+                        *ngIf="dir"
+                        (onChange)="actualizarDireccion($event)" 
+                        [origin]="dir.origin" 
+                        [destination]="dir.destination"
+                        [renderOptions]="renderOptions">
+                    </agm-direction>
+
+              </agm-map>
+  
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div *ngIf="!marcadorSel" class="main-container">
+                    <div class="alert alert-info" role="alert">
+                      <strong>
+                        Haga click
+                      </strong>
+                      en el mapa para crear un marcador o selecione uno.
+                    </div>
+                </div>
+  
+                <div *ngIf="marcadorSel" class="main-container">
+                    <h5>Marcador</h5>
+                    <hr>
+            
+                    <div class="form-group">
+                      <label>titulo</label>
+                      <input [(ngModel)]="marcadorSel.titulo"
+                              type="text"
+                              name="title"
+                              class="form-control">
+                    </div>
+            
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <textarea [(ngModel)]="marcadorSel.descripcion"
+                              type="text"
+                              name="descripcion"
+                              class="form-control">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Selecione tipo de marcador</label>
+                        <table class="table">
+                                <tbody>
+                                    <tr class="col-md-1">
+                                        <td *ngIf="marcadorSel.tipo._id">
+                                                <button class="btn btn-outline-light" type="button" disabled>
+                                                        <img    class="img-icono"
+                                                        [src]="marcadorSel.tipo.img | imagen:'tipo-marcadores'">
+                                                </button>
+    
+                                        </td>
+                                        <td class="col-md-3">
+                                            <select (change)="cambiarTipo( $event.target.value )" [(ngModel)]="marcadorSel.tipo._id" name="tipoMarcador" class="form-control" required>
+                                                <option *ngFor="let tipo of tipoMarcadores" [value]="tipo._id" required>
+                                                    {{ tipo.nombre }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                  <!--option es tipo string lo transformo via codigo en true o false-->
+                  <div class="form-group">
+                    <label>Desea mover marcador?</label>
+                    <select [(ngModel)]="arrastable"
+                            name="arrastable"
+                            class="form-control custom-select"
+                            (change)="cambiarArrastable()">
+                          <option value="1">Si</option>
+                          <option value="0">No</option>
+                    </select>
+                  </div>
+            
+                  <button (click)="actualizarMarcador()"
+                          type="button"
+                          class="btn btn-outline-success btn-block">
+                          Guardar Cambios
+                  </button>
+            </div>
+        </div>
+    </div>
+  </div>

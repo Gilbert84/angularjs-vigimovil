@@ -1,11 +1,14 @@
-export interface Dispositivo {
-    uuid?: string;
-    mac?:string;
-    imei?:string;
-    imsi?:string;
-    iccid?:string;
-    nombre?:string;
-    categoria?:string;
-    _id?:string;
-    activo?:boolean;
+export class Dispositivo {
+
+    constructor(
+        public nombre?:string,
+        public uuid?: string,
+        public mac?:string,
+        public imei?:string,
+        public imsi?:string,
+        public iccid?:string,
+        public categoria?:string,
+        public _id?:string,
+        public activo?:boolean,
+    ){}
 }

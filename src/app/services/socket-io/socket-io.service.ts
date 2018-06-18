@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ng-socket-io';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'; 
+import { promise } from 'protractor';
 
 @Injectable()
 export class SocketIoService {
@@ -23,7 +24,7 @@ export class SocketIoService {
 
   constructor( public io: Socket ) {
     this.io.on('connect',()=>{
-      console.log('conectado');
+      //console.log('conectado');
       this.server={
         online:true,
         mensaje:'En linea'
@@ -31,7 +32,7 @@ export class SocketIoService {
 
     });
     this.io.on('disconnect',()=>{
-      console.log('desconectado');
+      //console.log('desconectado');
       this.server={
         online:false,
         mensaje:'Fuera de linea'
@@ -41,6 +42,15 @@ export class SocketIoService {
   }
 
   //enviar informacion
+  
+  enviarEvento(audiencia:string,msg: object) {
+    return new Promise((resolve,reject)=>{
+      this.io.emit(audiencia, msg, ( resp: any ) => {
+        resolve(resp);
+      });
+    });
+  }
+  
 
   sendMessageUser(msg: object) {
         this.io.emit('entrarChat', msg, ( resp: any ) => {
@@ -51,7 +61,7 @@ export class SocketIoService {
   sendMessageDev(msg: object) {
     this.io.emit('entrarDev', msg, ( resp: any ) => {
       console.log('Dispositivos : ', resp);
-    });
+  });
 }
  
   //escuchar informacion  
@@ -60,6 +70,12 @@ export class SocketIoService {
         return this.io
             .fromEvent<any>('crearMensaje')
             .map(data => data );
+  }
+
+  observarInfo(evento:string) {
+    return this.io
+        .fromEvent<any>(evento)
+        .map(data => data );
   }
     
   close() {

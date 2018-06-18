@@ -1,6 +1,17 @@
-<div class="align-self-center">
+<div class="row animated fadeIn">
+    <div class="align-self-center col-md-6">
         <h3 class="text-themecolor">  {{ titulo }} </h3>
+    </div>
+
+    <div col-md-6>
+    <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+        <i class="fa fa-plus"></i>
+        Nuevo Operario
+    </button>
+    </div>
 </div>
+
+
 
 <div class="row animated fadeIn">
 
@@ -40,10 +51,6 @@
                           Guardar
                         </button>
                         <a routerLink="/operarios" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
-                        <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
-                                <i class="fa fa-plus"></i>
-                                Nuevo Operario
-                        </button>
                     </form>
                 </div>
             </div>
@@ -61,10 +68,11 @@
 
     <div class="col-md-3" *ngIf="operario._id">
         <div class="card card-body">
-            <h4 class="box-title m-b-0">Fotografía</h4>
+            <h4 class="box-title m-b-0">Operario</h4>
 
-            <img (click)="cambiarFoto()" [src]="operario.img | imagen:'operario'" class="img-circle img-fluid pointer">
+            <img (click)="cambiarFoto('operarios',operario._id)" [src]="operario.img | imagen:'operario'" class="img-circle img-fluid pointer">
         </div>
     </div>
+
 
 </div>

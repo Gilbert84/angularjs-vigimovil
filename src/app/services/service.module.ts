@@ -1,7 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalUploadService } from '../components/modal-upload/modal-upload.service';
+
+import { ServiceComponentsModule } from '../components/service.components.module';
 
 
 
@@ -18,14 +19,19 @@ import {
   VerificaTokenGuard,
   SocketIoService,
   DispositivoService,
-  VehiculoService
+  VehiculoService,
+  NacionalidadService,
+  DespachoService,
+  MarcadorService,
+  TipoMarcadorService
  } from './service.index';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceComponentsModule
   ],
   providers: [
     SettingsService,
@@ -35,13 +41,16 @@ import {
     LoginGuardGuard,
     AdminGuard,
     SubirArchivoService,
-    ModalUploadService,
     EmpresaService,
     OperarioService,
     VerificaTokenGuard,
     SocketIoService,
     DispositivoService,
-    VehiculoService
+    VehiculoService,
+    NacionalidadService,
+    DespachoService,
+    MarcadorService,
+    TipoMarcadorService
   ],
   declarations: []
 })

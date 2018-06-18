@@ -21,15 +21,23 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
 import { VerificaTokenGuard } from '../services/guards/verifica-token.guard';
 import { DispositivosComponent } from './dispositivos/dispositivos.component';
 import { DispositivoComponent } from './dispositivos/dispositivo.component';
-
+import { InfoComponent } from './dashboard/info/info.component';
+import { VehiculoComponent }  from './vehiculo/vehiculo.component';
+import { VehiculosComponent }  from './vehiculo/vehiculos.component';
+import { RutasComponent } from './ruta/rutas/rutas.component';
+import { RutaComponent } from './ruta/ruta.component';
+import { MarcadoresComponent } from './google-map/marcadores/marcadores.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
+import { TipoMarcadorComponent } from './google-map/tipo-marcador/tipo-marcador.component';
 
 const pagesRoutes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [ VerificaTokenGuard ],
-        data: { titulo: 'Dashboard' }
+        data: { titulo: 'Seguimiento' }
     },
+    { path: 'info-ruta', component: InfoComponent, data: { titulo: 'Informacion' } },
     { path: 'progress', component: ProgressComponent, data: { titulo: 'ProgressBars' } },
     { path: 'graficas1', component: Graficas1Component, data: { titulo: 'Gráficas' } },
     { path: 'promesas', component: PromesasComponent, data: { titulo: 'Promesas' } },
@@ -50,6 +58,13 @@ const pagesRoutes: Routes = [
     { path: 'operario/:id', component: OperarioComponent, data: { titulo: 'Mantenimiento Operario' } },
     { path: 'dispositivos', component: DispositivosComponent, data: { titulo: 'Mantenimiento de Dispositivos' } },
     { path: 'dispositivos/:id', component: DispositivoComponent, data: { titulo: 'Actualizar Dispositivo' } },
+    { path: 'vehiculos', component: VehiculosComponent, data: { titulo: 'Mantenimiento de Vehiculos' } },
+    { path: 'vehiculo/:id', component: VehiculoComponent, data: { titulo: 'Mantenimento vehiculo' } },
+    { path: 'rutas', component: RutasComponent, data: { titulo: 'Mantenimiento de rutas' } },
+    { path: 'ruta/:id', component: RutaComponent, data: { titulo: 'Mantenimento ruta' } },
+    { path: 'google-map', component: GoogleMapComponent, data: { titulo: 'Mantenimiento' } },
+    { path: 'marcador/:id', component: MarcadoresComponent, data: { titulo: 'Mantenimento marcador' } },
+    { path: 'tipo-marcador', component: TipoMarcadorComponent, data: { titulo: 'Mantenimento de tipo marcador' } },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 

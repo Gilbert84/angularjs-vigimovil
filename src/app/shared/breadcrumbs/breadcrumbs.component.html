@@ -7,8 +7,8 @@
     </div>
 
     <div class="col-md-7 align-self-center">
-        <div *ngIf="servidor.online" class="col-md-4 text-themecolor"><div class="switch">{{ servidor.mensaje }}<label><input type="checkbox" disabled="" checked=""><span class="lever"></span></label></div></div>
-        <div *ngIf="!servidor.online" class="col-md-4 text-themecolor"><div class="switch">{{ servidor.mensaje }}<label><input type="checkbox" disabled=""><span class="lever"></span></label></div></div>
+        <div *ngIf="socketIoService.server.online" class="col-md-4 text-themecolor"><div class="switch">{{ socketIoService.server.mensaje }}<label><input type="checkbox" disabled="" checked=""><span class="lever"></span></label></div></div>
+        <div *ngIf="!socketIoService.server.online" class="col-md-4 text-themecolor"><div class="switch">{{ socketIoService.server.mensaje }}<label><input type="checkbox" disabled=""><span class="lever"></span></label></div></div>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="javascript:void(0)">Inicio</a>
@@ -22,3 +22,7 @@
 <!-- ============================================================== -->
 <!-- End Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->
+
+
+
+    

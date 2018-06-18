@@ -1,0 +1,61 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+              <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar tipo de marcador...">
+
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+              <div class="text-right">
+                  <button (click)="crear()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                    <i class="fa fa-plus"></i> 
+                    Crear Tipo de Marcador
+                  </button>
+              </div>
+
+              <h3 class="card-title">Tipos de marcadores registrados ( <small>  {{_tipoMarcadorService.totalTipoMarcadores}}  </small> )</h3>
+
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>Icono</th>
+                          <th>Nombre</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+
+                  <tbody>
+                      <tr *ngFor="let tipoMarcador of tipoMarcadores">
+                          <td>
+                              <img (click)="actualizarImagen( tipoMarcador )" [src]="tipoMarcador.img | imagen:'tipo-marcadores'" class="card-img img-icono pointer">
+                          </td>
+                          <td>
+                              <input [(ngModel)]="tipoMarcador.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del tipo marcador">
+                          </td>
+                          <td>
+                              <button (click)="guardar( tipoMarcador )" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                              </button>
+
+                              <button (click)="borrar( tipoMarcador )" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i>
+                              </button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+
+          </div>
+      </div>
+  </div>
+</div>

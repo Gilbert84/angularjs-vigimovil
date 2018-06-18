@@ -11,6 +11,10 @@ export class ImagenPipe implements PipeTransform {
     let url = URL_SERVICIOS + '/img';
 
     if ( !img ) {
+      if(tipo==='tipo-marcadores'){
+        console.log('paso por aqui');
+        return url + '/tipo-marcadores/xxx';
+      }
       return url + '/usuarios/xxx';
     }
 
@@ -24,16 +28,28 @@ export class ImagenPipe implements PipeTransform {
         url += '/usuarios/' + img;
       break;
 
-      case 'medico':
-        url += '/medicos/' + img;
+      case 'operario':
+        url += '/operarios/' + img;
       break;
 
-      case 'hospital':
-         url += '/hospitales/' + img;
+      case 'empresa':
+         url += '/empresas/' + img;
+      break;
+
+      case 'vehiculo':
+        url += '/vehiculos/' + img;
+      break;
+
+      case 'dispositivo':
+        url += '/dispositivos/' + img;
+      break;
+
+      case 'tipo-marcadores':
+        url += '/tipo-marcadores/' + img;
       break;
 
       default:
-        console.log('tipo de imagen no existe, usuario, medicos, hospitales');
+        console.log('tipo de imagen no existe, usuario, operarios, empresas, dispositivos,tipo-marcadores');
         url += '/usurios/xxx';
     }
 

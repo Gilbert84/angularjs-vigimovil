@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Operario } from '../../models/operario.model';
-import { OperarioService } from '../../services/service.index';
-import { NgForm } from '@angular/forms';
 import { Empresa } from '../../models/empresa.model';
-import { EmpresaService } from '../../services/service.index';
+import { OperarioService, EmpresaService } from '../../services/service.index';
+import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
+import { ModalUploadService } from '../../components/service.components.index';
 
 @Component({
   selector: 'app-operario',
@@ -92,9 +91,9 @@ export class OperarioComponent implements OnInit {
 
   }
 
-  cambiarFoto() {
+  cambiarFoto(ruta:string,id) {
 
-    this._modalUploadService.mostrarModal( 'operarios', this.operario._id );
+    this._modalUploadService.mostrarModal( ruta, id );
 
   }
 

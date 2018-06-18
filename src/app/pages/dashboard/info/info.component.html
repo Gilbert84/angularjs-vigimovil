@@ -1,0 +1,89 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+  
+                <input #input (keyup)="buscarRuta( input.value )" type="text" class="form-control" placeholder="Buscar vehiculo u operario...">
+  
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row animated fadeIn" *ngIf="cargando">
+  
+    <div class="col-sm-12">
+  
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+  </div>
+  
+  
+  <div class="row animated fadeIn" *ngIf="!cargando">
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+  
+                <h3 class="card-title">Siguiendo a : ( <small>  vehiculoService.vehiculo </small> )</h3>
+
+                <agm-map    
+                  [latitude]="lat" 
+                  [longitude]="lng"
+                  [zoom]="zoom"
+                  maxZoom="19"
+                  minZoom="13"
+                  mapTypeControl="true"
+                  streetViewControl="false"
+                  keyboardShortcuts="false"
+                  disableDoubleClickZoom="true">
+                  <agm-marker 
+                      [latitude]="lat" 
+                      [longitude]="lng">
+                  </agm-marker>
+              </agm-map>
+  
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+  
+                <h3 class="card-title">Operarios ( <small>  vehiculoService.totalVehiculos </small> )</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr *ngFor="let operario of operarios">-->
+                        <tr>
+                            <td>
+                              <button (click)="verRuta( ruta )" class="btn btn-success">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
+                <div class="card-footer">
+                    <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                        Anteriores
+                    </button>
+                
+                    <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                        Siguientes
+                    </button>
+                </div>   
+
+            </div>
+        </div>
+    </div>
+  </div>
