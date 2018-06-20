@@ -11,6 +11,7 @@ export interface MarcadorRef {//MarketGoogleMaps
     arrastable:boolean;//arrastable
     tipo:TipoMarcadorRef;
     nombre?:string;
-    titulo? : string;
+    codigo?:string;
     descripcion?:string;
+    _id?:string;
 }

@@ -13,7 +13,7 @@ export class VehiculosComponent implements OnInit {
   desde: number = 0;
 
   totalRegistros: number = 0;
-  cargando: boolean = true;
+  cargando: boolean = false;
   mostrar={
     anterior:false,
     siguiente:true

@@ -11,8 +11,7 @@ export class ImagenPipe implements PipeTransform {
     let url = URL_SERVICIOS + '/img';
 
     if ( !img ) {
-      if(tipo==='tipo-marcadores'){
-        console.log('paso por aqui');
+      if(tipo==='tipo-marcadores') {
         return url + '/tipo-marcadores/xxx';
       }
       return url + '/usuarios/xxx';

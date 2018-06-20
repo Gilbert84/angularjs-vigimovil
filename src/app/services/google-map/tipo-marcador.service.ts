@@ -71,7 +71,7 @@ export class TipoMarcadorService {
 
   actualizar( tipoMarcador: TipoMarcador ) {
 
-    let url = URL_SERVICIOS + '/google-map/tipo-marcador' + tipoMarcador._id;
+    let url = URL_SERVICIOS + '/google-map/tipo-marcador/' + tipoMarcador._id;
     url += '?token=' + this._usuarioService.token;
 
     return this.http.put( url, tipoMarcador )
