@@ -1,4 +1,4 @@
-
+export { RutaService } from './google-map/ruta.service';
 export { MarcadorService } from './google-map/marcador.service';
 
 

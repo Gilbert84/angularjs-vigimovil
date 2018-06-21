@@ -1,3 +1,138 @@
-<p>
-  ruta works!
-</p>
+<div class="row animated fadeIn">
+    <div class="align-self-center col-md-6">
+        <h3 class="text-themecolor">  {{ titulo }} </h3>
+    </div>
+
+    <div class="align-self-center col-md-6">
+        <button [routerLink]="['/vehiculo','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+            <i class="fa fa-plus"></i>
+            Nueva Ruta
+        </button>
+    </div>
+</div>
+<hr>
+
+
+<div class="row animated fadeIn">
+    <div class="row animated fadeIn">
+        <div class="col-md-8" style="width: 100%;">
+            <agm-map                   
+            [latitude]="lat" 
+            [longitude]="lng"
+            [zoom]="zoom"
+            maxZoom="19"
+            minZoom="12"
+            mapTypeControl="true"
+            streetViewControl="false"
+            keyboardShortcuts="false"
+            disableDoubleClickZoom="true">
+                <!-- Marcador para el origen [label]="label" -->
+                <agm-marker
+                  *ngIf="ruta.origen.coords"  
+                  [latitude]="ruta.origen.coords.lat" 
+                  [longitude]="ruta.origen.coords.lng"
+                  [iconUrl]="ruta.origen.coords.tipo.img | imagen:'tipo-marcadores'"
+                  (markerClick)="marcadorClickOrigen(ruta,posicion)">
+                  <agm-info-window [disableAutoPan]="false" >
+                      <div class="card text-center">
+                          <div class="card-header">
+                            {{ruta.origen.coords.direccion}}
+                          </div>
+                          <div class="card-body">
+                              <h5 class="card-title">Origen : {{ruta.origen.coords.nombre}}</h5>
+                              <h5 class="card-title">{{ruta.nombre}}</h5>
+                              <!--<p class="card-text">ruta info</p>-->
+                              <button  (click)="borrarRuta(ruta,posicion)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                      Borrar
+                              </button>
+                          </div>
+                          <div class="card-footer bg-transparent border-success"><h4>{{ruta.codigo}}</h4></div>
+                      </div>
+                  </agm-info-window>
+                </agm-marker>
+    
+                <!-- Marcador para el destino [label]="label" -->
+                <agm-marker
+                  *ngIf="ruta.origen.coords"  
+                  [latitude]="ruta.destino.coords.lat" 
+                  [longitude]="ruta.destino.coords.lng"
+                  [iconUrl]="ruta.origen.coords.tipo.img | imagen:'tipo-marcadores'"
+                  (markerClick)="marcadorClickDestino(ruta,posicion)">
+                  <agm-info-window [disableAutoPan]="false" >
+                      <div class="card text-center">
+                          <div class="card-header">
+                              {{ruta.destino.coords.direccion}}
+                          </div>
+                          <div class="card-body">
+                                <h5 class="card-title">Destino : {{ruta.destino.coords.nombre}}</h5>
+                                <h5 class="card-title">{{ruta.nombre}}</h5>
+                                <!--<p class="card-text">ruta info</p>-->
+                              <button  (click)="borrarRuta(posicion)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                      Borrar
+                              </button>
+                          </div>
+                          <div class="card-footer bg-transparent border-success"><h4>{{ruta.codigo}}</h4></div>
+                      </div>
+                  </agm-info-window>
+                </agm-marker>
+                <!-- [markerOptions]="markerOptions"  -->
+                <agm-direction
+                    *ngIf="ruta.origen.coords" 
+                    [origin]="ruta.origen.coords" 
+                    [destination]="ruta.destino.coords" 
+                    [waypoints]="ruta.puntosRef" 
+                    [visible]="ruta.visible"
+                    [renderOptions]="renderOptions" 
+                    [optimizeWaypoints]="optimizeWaypoints"
+                    [provideRouteAlternatives]="provideRouteAlternatives"
+                    (onChange)="cambiarPuntosRef($event, posicion, ruta )">
+                </agm-direction>
+             </agm-map>    
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-body">
+            <h3 class="box-title m-b-0">Ruta: {{ ruta.nombre }}</h3><hr>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarRuta(f)">
+                        <div class="form-group">
+                            <label>Nombre de la ruta</label>
+                            <input [(ngModel)]="ruta.nombre" name="nombre" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Codigo de la ruta</label>
+                            <input [(ngModel)]="ruta.codigo" name="codigo" type="text" class="form-control" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Origen</label>
+                            <select (change)="cambiarOrigen( $event.target.value )" [(ngModel)]="ruta.origen.coords" name="origen" class="form-control" required>
+                              <option value="">Seleccione Origen</option>
+                              <option *ngFor="let marcador of marcadores" [value]="marcador._id">
+                                {{ marcador.nombre }}
+                              </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Destino</label>
+                            <select (change)="cambiarDestino( $event.target.value )" [(ngModel)]="ruta.destino.coords" name="destino" class="form-control" required>
+                              <option value="">Seleccione Destino</option>
+                              <option *ngFor="let marcador of marcadores" [value]="marcador._id">
+                                {{ marcador.nombre }}
+                              </option>
+                            </select>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">
+                          <i class="fa fa-save"></i>
+                          Guardar
+                        </button>
+                        <a routerLink="/rutas" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

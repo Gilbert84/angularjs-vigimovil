@@ -7,13 +7,14 @@ import swal from 'sweetalert';
 
 import { MarcadorRef } from '../../interfaces/google-map.interface';
 import { LatLngLiteral } from '@agm/core/services/google-maps-types';
+import { Marcador } from '../../class/google-maps.class';
 
 
 @Injectable()
 export class MarcadorService {
 
   totalMarcadores: number = 0;
-  marcadores:MarcadorRef[]=[];
+  marcadores: Marcador[]=[];
 
   constructor(
     public http: HttpClient,
@@ -36,7 +37,7 @@ export class MarcadorService {
 
     let url = URL_SERVICIOS + '/google-map/marcador/' + id;
     return this.http.get( url )
-                .map( (resp: any) => resp.tipoMarcador );
+                .map( (resp: any) => resp.marcador );
 
   }
 

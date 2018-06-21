@@ -67,9 +67,10 @@ export class MarcadoresComponent implements OnInit {
 
   crear(nuevoMarcador:MarcadorRef){
     this._marcadorService.crear(nuevoMarcador).subscribe((marcador)=>{
-      this.marcadorSel=marcador;
+      this.marcadorSel._id=marcador._id;
       this.marcadores.splice(this.posicion,1,this.marcadorSel);
       console.log('server:',marcador);
+      console.log('marcador:',this.marcadorSel);
     });
   }
 
@@ -89,9 +90,13 @@ export class MarcadoresComponent implements OnInit {
     if ( f.invalid ) {
       return;
     }
-    console.log('guardando...',this.marcadorSel);
-    this.guardarMarcador(this.marcadorSel,this.estado);
 
+    if(this.marcadorSel._id===undefined){
+      console.log('guardando...',this.marcadorSel);
+      this.guardarMarcador(this.marcadorSel,this.estado);
+    }else{
+      this.actualizar(this.marcadorSel);
+    }
   }
 
 

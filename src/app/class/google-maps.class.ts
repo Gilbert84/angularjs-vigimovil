@@ -57,19 +57,19 @@ export class Marcador {
 
 export class Origen {
 
-    public origen:Marcador;
+    public coords=[];
     
-    constructor(origen:Marcador){
-        this.origen = new Marcador(origen.lat,origen.lng,origen.direccion,origen.codigo);
+    constructor(coords){
+        this.coords = coords;
     }
 }
 
 export class Destino {
 
-    public destino:Marcador;
+    public coords = [];
     
-    constructor(destino:Marcador){
-        this.destino = new Marcador(destino.lat,destino.lng,destino.direccion,destino.codigo);
+    constructor(coords){
+        this.coords = coords;
     }
 }
 
@@ -78,9 +78,23 @@ export class Ruta {
 
     public origen:Origen;
     public destino:Destino;
+    public puntosRef: any = [];
+    public visible:boolean;
+    public puntosControl:any = [];
+    public _id?:string;
+    public nombre?:string='';
+    public codigo?:string=''
 
-    constructor(origen:Marcador,destino:Marcador){
+
+    constructor(origen:Origen,destino:Destino){
         this.origen = new Origen(origen);
         this.destino = new Destino(destino);
+        this.puntosRef=this.puntosRef;
+        this.puntosControl=this.puntosControl;
+        this.visible=this.visible=true;
+        this._id=this._id;
+        this.nombre=this.nombre;
+        this.codigo=this.codigo;
+
     }
 }

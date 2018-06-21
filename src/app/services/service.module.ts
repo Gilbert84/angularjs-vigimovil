@@ -23,7 +23,8 @@ import {
   NacionalidadService,
   DespachoService,
   MarcadorService,
-  TipoMarcadorService
+  TipoMarcadorService,
+  RutaService
  } from './service.index';
 
 
@@ -50,7 +51,8 @@ import {
     NacionalidadService,
     DespachoService,
     MarcadorService,
-    TipoMarcadorService
+    TipoMarcadorService,
+    RutaService
   ],
   declarations: []
 })
