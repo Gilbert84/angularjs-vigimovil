@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 export class TipoMarcadorService {
 
   totalTipoMarcadores: number = 0;
+  tipoMarcadores: TipoMarcador []=[];
 
   constructor(
     public http: HttpClient,
@@ -23,6 +24,7 @@ export class TipoMarcadorService {
     return this.http.get( url )
               .map( (resp: any) => {
                 this.totalTipoMarcadores = resp.total;
+                this.tipoMarcadores = resp.tipoMarcadores;
                 return resp.tipoMarcadores;
               });
 

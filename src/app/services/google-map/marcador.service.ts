@@ -5,7 +5,6 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { Observable } from 'rxjs/Observable';
 import swal from 'sweetalert';
 
-import { MarcadorRef } from '../../interfaces/google-map.interface';
 import { LatLngLiteral } from '@agm/core/services/google-maps-types';
 import { Marcador } from '../../class/google-maps.class';
 
@@ -51,18 +50,17 @@ export class MarcadorService {
 
   }
 
-  crear( marcador: MarcadorRef ) {
+  crear( marcador: Marcador ) {
 
     let url = URL_SERVICIOS + '/google-map/marcador';
     url += '?token=' + this._usuarioService.token;
 
     return this.http.post( url, marcador )
               .map( (resp: any) =>{
-                swal('Marcador Creado', marcador.nombre, 'success');
+                swal('Marcador: '+ marcador.nombre + ' Creado', marcador.direccion, 'success');
                 return resp.marcador;
               }  )
               .catch( err => {
-                console.log(err);
                 swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
                 return Observable.throw( err );
               });;
@@ -76,7 +74,7 @@ export class MarcadorService {
 
   }
 
-  actualizar( marcador: MarcadorRef ) {
+  actualizar( marcador: Marcador ) {
 
     let url = URL_SERVICIOS + '/google-map/marcador/' + marcador._id;
     url += '?token=' + this._usuarioService.token;

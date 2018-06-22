@@ -26,36 +26,9 @@ export class TipoMarcadorComponent implements OnInit {
           .subscribe( () => this.cargar() );
   }
 
-  buscar( termino: string ) {
-
-    if ( termino.length <= 0 ) {
-      this.cargar();
-      return;
-    }
-
-    this._tipoMarcadorService.buscar( termino )
-            .subscribe( tipoMarcadores => this.tipoMarcadores = tipoMarcadores );
-
-  }
-
   cargar() {
     this._tipoMarcadorService.cargar()
             .subscribe( tipoMarcadores => this.tipoMarcadores = tipoMarcadores );
-  }
-
-
-  guardar( tipoMarcador: TipoMarcador) {
-
-    this._tipoMarcadorService.actualizar( tipoMarcador )
-            .subscribe();
-
-  }
-
-  borrar( tipoMarcador: TipoMarcador ) {
-
-    this._tipoMarcadorService.borrar( tipoMarcador._id )
-            .subscribe( () =>  this.cargar() );
-
   }
 
   crear() {
@@ -82,6 +55,34 @@ export class TipoMarcadorComponent implements OnInit {
     });
 
   }
+
+
+  guardar( tipoMarcador: TipoMarcador) {
+
+    this._tipoMarcadorService.actualizar( tipoMarcador )
+            .subscribe();
+
+  }
+
+  borrar( tipoMarcador: TipoMarcador ) {
+
+    this._tipoMarcadorService.borrar( tipoMarcador._id )
+            .subscribe( () =>  this.cargar() );
+
+  }
+
+  buscar( termino: string ) {
+
+    if ( termino.length <= 0 ) {
+      this.cargar();
+      return;
+    }
+
+    this._tipoMarcadorService.buscar( termino )
+            .subscribe( tipoMarcadores => this.tipoMarcadores = tipoMarcadores );
+
+  }
+
 
   actualizarImagen( tipoMarcador: TipoMarcador ) {
 

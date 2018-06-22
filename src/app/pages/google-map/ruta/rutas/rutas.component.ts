@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Ruta, Origen, Destino, Marcador } from '../../../class/google-maps.class';
-import { MarcadorService , RutaService} from '../../../services/service.index';
+import { Ruta, Marcador } from '../../../../class/google-maps.class';
+import { MarcadorService , RutaService} from '../../../../services/service.index';
 
 
 @Component({

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , OnChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { MarcadorRef } from '../../../interfaces/google-map.interface';
 import { Marcador ,TipoMarcador } from '../../../class/google-maps.class';
 import { MarcadorService, TipoMarcadorService } from '../../../services/service.index';
 import { InfoWindow } from '@agm/core/services/google-maps-types' // option
@@ -29,8 +28,6 @@ export class MarcadoresComponent implements OnInit {
   arrastable:string="1";
 
   cargando: boolean = false;
-  estado:boolean=false;
-
   dir = undefined;
 
 
@@ -41,43 +38,60 @@ export class MarcadoresComponent implements OnInit {
       private _marcadorService:MarcadorService,
       private _tipoMarcadorService:TipoMarcadorService
     ) { 
-    this.cargarStorage();
+    //this.cargarStorage();
+    //this.tipoMarcadores = this._tipoMarcadorService.tipoMarcadores;
   }
 
   ngOnInit() {
-    this.cargar();
+    this.cargarTipoMarcadores();
+    this.cargarMarcadores();
     //this.cargarStorage();
     //this.obtenerDireccion();
   }
 
-  cargar(){
-    this.cargando = true;
-    this._tipoMarcadorService.cargar().subscribe((tipoMarcadores)=>{
-      this.tipoMarcadores=tipoMarcadores;
-      this.cargando = false;
-      //console.log('tipo:',this.tipoMarcadores);
-    });
-    this.cargando = true;
-    this._marcadorService.cargar().subscribe((marcadores)=>{
-      this.marcadores=marcadores;
-      console.log(this.marcadores);
-      this.cargando = false;
+  ngOnChanges(){
+    console.log('cambio');
+  }
+
+
+  cargarMarcadores() {
+    return new Promise((resolve, reject)=>{
+      this._marcadorService.cargar().subscribe((marcadores)=>{
+        this.marcadores=marcadores;
+        resolve(true);
+      },(error)=>{
+        resolve(false);
+      });    
+    })
+  }
+
+  cargarTipoMarcadores() {
+    return new Promise((resolve, reject)=>{
+      this._tipoMarcadorService.cargar().subscribe((tipoMarcadores)=>{
+        this.tipoMarcadores=tipoMarcadores;
+        resolve(true);
+      },(error)=>{
+        resolve(false);
+      });    
+    })
+  }
+
+  crear(nuevoMarcador:Marcador){
+    this._marcadorService.crear(nuevoMarcador).subscribe((respMarcador)=>{
+      this._marcadorService.obtener(respMarcador._id).subscribe((marcador)=>{
+        this.marcadorSel = marcador;
+        this.cargarMarcadores().then(()=>{ 
+          this.snakbar.open('Nuevo marcador :' + this.marcadorSel.codigo + ' agregado', 'cerrar',{ duration:3000 });
+        });        
+      })
     });
   }
 
-  crear(nuevoMarcador:MarcadorRef){
-    this._marcadorService.crear(nuevoMarcador).subscribe((marcador)=>{
-      this.marcadorSel._id=marcador._id;
-      this.marcadores.splice(this.posicion,1,this.marcadorSel);
-      console.log('server:',marcador);
-      console.log('marcador:',this.marcadorSel);
-    });
-  }
-
-  actualizar(marcadorSel:MarcadorRef){
+  actualizar(marcadorSel:Marcador){
     this._marcadorService.actualizar( marcadorSel )
             .subscribe( marcador=> {
-              this.marcadorSel = marcador;
+              //this.marcadorSel = marcador;
+              this.cargarMarcadores();
             });
     this.snakbar.open('Marcador actualizado', 'cerrar',{ duration:3000 });
   }
@@ -87,17 +101,13 @@ export class MarcadoresComponent implements OnInit {
     //console.log( f.valid );
     //console.log( f.value );
 
-    if ( f.invalid ) {
+    if ( f.invalid || !this.marcadorSel._id===undefined) {
       return;
     }
 
-    if(this.marcadorSel._id===undefined){
-      console.log('guardando...',this.marcadorSel);
-      this.guardarMarcador(this.marcadorSel,this.estado);
-    }else{
-      this.actualizar(this.marcadorSel);
-    }
+    this.actualizar(this.marcadorSel);
   }
+  
 
 
 
@@ -107,7 +117,7 @@ export class MarcadoresComponent implements OnInit {
 
   obtainInfowindow(window: InfoWindow) {
     this.infoWindow = window
-    console.log('infowindow map',this.infoWindow);
+    //console.log('infowindow map',this.infoWindow);
   }
 
   renderOptions: any = {
@@ -119,11 +129,9 @@ export class MarcadoresComponent implements OnInit {
     //},
   }
 
-  marcadorClick(marcador:MarcadorRef,posicion:number){//editar marcador
+  marcadorClick(marcador:Marcador,posicion:number){//editar marcador
     this.posicion=posicion;
-    console.log(posicion);
     this.marcadorSel=marcador;
-    console.log(this.marcadorSel);
     if(this.marcadorSel.arrastable){
       this.arrastable="1";
     }else{
@@ -132,7 +140,7 @@ export class MarcadoresComponent implements OnInit {
 
   }
 
-  agregarMarcador( evento ){
+  agregarMarcador( evento ){ //se dispara cuando se hace click en el mapa
     this.posicion=undefined;
     this.obtenerDireccion(evento.coords.lat,evento.coords.lng);//dispara la funcion actualizar direcion
     //this.snakbar.open('Creando marcador', 'cerrar',{ duration:3000 });
@@ -142,8 +150,8 @@ export class MarcadoresComponent implements OnInit {
     let route=evento.routes["0"].legs["0"];
     let coords=evento.routes["0"].overview_path["0"];
     let direccion= route.end_address;
-    let lat:number= coords.lat();
-    let lng= coords.lng();
+    let lat: number= coords.lat();
+    let lng: number = coords.lng();
 
     if(direccion===''){
       swal('Marcador', 'Selecione otro punto donde se pueda obtener bien la direccion', 'info');
@@ -151,47 +159,48 @@ export class MarcadoresComponent implements OnInit {
     }
 
     let key= lat.toString().split('.');
-    key= key['1'];
-    key= key.slice(0,5);
-    let codigo = direccion.split(',');
-    codigo='P:'+key+','+ codigo['0'];
+    key = key['1'];
+    key = key.slice(0,5);
+    let codigo = 'P:' + key;
 
 
     if(this.posicion===undefined){
         //nuevo marcador
-      this.estado=true;
-      let nuevoMarcador = new Marcador(lat,lng,direccion,codigo);
-      this.marcadores.push(nuevoMarcador);
-      this.snakbar.open('Nuevo marcador agregado', 'cerrar',{ duration:3000 });
+        this.cargarMarcadores().then(()=>{
+          this._tipoMarcadorService.cargar().subscribe((tipoMarcadores)=>{
+            this.tipoMarcadores=tipoMarcadores;
+            if ( this.tipoMarcadores.length <=0) {
+              swal('Marcador', 'No se puede crear porque no hay tipos de marcadores', 'info');
+              return;
+            }
+  
+            this.marcadorSel = null;
+            let nuevoMarcador = new Marcador(lat,lng,direccion,codigo);
+            let nombre = this._marcadorService.totalMarcadores + 1;
+            nuevoMarcador.nombre = nombre.toString();
+            nuevoMarcador.tipo = this.tipoMarcadores['0'];
+            this.crear(nuevoMarcador);
+          });  
+        });
+    
     }else{
-      //editar marcador
-      this.marcadorSel.codigo=codigo;
-      this.estado=false;
-      this.marcadores.splice(this.posicion,1,this.marcadorSel);
-      this.snakbar.open('Marcador actualizado', 'cerrar',{ duration:3000 });
+      this.marcadorSel.lat=lat;
+      this.marcadorSel.lng=lng;
+      this.marcadorSel.direccion=direccion;
+      this.snakbar.open('Marcador reubicado', 'cerrar',{ duration:3000 });
     }
   }
 
-
-
-  guardarMarcador( marcador:MarcadorRef, estado:boolean ){
-    if(estado){
-      //creando marcador
-      this.crear(marcador);
-      this.snakbar.open('Creando marcador', 'cerrar',{ duration:3000 });
-    }else{
-      //actualizando marcador
-      this.actualizar(marcador);
-      this.snakbar.open('Actualizando marcador', 'cerrar',{ duration:3000 });
-    }
-  }
  
 
-  borrarMarcador(posicion){
-    this.marcadores.splice(posicion,1);
+  borrarMarcador(id){
+    //this.marcadores.splice(posicion,1);
     //this.guardarStorage();
-    this.marcadorSel=null;
-    this.snakbar.open('Marcador borrado', 'cerrar',{ duration:3000 });
+    this._marcadorService.borrar( id )
+            .subscribe( () => {
+              this.cargarMarcadores();
+              this.marcadorSel=null;
+            });
   }
 
 
@@ -216,23 +225,17 @@ export class MarcadoresComponent implements OnInit {
       this.marcadorSel.tipo._id=tipoMarcador._id;
       this.marcadorSel.tipo.nombre=tipoMarcador.nombre;
       this.marcadorSel.tipo.img=tipoMarcador.img;
-      console.log('se cambio tipo:',this.marcadorSel);
     })
-    //console.log('tipo');
   }
 
-  marcadorMovido(marcador:MarcadorRef,evento,posicion:number){
+  marcadorMovido(marcador:Marcador,evento,posicion:number){
     //cuando se mueve el marcador se dispara esta funcion
     //actualizamos el marcador
     //console.log(evento);
     this.posicion=posicion;
     this.marcadorSel=marcador;
-    let codigo=posicion+':'+ this.marcadorSel.codigo;
-    this.marcadorSel.codigo=codigo;
     this.obtenerDireccion(evento.coords.lat,evento.coords.lng);
-    //this.guardarStorage();
     this.snakbar.open('Marcador Movido', 'cerrar',{ duration:3000 });
-
   }
 
 

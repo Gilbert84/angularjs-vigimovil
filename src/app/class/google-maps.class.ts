@@ -15,7 +15,7 @@ export class TipoMarcador{
 
         this._id=_id;
         this.nombre=nombre || this.nombre;
-        this.img=img;
+        this.img=img || this.img;
 
     }
 }
@@ -39,8 +39,7 @@ export class Marcador {
         lat:number,
         lng:number,
         direccion:string,
-        codigo:string,
-        _id?:string
+        codigo:string
     ){
         this.lat=lat;
         this.lng=lng
@@ -50,45 +49,27 @@ export class Marcador {
         this.descripcion=this.descripcion;
         this.arrastable=true;
         this.tipo=new TipoMarcador();
-        this._id=_id;
+        this._id=this._id;
     }
 }
 
-
-export class Origen {
-
-    public coords=[];
-    
-    constructor(coords){
-        this.coords = coords;
-    }
-}
-
-export class Destino {
-
-    public coords = [];
-    
-    constructor(coords){
-        this.coords = coords;
-    }
-}
 
 
 export class Ruta {
 
-    public origen:Origen;
-    public destino:Destino;
+    public origen:Marcador;
+    public destino:Marcador;
     public puntosRef: any = [];
     public visible:boolean;
     public puntosControl:any = [];
     public _id?:string;
-    public nombre?:string='';
+    public nombre:string='';
     public codigo?:string=''
 
 
-    constructor(origen:Origen,destino:Destino){
-        this.origen = new Origen(origen);
-        this.destino = new Destino(destino);
+    constructor(origen:Marcador,destino:Marcador){
+        this.origen = new Marcador(origen.lat,origen.lng,origen.direccion,origen.codigo);
+        this.destino = new Marcador(destino.lat,destino.lng,destino.direccion,destino.codigo);
         this.puntosRef=this.puntosRef;
         this.puntosControl=this.puntosControl;
         this.visible=this.visible=true;

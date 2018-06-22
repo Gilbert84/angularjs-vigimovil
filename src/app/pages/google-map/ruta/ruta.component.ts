@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Empresa } from '../../models/empresa.model';
-import { Vehiculo } from '../../models/vehiculo.model';
-import { Dispositivo } from '../../models/dispositivo.model';
-import { MarcadorService , RutaService } from '../../services/service.index';
+import { Empresa } from '../../../models/empresa.model';
+import { Vehiculo } from '../../../models/vehiculo.model';
+import { Dispositivo } from '../../../models/dispositivo.model';
+import { MarcadorService , RutaService } from '../../../services/service.index';
 
-import { ModalUploadService } from '../../components/service.components.index';
-import { Marcador, Ruta } from '../../class/google-maps.class';
+import { ModalUploadService } from '../../../components/service.components.index';
+import { Marcador, Ruta } from '../../../class/google-maps.class';
 
 @Component({
   selector: 'app-ruta',
@@ -21,17 +21,20 @@ export class RutaComponent implements OnInit {
   marcadores: Marcador[] = [];
   ruta;
 
-  origen:Marcador;
-  destino:Marcador;
+  cargando:boolean;
+
+  origen:Marcador = new Marcador(0,0,'','');
+  destino:Marcador  = new Marcador(0,0,'','');;
 
 
   lat: number = 6.344620;
   lng: number = -75.562874;
   zoom: number = 12;
+  opacidad: number = 0.5;
+  visible=true; 
 
   public optimizeWaypoints: boolean = true // default: true
   public provideRouteAlternatives: boolean = true // default: false
-  public visible=true;
 
   public renderOptions: any = {
     draggable: true,
@@ -48,9 +51,6 @@ export class RutaComponent implements OnInit {
     public _rutaService:RutaService
   ) {
 
-    this.marcadores=this._marcadorService.marcadores;
-    this.ruta= new Ruta(this.marcadores['0'],this.marcadores['1']);
-    console.log('ruta:',this.ruta);
     activatedRoute.params.subscribe( params => {
 
       let id = params['id'];
@@ -60,35 +60,49 @@ export class RutaComponent implements OnInit {
         this.cargarRuta( id );
       }else{
         this.titulo="Nueva ruta";
-        this.ruta= {};
+        this.cargando = true;
+        this.cargarMarcadores().then(()=>{
+          this.ruta= new Ruta(this.marcadores['0'],this.marcadores['1']);
+          this.cargando = false ;
+          console.log('ruta:',this.ruta);
+        });
       }
 
     });
 
-        //let nuevaRuta= new Ruta(this.origin1,this.destination1);
-    //this.rutas.push(nuevaRuta);
-    //nuevaRuta= new Ruta(this.origin1,this.destination1);
-    //this.rutas.push(nuevaRuta);
-    //console.log(this.rutas);
-
   }
 
   ngOnInit() {
+    this.cargarMarcadores().then();
+  }
 
-    this._marcadorService.cargar()
-          .subscribe( marcadores =>{
-            this.marcadores = marcadores;
-            console.log('marcadores',this.marcadores);
-          });
-
+  marcadorSel( marcador ) {
 
   }
 
-  public cambiarPuntosRef(event: any, posicion, ruta) {
-    this.ruta.puntosRef = event.request.waypoints;
-    //console.log('pos:',posicion);
-    //console.log(this.rutas);
+
+  marcadorSelOrigen() {
+
   }
+
+  marcadorSelDestino() {
+    
+  }
+
+
+
+  cargarMarcadores(){
+    return new Promise((resolve,reject)=>{
+      this._marcadorService.cargar().subscribe((marcadores)=>{
+        this.marcadores =  marcadores;
+        console.log(marcadores);
+        resolve(true);
+      },(error)=>{
+        resolve(false);
+      })
+    });
+  }
+
 
   cargarRuta( id: string ) {
     this._rutaService.cargarRuta( id )
@@ -123,22 +137,38 @@ export class RutaComponent implements OnInit {
   }
 
   cambiarOrigen(id){
-    console.log('cambiar origen',id);
-    console.log('ruta origen',this.ruta);
+
     this._marcadorService.obtener(id)
         .subscribe((origen)=>{
-          console.log('server origen ruta', origen);
+          
+          this.origen = origen;
+          console.log('origen :',this.origen);
+          this.ruta.origen = this.origen._id;
+          this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
+          this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
+          console.log('ruta', this.ruta);
         });
   }
 
   cambiarDestino(id){
-    console.log('cambiar destino',id);
-    console.log('ruta desino',this.ruta);
+
     this._marcadorService.obtener(id)
     .subscribe((destino)=>{
-      console.log('server destino ruta', destino);
+
+      this.destino = destino;
+      console.log('destino :',this.destino);
+      this.ruta.destino = this.destino._id;
+      this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
+      this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
+      console.log('ruta', this.ruta);
     });
   }
+
+  cambiarPuntosRef(evento) {
+    this.ruta.puntosRef = evento.request.waypoints;
+    console.log('ruta',this.ruta);
+  }
+  
 
   // cambiarEmpresa( id: string ) {
 

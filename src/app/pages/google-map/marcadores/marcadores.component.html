@@ -47,7 +47,7 @@
                         *ngFor="let marcador of marcadores; let posicion = index" 
                         [latitude]="marcador.lat" 
                         [longitude]="marcador.lng"
-                        [label]="label"
+                        [label]="marcador.nombre"
                         [iconUrl]="marcador.tipo.img | imagen:'tipo-marcadores'"
                         [markerDraggable]="marcador.arrastable"
                         (markerClick)="marcadorClick(marcador,posicion)"
@@ -61,7 +61,7 @@
                                     <h5 class="card-title">{{marcador.codigo}}</h5>
                                     <h5 class="card-title">{{marcador.nombre}}</h5>
                                     <p class="card-text">{{marcador.descripcion}}</p>
-                                    <button  (click)="borrarMarcador(posicion)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                    <button  (click)="borrarMarcador(marcador._id)" class="pointer-cursor btn btn-outline-danger btn-block">
                                             Borrar
                                     </button>
                                 </div>
@@ -131,7 +131,7 @@
                                                 </td>
                                                 <td class="col-md-3">
                                                     <select (change)="cambiarTipo( $event.target.value )" [(ngModel)]="marcadorSel.tipo._id" name="tipoMarcador" class="form-control" required>
-                                                        <option *ngFor="let tipo of tipoMarcadores" [value]="tipo._id" required>
+                                                        <option *ngFor="let tipo of _tipoMarcadorService.tipoMarcadores" [value]="tipo._id" required>
                                                             {{ tipo.nombre }}
                                                         </option>
                                                     </select>
@@ -155,10 +155,6 @@
                         <button *ngIf="marcadorSel._id" type="submit" class="btn btn-success waves-effect waves-light m-r-10">
                             <i class="fa fa-save"></i>
                             Actualizar
-                        </button>
-                        <button *ngIf="!marcadorSel._id" type="submit" class="btn btn-success waves-effect waves-light m-r-10">
-                                <i class="fa fa-save"></i>
-                            Guardar
                         </button>
                     </div>
                 </form>
