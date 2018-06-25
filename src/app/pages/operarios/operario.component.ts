@@ -14,7 +14,7 @@ import { ModalUploadService } from '../../components/service.components.index';
 export class OperarioComponent implements OnInit {
   titulo:string="Nuevo operario";
   empresas: Empresa[] = [];
-  operario: Operario = new Operario('', '', '', '', '');
+  operario: Operario = new Operario('', '', '',false, '', '');
   empresa: Empresa = new Empresa('');
 
   constructor(

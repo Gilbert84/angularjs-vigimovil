@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Ruta, Marcador } from '../../../../class/google-maps.class';
-import { MarcadorService , RutaService} from '../../../../services/service.index';
-
+import {
+  MarcadorService,
+  RutaService
+} from '../../../../services/service.index';
 
 @Component({
   selector: 'app-rutas',
@@ -11,164 +13,136 @@ import { MarcadorService , RutaService} from '../../../../services/service.index
 })
 export class RutasComponent implements OnInit {
 
-
-
-  lat: number = 6.344620;
+  lat: number = 6.34462;
   lng: number = -75.562874;
   zoom: number = 5;
 
-  marcadores:Marcador[]=[];
-  rutas=[];
-  rutaSel:Ruta;
- 
+  marcadores: Marcador[] = [];
+  rutas = [];
+  rutaSel: Ruta;
 
-  public optimizeWaypoints: boolean = true // default: true
-  public provideRouteAlternatives: boolean = true // default: false
-  public visible=true;
-
-
-
-  public renderOptions: any = {
-    draggable: true,
+  renderOptions: any = {
+    draggable: false,
     suppressMarkers: true,
-    suppressInfoWindows: true,
-  }
+    suppressInfoWindows: true
+  };
 
-  public transitOptions: any = {
-    departureTime: new Date('2018/05/20 13:14'),
-    arrivalTime: new Date('2018/05/20 13:30'),
-    modes: ['BUS'],
-  }
-
-  public waypoints: any = [];
-
-  public puntosRef: any = [];
-
-
-  
-  public markerOptions = {
-      origin: {
-          icon: 'assets/images/icon/origen.png',
-          draggable: false
-      },
-      destination: {
-          icon: 'assets/images/icon/destino.png',
-          draggable: false
-      },
+  markerOptions = {
+    origin: {
+      icon: 'assets/images/icon/origen.png',
+      draggable: false
+    },
+    destination: {
+      icon: 'assets/images/icon/destino.png',
+      draggable: false
+    }
   };
 
   desde: number = 0;
   totalRegistros: number = 0;
   cargando: boolean = false;
-  mostrar={
-    anterior:false,
-    siguiente:true
-  }
-  
+  mostrar = {
+    anterior: false,
+    siguiente: true
+  };
 
   constructor(
-    private _marcadorService:MarcadorService,
-    private _rutaService:RutaService
-  ) {
-
-  }
+    private _marcadorService: MarcadorService,
+    private _rutaService: RutaService
+  ) {}
 
   ngOnInit() {
-    this._marcadorService.cargar().subscribe((marcadores)=>{
-      this.marcadores=marcadores;
-      if(marcadores.length<=1){
+    this._marcadorService.cargar().subscribe(marcadores => {
+      this.marcadores = marcadores;
+      if (marcadores.length <= 1) {
         return;
       }
-      //console.log('marcadores',this.marcadores);
-      //let nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['1']);
-      //this.rutas.push(nuevaRuta);
-      // nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['2']);
-      // this.rutas.push(nuevaRuta);
-      // nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['3']);
-      // this.rutas.push(nuevaRuta);
-      // this.mostrar=true;
-      //console.log(this.rutas);
+      this.cargar();
     });
+  }
 
-    this._rutaService.cargarRutas().subscribe((rutas)=>{
-      this.rutas= rutas;
-      console.log('rutas:',this.rutas);
-    })
-
+  cargar() {
+    this.cargando = true;
+    this._rutaService.cargarRutas( this.desde ).subscribe(rutas => {
+      this.totalRegistros = this._rutaService.totalRutas;
+      this.rutas = rutas;
+      this.cargando = false;
+    });
   }
 
 
-  public cambiarPuntosRef1(event: any) {
-    this.waypoints = event.request.waypoints;
-    //console.log(this.waypoints);
+
+  buscar( termino: string ) {
+
+    if ( termino.length <= 0 ) {
+      this.cargar();
+      return;
+    }
+
+    this._rutaService.buscarRutas( termino )
+            .subscribe( rutas => {
+              this.rutas = rutas;
+            });
   }
 
-  public cambiarPuntosRef(event: any, posicion, ruta) {
-    ruta.puntosRef = event.request.waypoints;
-    this.rutas.splice(posicion, 1, ruta);
-    //console.log('pos:',posicion);
-    //console.log(this.rutas);
+
+  marcadorClickOrigen() {}
+
+  marcadorClickDestino() {}
+
+  borrar(id) {
+    this._rutaService.borrarRuta(id).subscribe(()=>{
+      this.cargar();
+    });
   }
 
-  marcadorClickOrigen(){
-
-  }
-
-  marcadorClickDestino(){
-
-  }
-
-  borrarRuta(ruta,posicion){
-    console.log('borrando ruta');
-  }
-
-  styleFunc(feature) {
-      return ({
-        clickable: false,
-        fillColor: feature.getProperty('color'),
-        strokeWeight: 1
-      });
-  }
-
-  cambiarDesde( valor: number ) {
-
+  cambiarDesde(valor: number) {
     let desde = this.desde + valor;
 
-    if ( desde >= this.totalRegistros ) {
+    if (desde >= this.totalRegistros) {
       //no hay mas registros
-      this.mostrar.siguiente=false;
-      this.mostrar.anterior=true;
+      this.mostrar.siguiente = false;
+      this.mostrar.anterior = true;
       return;
     }
 
-    if ( desde < 0 ) {
+    if (desde < 0) {
       //primera pagina
-      this.mostrar.siguiente=true;
-      this.mostrar.anterior=false;
+      this.mostrar.siguiente = true;
+      this.mostrar.anterior = false;
       return;
     }
-    this.mostrar.siguiente=true;
-    this.mostrar.anterior=true;
+    this.mostrar.siguiente = true;
+    this.mostrar.anterior = true;
     this.desde += valor;
-    //this.cargarVehiculos();
-
+    this.rutas.map((elem)=>{
+      elem.visible=false;
+    })
+    this.cargar();
   }
-  
+
+  // styleFunc(feature) {
+  //   return {
+  //     clickable: false,
+  //     fillColor: feature.getProperty('color'),
+  //     strokeWeight: 1
+  //   };
+  // }
 
   // geoJsonObject: Object = {
-  //     "type": "FeatureCollection",
-  //     "features": [
+  //     'type': 'FeatureCollection',
+  //     'features': [
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "G",
-  //           "color": "blue",
-  //           "rank": "7",
-  //           "ascii": "71"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'G',
+  //           'color': 'blue',
+  //           'rank': '7',
+  //           'ascii': '71'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [123.61, -22.14], [122.38, -21.73], [121.06, -21.69], [119.66, -22.22], [119.00, -23.40],
   //               [118.65, -24.76], [118.43, -26.07], [118.78, -27.56], [119.22, -28.57], [120.23, -29.49],
@@ -183,16 +157,16 @@ export class RutasComponent implements OnInit {
   //         }
   //       },
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "o",
-  //           "color": "red",
-  //           "rank": "15",
-  //           "ascii": "111"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'o',
+  //           'color': 'red',
+  //           'rank': '15',
+  //           'ascii': '111'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [128.84, -25.76], [128.18, -25.60], [127.96, -25.52], [127.88, -25.52], [127.70, -25.60],
   //               [127.26, -25.79], [126.60, -26.11], [126.16, -26.78], [126.12, -27.68], [126.21, -28.42],
@@ -207,16 +181,16 @@ export class RutasComponent implements OnInit {
   //         }
   //       },
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "o",
-  //           "color": "yellow",
-  //           "rank": "15",
-  //           "ascii": "111"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'o',
+  //           'color': 'yellow',
+  //           'rank': '15',
+  //           'ascii': '111'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [131.87, -25.76], [131.35, -26.07], [130.95, -26.78], [130.82, -27.64], [130.86, -28.53],
   //               [131.26, -29.22], [131.92, -29.76], [132.45, -29.87], [133.06, -29.76], [133.72, -29.34],
@@ -231,16 +205,16 @@ export class RutasComponent implements OnInit {
   //         }
   //       },
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "g",
-  //           "color": "blue",
-  //           "rank": "7",
-  //           "ascii": "103"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'g',
+  //           'color': 'blue',
+  //           'rank': '7',
+  //           'ascii': '103'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [138.12, -25.04], [136.84, -25.16], [135.96, -25.36], [135.26, -25.99], [135, -26.90],
   //               [135.04, -27.91], [135.26, -28.88], [136.05, -29.45], [137.02, -29.49], [137.81, -29.49],
@@ -258,16 +232,16 @@ export class RutasComponent implements OnInit {
   //         }
   //       },
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "l",
-  //           "color": "green",
-  //           "rank": "12",
-  //           "ascii": "108"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'l',
+  //           'color': 'green',
+  //           'rank': '12',
+  //           'ascii': '108'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [140.14, -21.04], [140.31, -29.42], [141.67, -29.49], [141.59, -20.92], [140.14, -21.04]
   //             ]
@@ -275,16 +249,16 @@ export class RutasComponent implements OnInit {
   //         }
   //       },
   //       {
-  //         "type": "Feature",
-  //         "properties": {
-  //           "letter": "e",
-  //           "color": "red",
-  //           "rank": "5",
-  //           "ascii": "101"
+  //         'type': 'Feature',
+  //         'properties': {
+  //           'letter': 'e',
+  //           'color': 'red',
+  //           'rank': '5',
+  //           'ascii': '101'
   //         },
-  //         "geometry": {
-  //           "type": "Polygon",
-  //           "coordinates": [
+  //         'geometry': {
+  //           'type': 'Polygon',
+  //           'coordinates': [
   //             [
   //               [144.14, -27.41], [145.67, -27.52], [146.86, -27.09], [146.82, -25.64], [146.25, -25.04],
   //               [145.45, -24.68], [144.66, -24.60], [144.09, -24.76], [143.43, -25.08], [142.99, -25.40],
@@ -301,5 +275,4 @@ export class RutasComponent implements OnInit {
   //       }
   //     ]
   // };
-
 }

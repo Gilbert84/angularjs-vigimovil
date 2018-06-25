@@ -18,7 +18,7 @@ export class RutaService {
 
   cargarRutas(desde: number = 0) {
 
-    let url = URL_SERVICIOS + '/google-map/ruta?desde='+ desde;
+    let url = URL_SERVICIOS + '/google-map/ruta?desde=' + desde;
 
     return this.http.get( url )
               .map( (resp: any) => {
@@ -41,7 +41,9 @@ export class RutaService {
 
     let url = URL_SERVICIOS + '/busqueda/coleccion/rutas/' + termino;
     return this.http.get( url )
-                .map( (resp: any) => resp.rutas );
+                .map( (resp: any) => {
+                  return resp.rutas; 
+                });
 
   }
 
