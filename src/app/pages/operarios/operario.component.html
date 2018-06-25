@@ -1,0 +1,78 @@
+<div class="row animated fadeIn">
+    <div class="align-self-center col-md-6">
+        <h3 class="text-themecolor">  {{ titulo }} </h3>
+    </div>
+
+    <div col-md-6>
+    <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+        <i class="fa fa-plus"></i>
+        Nuevo Operario
+    </button>
+    </div>
+</div>
+
+
+
+<div class="row animated fadeIn">
+
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h3 class="box-title m-b-0">Operario: {{ operario.nombre }}</h3><hr>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarOperario(f)">
+                        <div class="form-group">
+                            <label>Nombre del Operario</label>
+                            <input [(ngModel)]="operario.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del operario" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Asignar nombre de Usuario</label>
+                            <input [(ngModel)]="operario.alias" name="alias" type="text" class="form-control" placeholder="alias o nombre de usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <input [(ngModel)]="operario.password" name="password" type="password" class="form-control" placeholder="Contraseña" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Empresa</label>
+                            <select (change)="cambioEmpresa( $event.target.value )" [(ngModel)]="operario.empresa" name="empresa" class="form-control" required>
+                              <option value="">Seleccione Empresa</option>
+                              <option *ngFor="let empresa of empresas" [value]="empresa._id">
+                                {{ empresa.nombre }}
+                              </option>
+                            </select>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">
+                          <i class="fa fa-save"></i>
+                          Guardar
+                        </button>
+                        <a routerLink="/operarios" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card card-body">
+            <h4 class="box-title m-b-0">Empresa</h4>
+
+            <img [src]="empresa.img | imagen:'empresa'" class="rounded img-fluid">
+        </div>
+    </div>
+
+    <div class="col-md-3" *ngIf="operario._id">
+        <div class="card card-body">
+            <h4 class="box-title m-b-0">Operario</h4>
+
+            <img (click)="cambiarFoto('operarios',operario._id)" [src]="operario.img | imagen:'operario'" class="img-circle img-fluid pointer">
+        </div>
+    </div>
+
+
+</div>

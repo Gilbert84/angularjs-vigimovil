@@ -1,0 +1,86 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+              <input #input (keyup)="buscarDispositivo( input.value )" type="text" class="form-control" placeholder="Buscar dispositivo...">
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+        <div class="col-sm-12">
+    
+            <div class="alert alert-warning text-center">
+                <strong>Cargando</strong>
+                <br>
+                <i class="fa fa-refresh fa-spin fa-2x"></i>
+                <br>
+                <span>Espere por favor</span>
+            </div>
+        </div>
+</div>
+
+
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+
+              <h3 class="card-title">Dispositivos registrados ( <small>  {{dispositivoService.totalDispositivos}} </small> )</h3>
+
+                <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>Foto</th>
+                          <th>Dispositivo</th>
+                          <th>Estado</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let dispositivo of dispositivos">
+                          <td>
+                                <img (click)="actualizarImagen( dispositivo )" [src]="dispositivo.img | imagen:'dispositivo'" class="img-50 pointer">
+                          </td>
+                          <td>
+                              {{ dispositivo.nombre }}
+                          </td>
+                          <td>
+                                <select [(ngModel)]="dispositivo.activo" name="role" class="form-control">
+                                        <option value="true">ACTIVO</option>
+                                        <option value="false">INACTIVO</option>
+                                </select>
+                          </td>
+                          <td>
+                            <button [routerLink]="['/dispositivos', dispositivo._id ]" class="btn btn-primary">
+                                <i class="fa fa-edit"></i>
+                            </button>
+
+                            <button (click)="guardarCambios( dispositivo )" class="btn btn-success">
+                                <i class="fa fa-save"></i>
+                            </button>
+
+                            <button (click)="borrarDispositivo( dispositivo )" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                          </td>
+                      </tr>
+                  </tbody>
+                </table>
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                        Anteriores
+                </button>
+      
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                        Siguientes
+                </button>
+
+          </div>
+      </div>
+  </div>
+</div>
