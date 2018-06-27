@@ -8,7 +8,9 @@ export class Usuario {
         public img?: string,
         public role?: string,
         public google?: boolean,
-        public _id?: string
+        public _id?: string,
+        public fechaCreado?: Date,
+        public fechaActualizado?: Date,
     ) { }
 
 }

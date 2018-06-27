@@ -43,6 +43,9 @@ export class Ruta {
   public _id?: string;
   public nombre: string = '';
   public codigo?: string = '';
+  public distancia?:Object = {};
+  public duraccion?:Object = {};
+  public pasos?: any = [];
 
   constructor(origen: Marcador, destino: Marcador) {
     this.origen = new Marcador(
@@ -63,5 +66,8 @@ export class Ruta {
     this._id = this._id;
     this.nombre = this.nombre;
     this.codigo = this.codigo;
+    this.distancia = this.distancia;
+    this.duraccion = this.duraccion;
+    this.pasos = this.pasos;
   }
 }

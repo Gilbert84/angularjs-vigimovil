@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DespachoService, OperarioService } from '../../services/service.index';
-import { Operario } from '../../models/operario.model';
+import { DespachoService, OperarioService } from '../../../services/service.index';
+import { Operario } from '../../../models/operario.model';
 
 @Component({
   selector: 'app-despacho',

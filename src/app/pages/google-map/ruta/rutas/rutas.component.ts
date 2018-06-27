@@ -115,9 +115,9 @@ export class RutasComponent implements OnInit {
     this.mostrar.siguiente = true;
     this.mostrar.anterior = true;
     this.desde += valor;
-    this.rutas.map((elem)=>{
-      elem.visible=false;
-    })
+    this.rutas.map((ruta)=>{
+      ruta.visible=false;
+    });
     this.cargar();
   }
 

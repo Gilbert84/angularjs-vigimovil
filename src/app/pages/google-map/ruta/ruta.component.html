@@ -89,7 +89,7 @@
                 </agm-info-window>
             </agm-marker>
             <!-- [markerOptions]="markerOptions"  -->
-            <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions" [optimizeWaypoints]="optimizeWaypoints" [provideRouteAlternatives]="provideRouteAlternatives" (onChange)="cambiarPuntosRef($event)">
+            <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [travelMode]="travelMode" [renderOptions]="renderOptions" [optimizeWaypoints]="optimizeWaypoints" [provideRouteAlternatives]="provideRouteAlternatives" (onChange)="cambiarPuntosRef($event)">
             </agm-direction>
         </agm-map>
     </div>

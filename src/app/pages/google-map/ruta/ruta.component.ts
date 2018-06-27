@@ -49,6 +49,8 @@ export class RutaComponent implements OnInit {
     suppressInfoWindows: true
   };
 
+  transitOptions: string = 'TRANSIT';
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -167,5 +169,9 @@ export class RutaComponent implements OnInit {
 
   cambiarPuntosRef(evento) {
     this.ruta.puntosRef = evento.request.waypoints;
+    //this.ruta.puntosControl = evento.routes['0'].legs['0'];
+    this.ruta.distancia = evento.routes['0'].legs['0'].distance;
+    this.ruta.duraccion = evento.routes['0'].legs['0'].duration;
+    this.ruta.pasos = evento.routes['0'].legs['0'].steps;
   }
 }
