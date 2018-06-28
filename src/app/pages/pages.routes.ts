@@ -1,19 +1,19 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 import { AccoutSettingsComponent } from './accout-settings/accout-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
-import { DespachoComponent} from './despacho/despacho.component';
+import { DespachoComponent } from './despacho/despacho/despacho.component';
+import { DespachosComponent } from './despacho/despacho/despachos.component';
 // Guards
 import { LoginGuardGuard } from '../services/service.index';
 import { AdminGuard } from '../services/service.index';
 
-import { UsuariosComponent } from './usuarios/usuarios.component';
+import { IndexUsuariosComponent } from './usuarios/index-usuarios/index-usuarios.component';
 import { EmpresasComponent } from './empresas/empresas.component';
 import { OperariosComponent } from './operarios/operarios.component';
 import { OperarioComponent } from './operarios/operario.component';
@@ -22,21 +22,28 @@ import { VerificaTokenGuard } from '../services/guards/verifica-token.guard';
 import { DispositivosComponent } from './dispositivos/dispositivos.component';
 import { DispositivoComponent } from './dispositivos/dispositivo.component';
 import { InfoComponent } from './dashboard/info/info.component';
-import { VehiculoComponent }  from './vehiculo/vehiculo.component';
-import { VehiculosComponent }  from './vehiculo/vehiculos.component';
+import { VehiculoComponent } from './vehiculo/vehiculo.component';
+import { VehiculosComponent } from './vehiculo/vehiculos.component';
 import { RutasComponent } from './google-map/ruta/rutas/rutas.component';
 import { RutaComponent } from './google-map/ruta/ruta.component';
 import { MarcadoresComponent } from './google-map/marcadores/marcadores.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { TipoMarcadorComponent } from './google-map/tipo-marcador/tipo-marcador.component';
+import { UsuariosComponent } from './usuarios/usuarios/usuarios.component';
+import { EstadoRutaComponent } from './dashboard/estado-ruta/estado-ruta.component';
+import { IndexDashboardComponent } from './dashboard/index-dashboard/index-dashboard.component';
+import { IndexDespachoComponent } from './despacho/index-despacho/index-despacho.component';
+import { AsignacionComponent } from './despacho/asignacion/asignacion.component';
+import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.component';
 
 const pagesRoutes: Routes = [
     {
         path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [ VerificaTokenGuard ],
+        component: IndexDashboardComponent,
+        canActivate: [VerificaTokenGuard],
         data: { titulo: 'Seguimiento' }
     },
+    { path: 'estado-ruta/:id', component: EstadoRutaComponent, data: { titulo: 'Siguiendo Ruta :' } },
     { path: 'info-ruta', component: InfoComponent, data: { titulo: 'Informacion' } },
     { path: 'progress', component: ProgressComponent, data: { titulo: 'ProgressBars' } },
     { path: 'graficas1', component: Graficas1Component, data: { titulo: 'Gráficas' } },
@@ -48,11 +55,15 @@ const pagesRoutes: Routes = [
     // Mantenimientos
     {
         path: 'usuarios',
-        component: UsuariosComponent,
-        canActivate: [ AdminGuard ],
-        data: { titulo: 'Mantenimiento de Usuarios' }
+        component: IndexUsuariosComponent,
+        canActivate: [AdminGuard],
+        data: { titulo: 'Mantenimiento' }
     },
-    { path: 'despacho', component: DespachoComponent, data: { titulo: 'Gestion despacho' } },
+    { path: 'despacho', component: IndexDespachoComponent, data: { titulo: 'Gestion despacho' } },
+    { path: 'asignaciones', component: AsignacionesComponent, data: { titulo: 'Asignaciones de vehiculo' } },
+    { path: 'asignacion/:id', component: AsignacionComponent, data: { titulo: 'Asignacion de vehiculo' } },
+    { path: 'viajes', component: DespachosComponent, data: { titulo: 'Asignacion de viaje' } },
+    { path: 'viaje/:id', component: DespachoComponent, data: { titulo: 'Asignacion de viaje' } },
     { path: 'empresas', component: EmpresasComponent, data: { titulo: 'Mantenimiento de Empresas' } },
     { path: 'operarios', component: OperariosComponent, data: { titulo: 'Mantenimiento de Operarios' } },
     { path: 'operario/:id', component: OperarioComponent, data: { titulo: 'Mantenimiento Operario' } },
@@ -69,4 +80,4 @@ const pagesRoutes: Routes = [
 ];
 
 
-export const PAGES_ROUTES = RouterModule.forChild( pagesRoutes );
+export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes);

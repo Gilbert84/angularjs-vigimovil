@@ -49,6 +49,8 @@ export class RutaComponent implements OnInit {
     suppressInfoWindows: true
   };
 
+  transitOptions: string = 'TRANSIT';
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -106,7 +108,7 @@ export class RutaComponent implements OnInit {
     this._rutaService.cargarRuta(id).subscribe(ruta => {
       this.cargando = false;
       this.ruta = ruta;
-      //console.log('ruta se cargo:', ruta);
+      console.log('ruta se cargo:', ruta);
     });
   }
 
@@ -126,7 +128,7 @@ export class RutaComponent implements OnInit {
     //console.log('guardando ruta', this.ruta);
 
     this._rutaService.guardarRuta(this.ruta).subscribe(ruta => {
-      //console.log('server :', ruta);
+      this._rutaService.cargarRutas().subscribe();
       this.ruta._id = ruta._id;
       this.ruta.origen = this.origen;
       this.ruta.destino = this.destino; 
@@ -134,10 +136,6 @@ export class RutaComponent implements OnInit {
     });
   }
 
-
-  borrar() {
-
-  }
 
   cambiarOrigen(id) {
     
@@ -171,5 +169,9 @@ export class RutaComponent implements OnInit {
 
   cambiarPuntosRef(evento) {
     this.ruta.puntosRef = evento.request.waypoints;
+    //this.ruta.puntosControl = evento.routes['0'].legs['0'];
+    this.ruta.distancia = evento.routes['0'].legs['0'].distance;
+    this.ruta.duraccion = evento.routes['0'].legs['0'].duration;
+    this.ruta.pasos = evento.routes['0'].legs['0'].steps;
   }
 }

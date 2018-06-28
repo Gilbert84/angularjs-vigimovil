@@ -1,89 +1,128 @@
-<div class="row animated fadeIn">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-  
-                <input #input (keyup)="buscarRuta( input.value )" type="text" class="form-control" placeholder="Buscar vehiculo u operario...">
-  
-            </div>
-        </div>
-    </div>
-  </div>
-  
-  <div class="row animated fadeIn" *ngIf="cargando">
-  
-    <div class="col-sm-12">
-  
-        <div class="alert alert-warning text-center">
-            <strong>Cargando</strong>
-            <br>
-            <i class="fa fa-refresh fa-spin fa-2x"></i>
-            <br>
-            <span>Espere por favor</span>
-        </div>
-    </div>
-  </div>
-  
-  
-  <div class="row animated fadeIn" *ngIf="!cargando">
-    <div class="col-9">
-        <div class="card">
-            <div class="card-body">
-  
-                <h3 class="card-title">Siguiendo a : ( <small>  vehiculoService.vehiculo </small> )</h3>
-
-                <agm-map    
-                  [latitude]="lat" 
-                  [longitude]="lng"
-                  [zoom]="zoom"
-                  maxZoom="19"
-                  minZoom="13"
-                  mapTypeControl="true"
-                  streetViewControl="false"
-                  keyboardShortcuts="false"
-                  disableDoubleClickZoom="true">
-                  <agm-marker 
-                      [latitude]="lat" 
-                      [longitude]="lng">
-                  </agm-marker>
-              </agm-map>
-  
-            </div>
-        </div>
-    </div>
-    <div class="col-3">
-        <div class="card">
-            <div class="card-body">
-  
-                <h3 class="card-title">Operarios ( <small>  vehiculoService.totalVehiculos </small> )</h3>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Foto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--<tr *ngFor="let operario of operarios">-->
-                        <tr>
-                            <td>
-                              <button (click)="verRuta( ruta )" class="btn btn-success">
-                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                              </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> 
-                <div class="card-footer">
-                    <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
-                        Anteriores
-                    </button>
-                
-                    <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
-                        Siguientes
-                    </button>
-                </div>   
-
-            </div>
-        </div>
-    </div>
-  </div>
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card m-b-0">
+                                <!-- .chat-row -->
+                                <div class="chat-main-box">
+                                    <!-- .chat-left-panel -->
+                                    <div class="chat-left-aside">
+                                        <div class="open-panel"><i class="ti-angle-right"></i></div>
+                                        <div class="chat-left-inner">
+                                            <div class="form-material">
+                                                <input class="form-control p-20" type="text" placeholder="Search Contact">
+                                            </div>
+                                            <ul class="chatonline chat-list style-none p-20">
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" class="active"><img src="../assets/images/users/2.jpg" alt="user-img" class="img-circle"> <span>Genelia Deshmukh <small class="text-warning">Away</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/3.jpg" alt="user-img" class="img-circle"> <span>Ritesh Deshmukh <small class="text-danger">Busy</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/4.jpg" alt="user-img" class="img-circle"> <span>Arijit Sinh <small class="text-muted">Offline</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/5.jpg" alt="user-img" class="img-circle"> <span>Govinda Star <small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/6.jpg" alt="user-img" class="img-circle"> <span>John Abraham<small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/7.jpg" alt="user-img" class="img-circle"> <span>Hritik Roshan<small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                        <a href="javascript:void(0)"><img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
+                                                </li>
+                                                <li>
+                                                        <a href="javascript:void(0)"><img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
+                                                    </li>
+                                                    <li>
+                                                            <a href="javascript:void(0)"><img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
+                                                        </li>
+                                                <li class="p-20"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- .chat-left-panel -->
+                                    <!-- .chat-right-panel -->
+                                    <div class="chat-right-aside">
+                                        <div class="chat-main-header">
+                                            <div class="p-20 b-b">
+                                                <h3 class="box-title">Chat Message</h3>
+                                            </div>
+                                        </div>
+                                        <div class="chat-rbox">
+                                            <ul class="chat-list p-20">
+                                                <!--chat Row -->
+                                                <li>
+                                                    <div class="chat-img"><img src="../assets/images/users/1.jpg" alt="user" /></div>
+                                                    <div class="chat-content">
+                                                        <h5>James Anderson</h5>
+                                                        <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing & type setting industry.</div>
+                                                    </div>
+                                                    <div class="chat-time">10:56 am</div>
+                                                </li>
+                                                <!--chat Row -->
+                                                <li>
+                                                    <div class="chat-img"><img src="../assets/images/users/2.jpg" alt="user" /></div>
+                                                    <div class="chat-content">
+                                                        <h5>Bianca Doe</h5>
+                                                        <div class="box bg-light-info">It’s Great opportunity to work.</div>
+                                                    </div>
+                                                    <div class="chat-time">10:57 am</div>
+                                                </li>
+                                                <!--chat Row -->
+                                                <li class="reverse">
+                                                    <div class="chat-content">
+                                                        <h5>Steave Doe</h5>
+                                                        <div class="box bg-light-inverse">It’s Great opportunity to work.</div>
+                                                    </div>
+                                                    <div class="chat-img"><img src="../assets/images/users/5.jpg" alt="user" /></div>
+                                                    <div class="chat-time">10:57 am</div>
+                                                </li>
+                                                <!--chat Row -->
+                                                <li class="reverse">
+                                                    <div class="chat-content">
+                                                        <h5>Steave Doe</h5>
+                                                        <div class="box bg-light-inverse">It’s Great opportunity to work.</div>
+                                                    </div>
+                                                    <div class="chat-img"><img src="../assets/images/users/5.jpg" alt="user" /></div>
+                                                    <div class="chat-time">10:57 am</div>
+                                                </li>
+                                                <!--chat Row -->
+                                                <li>
+                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg" alt="user" /></div>
+                                                    <div class="chat-content">
+                                                        <h5>Angelina Rhodes</h5>
+                                                        <div class="box bg-light-info">Well we have good budget for the project</div>
+                                                    </div>
+                                                    <div class="chat-time">11:00 am</div>
+                                                </li>
+                                                <!--chat Row -->
+                                            </ul>
+                                        </div>
+                                        <div class="card-body b-t">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <textarea placeholder="Type your message here" class="form-control b-0"></textarea>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <button type="button" class="btn btn-info btn-circle btn-lg"><i class="fa fa-paper-plane-o"></i> </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .chat-right-panel -->
+                                </div>
+                                <!-- /.chat-row -->
+                            </div>
+                        </div>
+                    </div>

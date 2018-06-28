@@ -5,12 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Empresa } from '../../models/empresa.model';
 import { Vehiculo } from '../../models/vehiculo.model';
 import { Dispositivo } from '../../models/dispositivo.model';
-import { EmpresaService, VehiculoService, DispositivoService } from '../../services/service.index';
+import {
+  EmpresaService,
+  VehiculoService,
+  DispositivoService
+} from '../../services/service.index';
 
 import { ModalUploadService } from '../../components/service.components.index';
-
-
-
 
 @Component({
   selector: 'app-vehiculo',
@@ -18,13 +19,12 @@ import { ModalUploadService } from '../../components/service.components.index';
   styleUrls: []
 })
 export class VehiculoComponent implements OnInit {
-
-  titulo:string="Nuevo vehiculo";
+  titulo: string = 'Nuevo vehiculo';
   empresas: Empresa[] = [];
   dispositivos: Dispositivo[] = [];
-  vehiculo: Vehiculo = new Vehiculo('','','','','','','','','');
+  vehiculo: Vehiculo = new Vehiculo('', '', '', '', '', '', '', '', '');
   empresa: Empresa = new Empresa('');
-  dispositivo: Dispositivo= new Dispositivo('');
+  dispositivo: Dispositivo = new Dispositivo('');
 
   constructor(
     public _vehiculoService: VehiculoService,
@@ -34,85 +34,70 @@ export class VehiculoComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public _modalUploadService: ModalUploadService
   ) {
-
-    activatedRoute.params.subscribe( params => {
-
+    activatedRoute.params.subscribe(params => {
       let id = params['id'];
 
-      if ( id !== 'nuevo' ) {
-        this.titulo="Actualizar vehiculo";
-        this.cargarVehiculo( id );
-      }else{
-        this.titulo="Nuevo vehiculo";
-        this.vehiculo={};
+      if (id !== 'nuevo') {
+        this.titulo = 'Actualizar vehiculo';
+        this.cargarVehiculo(id);
+      } else {
+        this.titulo = 'Nuevo vehiculo';
+        this.vehiculo = {};
       }
-
     });
-
   }
 
   ngOnInit() {
+    this._empresaService
+      .cargarEmpresas()
+      .subscribe(empresas => (this.empresas = empresas));
 
-    this._empresaService.cargarEmpresas()
-          .subscribe( empresas => this.empresas = empresas );
+    this._dispositivoService.cargarDispositivos().subscribe(resp => {
+      this.dispositivos = resp.dispositivos;
+    });
 
-    this._dispositivoService.cargarDispositivos()
-        .subscribe( resp => {
-          this.dispositivos= resp.dispositivos; 
-        });
-
-    this._modalUploadService.notificacion
-          .subscribe( resp => {
-            this.vehiculo.img = resp.vehiculo.img;
-          });
-
+    this._modalUploadService.notificacion.subscribe(resp => {
+      this.vehiculo.img = resp.vehiculo.img;
+    });
   }
 
-  cargarVehiculo( id: string ) {
-    this._vehiculoService.cargarVehiculo( id )
-          .subscribe( vehiculo => {
-            this.vehiculo = vehiculo;
-            this.vehiculo.empresa = vehiculo.empresa._id;
-            this.vehiculo.dispositivo= vehiculo.dispositivo._id;
-            this.cambiarEmpresa( this.vehiculo.empresa );
-            this.cambiarDispositivo(this.vehiculo.dispositivo);
-          });
+  cargarVehiculo(id: string) {
+    this._vehiculoService.cargarVehiculo(id).subscribe(vehiculo => {
+      this.vehiculo = vehiculo;
+      this.vehiculo.empresa = vehiculo.empresa._id;
+      this.vehiculo.dispositivo = vehiculo.dispositivo._id;
+      this.cambiarEmpresa(this.vehiculo.empresa);
+      this.cambiarDispositivo(this.vehiculo.dispositivo);
+    });
   }
 
-  guardarVehiculo( f: NgForm ) {
+  guardarVehiculo(f: NgForm) {
+    console.log(f.valid);
+    console.log(f.value);
 
-    console.log( f.valid );
-    console.log( f.value );
-
-    if ( f.invalid ) {
+    if (f.invalid) {
       return;
     }
 
-    this._vehiculoService.guardarVehiculo( this.vehiculo )
-            .subscribe( vehiculo => {
-              this.vehiculo._id = vehiculo._id;
-              this.router.navigate(['/vehiculo', vehiculo._id ]);
-            });
-
+    this._vehiculoService.guardarVehiculo(this.vehiculo).subscribe(vehiculo => {
+      this.vehiculo._id = vehiculo._id;
+      this.router.navigate(['/vehiculo', vehiculo._id]);
+    });
   }
 
-  cambiarEmpresa( id: string ) {
-
-    this._empresaService.obtenerEmpresa( id )
-          .subscribe( empresa => this.empresa = empresa );
-
+  cambiarEmpresa(id: string) {
+    this._empresaService
+      .obtenerEmpresa(id)
+      .subscribe(empresa => (this.empresa = empresa));
   }
 
-  cambiarDispositivo(id: string ){
-    this._dispositivoService.obtenerDispositivo( id )
-      .subscribe( dispositivo => this.dispositivo = dispositivo );
+  cambiarDispositivo(id: string) {
+    this._dispositivoService
+      .obtenerDispositivo(id)
+      .subscribe(dispositivo => (this.dispositivo = dispositivo));
   }
 
-  cambiarFoto(ruta:string,id) {
-
-    this._modalUploadService.mostrarModal(ruta,id );
-
+  cambiarFoto(ruta: string, id) {
+    this._modalUploadService.mostrarModal(ruta, id);
   }
-
-
 }

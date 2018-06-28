@@ -41,7 +41,9 @@ export class RutaService {
 
     let url = URL_SERVICIOS + '/busqueda/coleccion/rutas/' + termino;
     return this.http.get( url )
-                .map( (resp: any) => resp.rutas );
+                .map( (resp: any) => {
+                  return resp.rutas; 
+                });
 
   }
 

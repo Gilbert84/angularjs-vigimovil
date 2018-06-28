@@ -5,6 +5,7 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { Operario } from '../../models/operario.model';
 
 import swal from 'sweetalert';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class OperarioService {
@@ -73,6 +74,10 @@ export class OperarioService {
                   swal('Operario Actualizado', operario.nombre, 'success');
                   return resp.operario;
 
+                }).catch((err)=>{
+                  console.log('err:',err);
+                  swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
+                  return Observable.throw( err );
                 });
 
     }else {
@@ -82,6 +87,10 @@ export class OperarioService {
               .map( (resp: any) => {
                 swal('Operario Creado', operario.nombre, 'success');
                 return resp.operario;
+              }).catch((err)=>{
+                console.log('err:',err);
+                swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
+                return Observable.throw( err );
               });
     }
 

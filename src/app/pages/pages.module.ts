@@ -18,7 +18,7 @@ import { AgmDirectionModule } from 'agm-direction';   // agm-direction //http://
 
 import { PagesComponent } from './pages.component';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 
@@ -33,13 +33,14 @@ import { AccoutSettingsComponent } from './accout-settings/accout-settings.compo
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
+import { UsuariosComponent } from './usuarios/usuarios/usuarios.component';
 //import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 import { EmpresasComponent } from './empresas/empresas.component';
 import { OperariosComponent } from './operarios/operarios.component';
 import { OperarioComponent } from './operarios/operario.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
-import { DespachoComponent } from './despacho/despacho.component';
+import { DespachoComponent } from './despacho/despacho/despacho.component';
+import { DespachosComponent } from './despacho/despacho/despachos.component';
 import { DispositivosComponent } from './dispositivos/dispositivos.component';
 import { DispositivoComponent } from './dispositivos/dispositivo.component';
 import { InfoComponent } from './dashboard/info/info.component';
@@ -52,6 +53,14 @@ import { MarcadoresComponent } from './google-map/marcadores/marcadores.componen
 import { TipoMarcadorComponent } from './google-map/tipo-marcador/tipo-marcador.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
+import { IndexUsuariosComponent } from './usuarios/index-usuarios/index-usuarios.component';
+import { RolesComponent } from './usuarios/roles/roles.component';
+import { EstadosComponent } from './usuarios/estados/estados.component';
+import { IndexDashboardComponent } from './dashboard/index-dashboard/index-dashboard.component';
+import { EstadoRutaComponent } from './dashboard/estado-ruta/estado-ruta.component';
+import { IndexDespachoComponent } from './despacho/index-despacho/index-despacho.component';
+import { AsignacionComponent } from './despacho/asignacion/asignacion.component';
+import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.component';
 
 
 @NgModule({
@@ -71,7 +80,6 @@ import { MatTabsModule } from '@angular/material/tabs';
         OperariosComponent,
         OperarioComponent,
         BusquedaComponent,
-        DespachoComponent,
         DispositivosComponent,
         DispositivoComponent,
         InfoComponent,
@@ -82,6 +90,16 @@ import { MatTabsModule } from '@angular/material/tabs';
         GoogleMapComponent,
         MarcadoresComponent,
         TipoMarcadorComponent,
+        IndexUsuariosComponent,
+        RolesComponent,
+        EstadosComponent,
+        IndexDashboardComponent,
+        EstadoRutaComponent,
+        IndexDespachoComponent,
+        AsignacionComponent,
+        DespachosComponent,
+        DespachoComponent,
+        AsignacionesComponent
     ],
     exports: [
         DashboardComponent,

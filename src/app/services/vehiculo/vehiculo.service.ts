@@ -18,7 +18,7 @@ export class VehiculoService {
 
   cargarVehiculos(desde: number = 0) {
 
-    let url = URL_SERVICIOS + '/vehiculo?desde='+ desde;
+    let url = URL_SERVICIOS + '/vehiculo?desde=' + desde;
 
     return this.http.get( url )
               .map( (resp: any) => {

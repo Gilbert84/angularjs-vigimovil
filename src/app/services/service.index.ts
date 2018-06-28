@@ -1,3 +1,9 @@
+export { AsignacionService } from './despacho/asignacion.service';
+export { ViajeService } from './despacho/viaje.service';
+
+export { EstadoService } from './usuario/estado.service';
+export { RoleService } from './usuario/role.service';
+
 export { RutaService } from './google-map/ruta.service';
 export { MarcadorService } from './google-map/marcador.service';
 
@@ -26,5 +32,6 @@ export { SharedService } from './shared/shared.service';
 export { SidebarService } from './shared/sidebar.service';
 export { DespachoService } from './despacho/despacho.service';
 export { TipoMarcadorService } from './google-map/tipo-marcador.service';
+//export { ViajeService }
 
 

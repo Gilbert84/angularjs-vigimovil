@@ -1,0 +1,78 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar ruta...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!cargando">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h3 class="card-title">Rutas disponibles ( <small>  {{totalRegistros}}  </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>codigo</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Seguir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ruta of rutas;let posicion = index">
+                            <td>
+                                {{ruta.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.origen.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.destino.nombre}}
+                            </td>
+                            <td>
+                                <button [routerLink]="['/estado-ruta', ruta._id ]" class="btn btn-primary">
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                            Anteriores
+                    </button>
+
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                            Siguientes
+                    </button>
+
+            </div>
+        </div>
+    </div>
+</div>

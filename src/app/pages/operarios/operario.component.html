@@ -22,8 +22,12 @@
                 <div class="col-sm-12 col-xs-12">
                     <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarOperario(f)">
                         <div class="form-group">
-                            <label>Nombre del Operario</label>
+                            <label>Nombre</label>
                             <input [(ngModel)]="operario.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del operario" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Identificacion</label>
+                            <input [(ngModel)]="operario.identificacion" name="identificacion" type="number"  min="6" class="form-control" placeholder="identificacion del operario" required>
                         </div>
                         <div class="form-group">
                             <label>Asignar nombre de Usuario</label>

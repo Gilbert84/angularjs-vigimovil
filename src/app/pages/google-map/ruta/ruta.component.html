@@ -4,7 +4,7 @@
     </div>
 
     <div class="align-self-center col-md-6">
-        <button [routerLink]="['/vehiculo','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+        <button [routerLink]="['/ruta','nueva']" type="button" class="btn waves-effect waves-light btn-primary">
             <i class="fa fa-plus"></i>
             Nueva Ruta
         </button>
@@ -29,7 +29,7 @@
     <div class="col-md-8">
         <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" maxZoom="21" minZoom="12" mapTypeControl="true" streetViewControl="false" keyboardShortcuts="false" disableDoubleClickZoom="true">
             <!-- Marcadores disponibles-->
-            <agm-marker *ngFor="let marcador of marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng" [iconUrl]="marcador.tipo.img | imagen:'tipo-marcadores'" [label]="marcador.nombre" [visible]="visible" (markerClick)="marcadorSel(marcador)">
+            <agm-marker *ngFor="let marcador of marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng" [iconUrl]="marcador.tipo.img | imagen:'tipo-marcadores'" [visible]="visible" (markerClick)="marcadorSel(marcador)">
                 <agm-info-window [disableAutoPan]="false">
                     <div class="card text-center">
                         <div class="card-header">
@@ -56,9 +56,9 @@
                             <h5 class="card-title">Origen : {{ruta.origen.nombre}}</h5>
                             <h5 class="card-title">{{ruta.nombre}}</h5>
                             <!--<p class="card-text">ruta info</p>-->
-                            <button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
+                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
                                       Borrar
-                            </button>
+                            </button>-->
                         </div>
                         <div class="card-footer bg-transparent border-success">
                             <h4>{{ruta.codigo}}</h4>
@@ -78,9 +78,9 @@
                             <h5 class="card-title">Destino : {{ruta.destino.nombre}}</h5>
                             <h5 class="card-title">{{ruta.nombre}}</h5>
                             <!--<p class="card-text">ruta info</p>-->
-                            <button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
+                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
                                       Borrar
-                              </button>
+                              </button>-->
                         </div>
                         <div class="card-footer bg-transparent border-success">
                             <h4>{{ruta.codigo}}</h4>
@@ -89,7 +89,7 @@
                 </agm-info-window>
             </agm-marker>
             <!-- [markerOptions]="markerOptions"  -->
-            <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions" [optimizeWaypoints]="optimizeWaypoints" [provideRouteAlternatives]="provideRouteAlternatives" (onChange)="cambiarPuntosRef($event)">
+            <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [travelMode]="travelMode" [renderOptions]="renderOptions" [optimizeWaypoints]="optimizeWaypoints" [provideRouteAlternatives]="provideRouteAlternatives" (onChange)="cambiarPuntosRef($event)">
             </agm-direction>
         </agm-map>
     </div>

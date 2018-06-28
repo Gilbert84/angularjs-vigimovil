@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+declare function init_plugins();
+
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
@@ -27,7 +29,7 @@ export class InfoComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    init_plugins();
   }
 
 

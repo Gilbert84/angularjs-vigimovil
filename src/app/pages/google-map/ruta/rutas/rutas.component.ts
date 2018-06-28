@@ -12,6 +12,7 @@ import {
   styleUrls: ['./rutas.component.css']
 })
 export class RutasComponent implements OnInit {
+
   lat: number = 6.34462;
   lng: number = -75.562874;
   zoom: number = 5;
@@ -20,27 +21,13 @@ export class RutasComponent implements OnInit {
   rutas = [];
   rutaSel: Ruta;
 
-  public optimizeWaypoints: boolean = true; // default: true
-  public provideRouteAlternatives: boolean = true; // default: false
-  public visible = true;
-
-  public renderOptions: any = {
+  renderOptions: any = {
     draggable: false,
     suppressMarkers: true,
     suppressInfoWindows: true
   };
 
-  public transitOptions: any = {
-    departureTime: new Date('2018/05/20 13:14'),
-    arrivalTime: new Date('2018/05/20 13:30'),
-    modes: ['BUS']
-  };
-
-  public waypoints: any = [];
-
-  public puntosRef: any = [];
-
-  public markerOptions = {
+  markerOptions = {
     origin: {
       icon: 'assets/images/icon/origen.png',
       draggable: false
@@ -70,49 +57,43 @@ export class RutasComponent implements OnInit {
       if (marcadores.length <= 1) {
         return;
       }
-      //console.log('marcadores',this.marcadores);
-      //let nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['1']);
-      //this.rutas.push(nuevaRuta);
-      // nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['2']);
-      // this.rutas.push(nuevaRuta);
-      // nuevaRuta= new Ruta(this.marcadores['0'],this.marcadores['3']);
-      // this.rutas.push(nuevaRuta);
-      // this.mostrar=true;
-      //console.log(this.rutas);
+      this.cargar();
     });
+  }
 
-    this._rutaService.cargarRutas().subscribe(rutas => {
+  cargar() {
+    this.cargando = true;
+    this._rutaService.cargarRutas( this.desde ).subscribe(rutas => {
+      this.totalRegistros = this._rutaService.totalRutas;
       this.rutas = rutas;
-      console.log('rutas:', this.rutas);
+      this.cargando = false;
     });
   }
 
-  public cambiarPuntosRef1(event: any) {
-    this.waypoints = event.request.waypoints;
-    //console.log(this.waypoints);
+
+
+  buscar( termino: string ) {
+
+    if ( termino.length <= 0 ) {
+      this.cargar();
+      return;
+    }
+
+    this._rutaService.buscarRutas( termino )
+            .subscribe( rutas => {
+              this.rutas = rutas;
+            });
   }
 
-  public cambiarPuntosRef(event: any, posicion, ruta) {
-    ruta.puntosRef = event.request.waypoints;
-    this.rutas.splice(posicion, 1, ruta);
-    //console.log('pos:',posicion);
-    //console.log(this.rutas);
-  }
 
   marcadorClickOrigen() {}
 
   marcadorClickDestino() {}
 
-  borrarRuta(ruta, posicion) {
-    console.log('borrando ruta');
-  }
-
-  styleFunc(feature) {
-    return {
-      clickable: false,
-      fillColor: feature.getProperty('color'),
-      strokeWeight: 1
-    };
+  borrar(id) {
+    this._rutaService.borrarRuta(id).subscribe(()=>{
+      this.cargar();
+    });
   }
 
   cambiarDesde(valor: number) {
@@ -134,8 +115,19 @@ export class RutasComponent implements OnInit {
     this.mostrar.siguiente = true;
     this.mostrar.anterior = true;
     this.desde += valor;
-    //this.cargarVehiculos();
+    this.rutas.map((ruta)=>{
+      ruta.visible=false;
+    });
+    this.cargar();
   }
+
+  // styleFunc(feature) {
+  //   return {
+  //     clickable: false,
+  //     fillColor: feature.getProperty('color'),
+  //     strokeWeight: 1
+  //   };
+  // }
 
   // geoJsonObject: Object = {
   //     'type': 'FeatureCollection',
