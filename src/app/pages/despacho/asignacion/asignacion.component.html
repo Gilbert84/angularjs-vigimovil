@@ -1,3 +1,105 @@
-<p>
-  asignacion works!
-</p>
+<div class="row animated fadeIn">
+    <div class="align-self-center col-md-6">
+        <h3 class="text-themecolor"> {{ titulo }} </h3>
+    </div>
+
+    <div class="align-self-center col-md-6">
+        <button [routerLink]="['/asignacion','nueva']" type="button" class="btn waves-effect waves-light btn-primary">
+            <i class="fa fa-plus"></i>
+            Nueva Asignacion
+        </button>
+    </div>
+</div>
+<hr>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="!cargando" class="row animated fadeIn">
+
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h3 class="box-title m-b-0">Asignacion: {{ vehiculo.placa }}</h3>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <form #f="ngForm" ngNativeValidate (ngSubmit)="guardar(f)">
+
+
+                        <div class="form-group">
+                            <label>Vehiculo</label>
+                            <select (change)="cambiarVehiculo( $event.target.value )" 
+                                    [(ngModel)]="asignacion.vehiculo" 
+                                    name="vehiculo" 
+                                    class="form-control selectpicker text-themecolor" 
+                                    data-live-search="true" required>
+                                <option value="">Seleccione Vehiculo</option>
+                                <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo._id">
+                                {{ vehiculo.interno }}:{{vehiculo.placa}}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Operario</label>
+                            <select (change)="cambiarOperario( $event.target.value )" [(ngModel)]="asignacion.operario" name="operario" class="form-control selectpicker text-themecolor" data-live-search="true" required>
+                                <option value="">Seleccione Operario</option>
+                                <option *ngFor="let operario of operarios" [value]="operario._id">
+                                {{ operario.nombre }}
+                              </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox checkbox-primary">
+                                <input [(ngModel)]="asignacion.disponible" name="disponible" id="disponible" type="checkbox" class="filled-in chk-col-light-blue">
+                                <label for="disponible">Disponible</label>
+                            </div>
+                        </div>
+
+                        <button *ngIf="!asignacion._id" type="submit" class="btn btn-success waves-effect waves-light m-r-10" role="button">
+                          <i class="fa fa-save"></i>
+                          Guardar
+                        </button>
+                        <button *ngIf="asignacion._id" type="submit" class="btn btn-success waves-effect waves-light m-r-10" role="button">
+                            <i class="fa fa-save"></i>
+                            Actualizar
+                        </button>
+                        <a routerLink="/asignaciones" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card-deck">
+
+            <div class="card" *ngIf="vehiculo._id">
+                <img class="card-img rounded" [src]="vehiculo.img | imagen:'vehiculo'">
+                <h5 class="box-title m-b-0 text-center">{{vehiculo.placa}}-{{vehiculo.interno}} </h5>
+            </div>
+
+            <div class="card" *ngIf="operario._id">
+                <img class="card-img rounded" [src]="operario.img | imagen:'empresa'">
+                <h5 class="box-title m-b-0 text-center">{{operario.nombre}}</h5>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

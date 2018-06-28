@@ -70,7 +70,7 @@ export class AsignacionService {
   
         return this.http.put( url, asignacion )
                   .map( (resp: any) => {
-                    swal('Asignacion Actualizada', asignacion.fechaHora.toLocaleDateString(), 'success');
+                    swal('Asignacion Actualizada', resp.asignacion.fechaHora, 'success');
                     return resp.asignacion;
   
                   });
