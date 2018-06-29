@@ -12,7 +12,7 @@ import { ModalUploadService } from '../../components/service.components.index';
   styles: []
 })
 export class OperarioComponent implements OnInit {
-  titulo:string="Nuevo operario";
+  titulo: string= 'Nuevo operario';
   empresas: Empresa[] = [];
   operario: Operario = new Operario();
   empresa: Empresa = new Empresa('');
@@ -30,11 +30,11 @@ export class OperarioComponent implements OnInit {
       let id = params['id'];
 
       if ( id !== 'nuevo' ) {
-        this.titulo="Actualizar Operario";
+        this.titulo = 'Actualizar Operario';
         this.cargarOperario( id );
-      }else{
-        this.titulo="Nuevo Operario";
-        this.operario={};
+      }else {
+        this.titulo = 'Nuevo Operario';
+        this.operario = {};
       }
 
     });
@@ -66,18 +66,16 @@ export class OperarioComponent implements OnInit {
 
   guardarOperario( f: NgForm ) {
 
-    console.log( f.valid );
-    console.log( f.value );
+    //console.log( f.valid );
+    //console.log( f.value );
 
     if ( f.invalid ) {
       return;
     }
-    console.log('guardando operario');
     this._operarioService.guardarOperario( this.operario )
             .subscribe( operario => {
-
+              //console.log('operario', operario);
               this.operario._id = operario._id;
-
               this.router.navigate(['/operario', operario._id ]);
 
             });
@@ -91,7 +89,7 @@ export class OperarioComponent implements OnInit {
 
   }
 
-  cambiarFoto(ruta:string,id) {
+  cambiarFoto(ruta: string, id) {
 
     this._modalUploadService.mostrarModal( ruta, id );
 

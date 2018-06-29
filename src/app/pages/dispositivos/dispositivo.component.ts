@@ -15,7 +15,7 @@ export class DispositivoComponent implements OnInit {
   dispositivo: Dispositivo = {};
 
   constructor(
-    public dispositivoService: DispositivoService,
+    private dispositivoService: DispositivoService,
     public router: Router,
     public activatedRoute: ActivatedRoute
   ) {

@@ -5,16 +5,28 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { Asignacion } from '../../models/despacho/despacho.model';
 
 import swal from 'sweetalert';
+import { SocketIoService } from '../socket-io/socket-io.service';
 
 @Injectable()
 export class AsignacionService {
 
     total: number = 0;
 
+    asignaciones:Asignacion [] = [];
+
     constructor(
       public http: HttpClient,
-      public _usuarioService: UsuarioService
-    ) { }
+      public _usuarioService: UsuarioService,
+      private _socketIoService:SocketIoService
+    ) { 
+
+      this._socketIoService.observarInfo('asigancionesActulaes')
+          .subscribe((asignaciones)=>{
+            this.asignaciones = asignaciones;
+            console.log('service asignaciones:', this.asignaciones);
+      })
+
+    }
   
     cargar(desde: number = 0) {
   
@@ -87,5 +99,9 @@ export class AsignacionService {
   
   
     }
+
+
+
+
 
 }

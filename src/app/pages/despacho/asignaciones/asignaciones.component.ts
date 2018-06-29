@@ -34,7 +34,6 @@ export class AsignacionesComponent implements OnInit {
       .subscribe((asignaciones: any) => {
         this.totalRegistros = asignaciones.total;
         this.asignaciones = asignaciones;
-        console.log('asignaciones', asignaciones);
         this.cargando = false;
       });
   }

@@ -43,7 +43,7 @@ export class SocketIoService {
 
   //enviar informacion
   
-  enviarEvento(audiencia:string,msg: object) {
+  enviarEvento(audiencia:string,msg?: object) {
     return new Promise((resolve,reject)=>{
       this.io.emit(audiencia, msg, ( resp: any ) => {
         resolve(resp);
@@ -73,14 +73,16 @@ export class SocketIoService {
   }
 
   observarInfo(evento:string) {
-    return this.io
-        .fromEvent<any>(evento)
-        .map(data => data );
+    return this.io.fromEvent<any>(evento)
+        .map(data =>{
+          return data; 
+        });
   }
     
   close() {
       this.io.disconnect();
   }
+
 
 
 }
