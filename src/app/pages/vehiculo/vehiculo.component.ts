@@ -13,6 +13,8 @@ import {
 
 import { ModalUploadService } from '../../components/service.components.index';
 
+declare function init_plugin_select(); 
+
 @Component({
   selector: 'app-vehiculo',
   templateUrl: './vehiculo.component.html',
@@ -25,6 +27,8 @@ export class VehiculoComponent implements OnInit {
   vehiculo: Vehiculo = new Vehiculo('', '', '', '', '', '', '', '', '');
   empresa: Empresa = new Empresa('');
   dispositivo: Dispositivo = new Dispositivo('');
+
+  cargando:boolean = false;
 
   constructor(
     public _vehiculoService: VehiculoService,
@@ -48,13 +52,16 @@ export class VehiculoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._empresaService
-      .cargarEmpresas()
-      .subscribe(empresas => (this.empresas = empresas));
 
-    this._dispositivoService.cargarDispositivos().subscribe(resp => {
-      this.dispositivos = resp.dispositivos;
-    });
+    this._empresaService.cargarEmpresas()
+      .subscribe(empresas => {
+        this.empresas = empresas;
+        this._dispositivoService.cargarDispositivos().subscribe(resp => {
+          this.dispositivos = resp.dispositivos;
+          init_plugin_select();
+        });
+      });
+
 
     this._modalUploadService.notificacion.subscribe(resp => {
       this.vehiculo.img = resp.vehiculo.img;
@@ -72,8 +79,8 @@ export class VehiculoComponent implements OnInit {
   }
 
   guardarVehiculo(f: NgForm) {
-    console.log(f.valid);
-    console.log(f.value);
+    //console.log(f.valid);
+    //console.log(f.value);
 
     if (f.invalid) {
       return;
@@ -86,18 +93,21 @@ export class VehiculoComponent implements OnInit {
   }
 
   cambiarEmpresa(id: string) {
+    if (id==='')return;
     this._empresaService
       .obtenerEmpresa(id)
       .subscribe(empresa => (this.empresa = empresa));
   }
 
   cambiarDispositivo(id: string) {
+    if (id==='')return;
     this._dispositivoService
       .obtenerDispositivo(id)
       .subscribe(dispositivo => (this.dispositivo = dispositivo));
   }
 
   cambiarFoto(ruta: string, id) {
+    if (id==='')return;
     this._modalUploadService.mostrarModal(ruta, id);
   }
 }

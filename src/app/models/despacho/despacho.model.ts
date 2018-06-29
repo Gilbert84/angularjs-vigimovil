@@ -8,7 +8,7 @@ export class Asignacion {
   constructor() {
     this.fechaHora = new Date();
     this.disponible = this.disponible;
-    this.vehiculo = this.operario;
+    this.operario = this.operario;
     this.vehiculo = this.vehiculo;
     this._id = this._id;
   }

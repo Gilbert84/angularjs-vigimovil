@@ -45,7 +45,7 @@
                         </div>
                         <div class="form-group">
                             <label>Empresa</label>
-                            <select (change)="cambiarEmpresa( $event.target.value )" [(ngModel)]="vehiculo.empresa" name="empresa" class="form-control" required>
+                            <select (change)="cambiarEmpresa( $event.target.value )" [(ngModel)]="vehiculo.empresa" name="empresa" class="form-control selectpicker" data-live-search="true" required>
                               <option value="">Seleccione Empresa</option>
                               <option *ngFor="let empresa of empresas" [value]="empresa._id">
                                 {{ empresa.nombre }}
@@ -54,7 +54,7 @@
                         </div>
                         <div class="form-group">
                             <label>Dispositivo</label>
-                            <select (change)="cambiarDispositivo( $event.target.value )" [(ngModel)]="vehiculo.dispositivo" name="dispositivo" class="form-control" required>
+                            <select (change)="cambiarDispositivo( $event.target.value )" [(ngModel)]="vehiculo.dispositivo" name="dispositivo" class="form-control selectpicker" data-live-search="true" required>
                               <option value="">Seleccione Dispositivo</option>
                               <option *ngFor="let dispositivo of dispositivos" [value]="dispositivo._id">
                                 {{ dispositivo.nombre }}
@@ -79,17 +79,17 @@
 
             <div class="card" *ngIf="vehiculo._id">
                 <img class="card-img rounded pointer" (click)="cambiarFoto('vehiculos',vehiculo._id)" [src]="vehiculo.img | imagen:'vehiculo'">
-                <h5 class="box-title m-b-0 text-center">{{vehiculo.placa}}-{{vehiculo.interno}} </h5>
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{vehiculo.placa}}-{{vehiculo.interno}} </h5>
             </div>
 
             <div class="card" *ngIf="empresa._id">
                 <img class="card-img rounded" [src]="empresa.img | imagen:'empresa'">
-                <h5 class="box-title m-b-0 text-center">{{empresa.nombre}}</h5>
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{empresa.nombre}}</h5>
             </div>
 
             <div class="card" *ngIf="dispositivo._id">
                 <img class="card-img rounded" [src]="dispositivo.img | imagen:'dispositivo'">
-                <h5 class="box-title m-b-0 text-center">{{dispositivo.categoria}}</h5>
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{dispositivo.categoria}}</h5>
             </div>
 
         </div>

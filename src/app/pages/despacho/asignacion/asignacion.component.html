@@ -40,20 +40,24 @@
 
                         <div class="form-group">
                             <label>Vehiculo</label>
-                            <select (change)="cambiarVehiculo( $event.target.value )" [(ngModel)]="asignacion.vehiculo" name="vehiculo" class="form-control selectpicker" data-live-search="show" required>
-                              <option value="">Seleccione vehiculo</option>
-                              <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo._id">
+                            <select (change)="cambiarVehiculo( $event.target.value )" 
+                                    [(ngModel)]="asignacion.vehiculo" 
+                                    name="vehiculo" 
+                                    class="form-control selectpicker text-themecolor" 
+                                    data-live-search="true" required>
+                                <option value="">Seleccione Vehiculo</option>
+                                <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo._id">
                                 {{ vehiculo.interno }}:{{vehiculo.placa}}
-                              </option>
+                                </option>
                             </select>
                         </div>
 
 
                         <div class="form-group">
                             <label>Operario</label>
-                            <select (change)="cambiarOperario( $event.target.value )" [(ngModel)]="asignacion.operario" name="operario" class="form-control selectpicker" data-live-search="true" required>
-                              <option value="">Seleccione operario</option>
-                              <option *ngFor="let operario of operarios" [value]="operario._id">
+                            <select (change)="cambiarOperario( $event.target.value )" [(ngModel)]="asignacion.operario" name="operario" class="form-control selectpicker text-themecolor" data-live-search="true" required>
+                                <option value="">Seleccione Operario</option>
+                                <option *ngFor="let operario of operarios" [value]="operario._id">
                                 {{ operario.nombre }}
                               </option>
                             </select>

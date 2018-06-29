@@ -149,7 +149,7 @@ export class RutaComponent implements OnInit {
       this.ruta.origen = this.origen;
       this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
       this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
-      //console.log('ruta', this.ruta);
+      this.ruta.puntosRef = [];
     });
   }
 
@@ -163,7 +163,7 @@ export class RutaComponent implements OnInit {
       this.ruta.destino = this.destino;
       this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
       this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
-      //console.log('ruta', this.ruta);
+      this.ruta.puntosRef = [];
     });
   }
 
@@ -173,5 +173,6 @@ export class RutaComponent implements OnInit {
     this.ruta.distancia = evento.routes['0'].legs['0'].distance;
     this.ruta.duraccion = evento.routes['0'].legs['0'].duration;
     this.ruta.pasos = evento.routes['0'].legs['0'].steps;
+    console.log('ruta:', this.ruta);
   }
 }

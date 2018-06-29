@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Vehiculo } from '../../../models/vehiculo.model';
 import { Operario } from '../../../models/operario.model';
 import { Asignacion } from '../../../models/despacho/despacho.model';
+
+declare function init_plugin_select();
 
 import {
   VehiculoService,
@@ -11,14 +14,12 @@ import {
   AsignacionService
 } from '../../../services/service.index';
 
-
 @Component({
   selector: 'app-asignacion',
   templateUrl: './asignacion.component.html',
   styleUrls: ['./asignacion.component.css']
 })
 export class AsignacionComponent implements OnInit {
-
   titulo: string = 'Nuevo vehiculo';
   show: boolean = true;
 
@@ -56,18 +57,16 @@ export class AsignacionComponent implements OnInit {
 
   cargarServicios() {
     this.cargando = true;
-    this._vehiculoService.cargarVehiculos()
-          .subscribe(vehiculos => {
-            this.vehiculos = vehiculos;
-            console.log('vehiculos', this.vehiculos);
-            this.cargando = true;
-    });
+    this._vehiculoService.cargarVehiculos().subscribe(vehiculos => {
+      this.vehiculos = vehiculos;
+      //console.log('vehiculos', this.vehiculos);
 
-    this._operarioService.cargarOperarios()
-          .subscribe(resp => {
-            this.operarios = resp.operarios;
-            console.log('operarios', this.operarios);
-            this.cargando = false;
+      this._operarioService.cargarOperarios().subscribe(resp => {
+        this.operarios = resp.operarios;
+        //console.log('operarios', this.operarios);
+        this.cargando = false;
+        init_plugin_select(); // se debe iniciar cuando ya este cargado todo los objetos !importante
+      });
     });
   }
 
@@ -92,22 +91,29 @@ export class AsignacionComponent implements OnInit {
       return;
     }
 
-    this._asignacionService.guardar(this.asignacion).subscribe( asignacion => {
+    this._asignacionService.guardar(this.asignacion).subscribe(asignacion => {
+      
       this.asignacion._id = asignacion._id;
       this.router.navigate(['/asignacion', asignacion._id]);
     });
   }
 
   cambiarVehiculo(id: string) {
+    if (id === '') {
+      return;
+    }
     this._vehiculoService
       .cargarVehiculo(id)
       .subscribe(vehiculo => (this.vehiculo = vehiculo));
   }
 
   cambiarOperario(id: string) {
+    if (id === '') {
+      return;
+    }
+    
     this._operarioService
       .cargarOperario(id)
       .subscribe(operario => (this.operario = operario));
   }
-
 }

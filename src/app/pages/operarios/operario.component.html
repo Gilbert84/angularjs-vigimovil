@@ -1,10 +1,10 @@
 <div class="row animated fadeIn">
     <div class="align-self-center col-md-6">
-        <h3 class="text-themecolor">  {{ titulo }} </h3>
+        <h3 class="text-themecolor"> {{ titulo }} </h3>
     </div>
 
     <div col-md-6>
-    <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+        <button [routerLink]="['/operario','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
         <i class="fa fa-plus"></i>
         Nuevo Operario
     </button>
@@ -17,7 +17,8 @@
 
     <div class="col-md-6">
         <div class="card card-body">
-            <h3 class="box-title m-b-0">Operario: {{ operario.nombre }}</h3><hr>
+            <h3 class="box-title m-b-0">Operario: {{ operario.nombre }}</h3>
+            <hr>
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
                     <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarOperario(f)">
@@ -27,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <label>Identificacion</label>
-                            <input [(ngModel)]="operario.identificacion" name="identificacion" type="number"  min="6" class="form-control" placeholder="identificacion del operario" required>
+                            <input [(ngModel)]="operario.identificacion" value="" name="identificacion" type="number" min="6" class="form-control" placeholder="identificacion del operario" required>
                         </div>
                         <div class="form-group">
                             <label>Asignar nombre de Usuario</label>

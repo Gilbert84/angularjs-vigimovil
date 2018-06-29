@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Asignacion } from '../../../models/despacho/despacho.model';
 import { AsignacionService } from '../../../services/service.index';
 
+declare function init_plugin_select(); 
+
 @Component({
   selector: 'app-asignaciones',
   templateUrl: './asignaciones.component.html',
