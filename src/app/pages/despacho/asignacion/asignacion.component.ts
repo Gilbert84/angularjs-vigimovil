@@ -11,7 +11,8 @@ declare function init_plugin_select();
 import {
   VehiculoService,
   OperarioService,
-  AsignacionService
+  AsignacionService,
+  SocketIoService
 } from '../../../services/service.index';
 
 @Component({
@@ -37,7 +38,8 @@ export class AsignacionComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public _vehiculoService: VehiculoService,
     public _operarioService: OperarioService,
-    public _asignacionService: AsignacionService
+    public _asignacionService: AsignacionService,
+    private _socketIoService: SocketIoService
   ) {
     activatedRoute.params.subscribe(params => {
       let id = params['id'];
@@ -47,6 +49,9 @@ export class AsignacionComponent implements OnInit {
         this.cargar(id);
       } else {
         this.titulo = 'Nueva asignacion';
+        this.asignacion = new Asignacion();
+        this.asignacion.operario = ''; 
+        this.asignacion.vehiculo = ''; 
       }
     });
   }
@@ -74,27 +79,29 @@ export class AsignacionComponent implements OnInit {
     this.cargando = true;
     this._asignacionService.obtener(id).subscribe(asignacion => {
       this.asignacion = asignacion;
-      console.log(this.asignacion);
       this.asignacion.operario = asignacion.operario._id;
       this.asignacion.vehiculo = asignacion.vehiculo._id;
-      this.cambiarVehiculo(this.asignacion.operario);
-      this.cambiarOperario(this.asignacion.vehiculo);
+      this.cambiarVehiculo(this.asignacion.vehiculo);
+      this.cambiarOperario(this.asignacion.operario);
       this.cargando = false;
+      init_plugin_select(); 
     });
   }
 
   guardar(f: NgForm) {
-    console.log(f.valid);
-    console.log(f.value);
+    //console.log(f.valid);
+    //console.log(f.value);
 
     if (f.invalid) {
       return;
     }
 
     this._asignacionService.guardar(this.asignacion).subscribe(asignacion => {
-      
       this.asignacion._id = asignacion._id;
+      this._socketIoService.enviarEvento('actualizarAsignaciones').then();
       this.router.navigate(['/asignacion', asignacion._id]);
+    }, (error) => {
+      console.log(error);
     });
   }
 
@@ -102,9 +109,11 @@ export class AsignacionComponent implements OnInit {
     if (id === '') {
       return;
     }
-    this._vehiculoService
-      .cargarVehiculo(id)
-      .subscribe(vehiculo => (this.vehiculo = vehiculo));
+    this._vehiculoService.cargarVehiculo(id)
+      .subscribe(vehiculo => {
+        this.vehiculo = vehiculo;
+        this.asignacion.vehiculo = this.vehiculo._id; 
+      });
   }
 
   cambiarOperario(id: string) {
@@ -112,8 +121,12 @@ export class AsignacionComponent implements OnInit {
       return;
     }
     
-    this._operarioService
-      .cargarOperario(id)
-      .subscribe(operario => (this.operario = operario));
+    this._operarioService.cargarOperario(id)
+      .subscribe(operario => {
+        this.operario = operario;
+        this.asignacion.operario = this.operario._id;
+      });
   }
+
+
 }

@@ -1,0 +1,13 @@
+.chat-list {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    height: 500px !important;
+    width: 100vw !important;
+}
+
+agm-map {
+    height: 500px;
+}
+
+
+/* width: 100vw  toma el 100 % de la pantalla*/

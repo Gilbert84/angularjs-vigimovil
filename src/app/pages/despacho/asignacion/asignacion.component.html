@@ -40,11 +40,7 @@
 
                         <div class="form-group">
                             <label>Vehiculo</label>
-                            <select (change)="cambiarVehiculo( $event.target.value )" 
-                                    [(ngModel)]="asignacion.vehiculo" 
-                                    name="vehiculo" 
-                                    class="form-control selectpicker text-themecolor" 
-                                    data-live-search="true" required>
+                            <select (change)="cambiarVehiculo( $event.target.value )" [(ngModel)]="asignacion.vehiculo" name="vehiculo" class="form-control selectpicker text-themecolor" data-live-search="true" required>
                                 <option value="">Seleccione Vehiculo</option>
                                 <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo._id">
                                 {{ vehiculo.interno }}:{{vehiculo.placa}}
@@ -63,12 +59,12 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="checkbox checkbox-primary">
                                 <input [(ngModel)]="asignacion.disponible" name="disponible" id="disponible" type="checkbox" class="filled-in chk-col-light-blue">
                                 <label for="disponible">Disponible</label>
                             </div>
-                        </div>
+                        </div> -->
 
                         <button *ngIf="!asignacion._id" type="submit" class="btn btn-success waves-effect waves-light m-r-10" role="button">
                           <i class="fa fa-save"></i>
@@ -78,7 +74,7 @@
                             <i class="fa fa-save"></i>
                             Actualizar
                         </button>
-                        <a routerLink="/asignaciones" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                        <a routerLink="/asignaciones" class="btn btn-inverse waves-effect waves-light m-r-10">Salir</a>
                     </form>
                 </div>
             </div>

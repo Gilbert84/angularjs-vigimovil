@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ImagenPipe } from './imagen.pipe';
 import { ImagenMapPipe } from './imagen-map.pipe';
+import { VariablePipe } from './variables.pipe';
 
 
 
@@ -8,11 +9,13 @@ import { ImagenMapPipe } from './imagen-map.pipe';
   imports: [ ],
   declarations: [
     ImagenPipe,
-    ImagenMapPipe
+    ImagenMapPipe,
+    VariablePipe
   ],
   exports: [
     ImagenPipe,
-    ImagenMapPipe
+    ImagenMapPipe,
+    VariablePipe
   ]
 })
 export class PipesModule { }

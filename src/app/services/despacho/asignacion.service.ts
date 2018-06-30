@@ -11,10 +11,13 @@ export class AsignacionService {
 
     total: number = 0;
 
+
     constructor(
       public http: HttpClient,
       public _usuarioService: UsuarioService
-    ) { }
+    ) { 
+
+    }
   
     cargar(desde: number = 0) {
   
@@ -82,10 +85,18 @@ export class AsignacionService {
                 .map( (resp: any) => {
                   swal('Asignacion Creada', asignacion.fechaHora.toLocaleDateString(), 'success');
                   return resp.asignacion;
+                })
+                .catch( err => {
+                  swal( err.error.mensaje, err.error.errors.message, 'error' );
+                  return err;
                 });
       }
   
   
     }
+
+
+
+
 
 }

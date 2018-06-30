@@ -45,7 +45,7 @@ export class DispositivoService {
     url += '?token=' + this.usuarioService.token;
 
     return this.http.delete(url).map(resp => {
-      console.log('dispositivo actualizado', resp);
+      //console.log('dispositivo actualizado', resp);
       swal(
         'Dispositivo Borrado',
         'Dispositivo borrado correctamente',
