@@ -1,95 +1,108 @@
 import { Component, OnInit } from '@angular/core';
-import { DespachoService, OperarioService } from '../../../services/service.index';
-import { Operario } from '../../../models/operario.model';
+import { NgForm } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import {
+  DespachoService,
+  RutaService,
+  ViajeService,
+  AsignacionService
+} from '../../../services/service.index';
+import { Asignacion, Viaje } from '../../../models/despacho/despacho.model';
+import { Ruta } from '../../../class/google-maps.class';
+
+declare function init_plugin_select();
 
 @Component({
   selector: 'app-despacho',
   templateUrl: './despacho.component.html',
-  styleUrls: []
+  styleUrls: ['./despacho.component.css']
 })
 export class DespachoComponent implements OnInit {
+  titulo: string = 'Nueva Ruta';
+  ruta: Ruta;
+  rutas: Ruta [] = [];
+  asignacion: Asignacion;
+  viaje = new Viaje();
+  cargando: boolean = false;
 
-  operarios: Operario[] = [];
-  desde: number = 0;
+  lat: number = 6.34462;
+  lng: number = -75.562874;
+  zoom: number = 12;
+  mapDraggable:boolean = false;
 
-  totalRegistros: number = 0;
-  cargando: boolean = true;
-  mostrar={
-    anterior:false,
-    siguiente:true
-  }
+  renderOptions: any = {
+    draggable: false,
+    suppressMarkers: true,
+    suppressInfoWindows: true
+  };
 
   constructor(
-    public _operarioService: OperarioService,
-    private despachoService:DespachoService
-  ) { }
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    private despachoService: DespachoService,
+    private _rutaService: RutaService,
+    private _viajeService: ViajeService,
+    private _asignacionService: AsignacionService
+  ) {
+    activatedRoute.params.subscribe(params => {
+      let id = params['id']; 
+      this.cargando = true;
+      this._asignacionService.obtener(id)
+      .subscribe(asignacion => {
+        this.asignacion = asignacion;
+        console.log('asignacion', asignacion);
+        this.cargando = false;        
+      }, (error) => {
+        console.log('error', error);
+      });
+    });
+
+
+  }
 
   ngOnInit() {
-    this.cargarOperarios();
-    this.despachoService.estadoActual();
-  }
-
-  cargarOperarios() {
-
     this.cargando = true;
-
-    this._operarioService.cargarOperarios( this.desde )
-          .subscribe( (resp:any) => {
-            this.totalRegistros = resp.total;
-            this.operarios = resp.operarios 
-            this.cargando = false;
-            console.log('operarios: ',resp);
-          });
-            
+    this._rutaService.cargarRutas().subscribe((rutas) => {
+      console.log('rutas', rutas);
+      this.rutas = rutas;
+      init_plugin_select();
+      this.cargando = false;
+    });
   }
 
-  buscarOperario( termino: string ) {
+  cargarViaje(id) {
 
-    if ( termino.length <= 0 ) {
-      this.cargarOperarios();
+  }
+
+  guardar(f: NgForm) {
+    //console.log(f.valid);
+    //console.log(f.value);
+
+    if (f.invalid) {
       return;
     }
 
-    this._operarioService.buscarOperarios( termino )
-            .subscribe( operarios =>  this.operarios = operarios );
+    this.viaje.asignacion = this.asignacion._id;
+
+    console.log(this.viaje);
+
+    this._viajeService.guardar(this.viaje).subscribe(viaje => {
+      this.viaje._id = viaje._id;
+      this.router.navigate(['/viaje', this.asignacion._id]);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
-  borrarOperario( operario: Operario ) {
-
-    this._operarioService.borrarOperario( operario._id )
-            .subscribe( () =>  this.cargarOperarios() );
-
+  cambiarRuta(id) {
+    this._rutaService.cargarRuta(id).subscribe((ruta) => {
+        this.ruta = ruta;
+        console.log('ruta selecionada:',this.ruta);
+    });
   }
 
-  cambiarDesde( valor: number ) {
-
-    let desde = this.desde + valor;
-
-    if ( desde >= this.totalRegistros ) {
-      //no hay mas registros
-      this.mostrar.siguiente=false;
-      this.mostrar.anterior=true;
-      return;
-    }
-
-    if ( desde < 0 ) {
-      //primera pagina
-      this.mostrar.siguiente=true;
-      this.mostrar.anterior=false;
-      return;
-    }
-    this.mostrar.siguiente=true;
-    this.mostrar.anterior=true;
-    this.desde += valor;
-    this.cargarOperarios();
-
-  }
-
-  asignarOperario(operario){
-    console.log(operario);
+  asignarOperario(operario) {
+    //console.log(operario);
     this.despachoService.siguiente();
   }
-
-
-
 }

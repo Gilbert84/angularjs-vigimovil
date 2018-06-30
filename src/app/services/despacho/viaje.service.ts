@@ -82,6 +82,10 @@ export class ViajeService {
               .map( (resp: any) => {
                 swal('Viaje Creado', viaje.ruta, 'success');
                 return resp.viaje;
+              })
+              .catch( err => {
+                swal( err.error.mensaje, err.error.errors.message, 'error' );
+                return err;
               });
     }
 

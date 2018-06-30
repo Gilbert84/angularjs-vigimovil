@@ -39,7 +39,7 @@ export class AsignacionComponent implements OnInit {
     public _vehiculoService: VehiculoService,
     public _operarioService: OperarioService,
     public _asignacionService: AsignacionService,
-    private _socketIoService:SocketIoService
+    private _socketIoService: SocketIoService
   ) {
     activatedRoute.params.subscribe(params => {
       let id = params['id'];
@@ -49,6 +49,9 @@ export class AsignacionComponent implements OnInit {
         this.cargar(id);
       } else {
         this.titulo = 'Nueva asignacion';
+        this.asignacion = new Asignacion();
+        this.asignacion.operario = ''; 
+        this.asignacion.vehiculo = ''; 
       }
     });
   }
@@ -76,30 +79,29 @@ export class AsignacionComponent implements OnInit {
     this.cargando = true;
     this._asignacionService.obtener(id).subscribe(asignacion => {
       this.asignacion = asignacion;
-      console.log(asignacion);
       this.asignacion.operario = asignacion.operario._id;
       this.asignacion.vehiculo = asignacion.vehiculo._id;
       this.cambiarVehiculo(this.asignacion.vehiculo);
       this.cambiarOperario(this.asignacion.operario);
       this.cargando = false;
+      init_plugin_select(); 
     });
   }
 
   guardar(f: NgForm) {
-    console.log(f.valid);
-    console.log(f.value);
+    //console.log(f.valid);
+    //console.log(f.value);
 
     if (f.invalid) {
       return;
     }
 
     this._asignacionService.guardar(this.asignacion).subscribe(asignacion => {
-      
       this.asignacion._id = asignacion._id;
-      this._asignacionService.cargar().subscribe((asignaciones)=>{
-        this._socketIoService.enviarEvento('actualizarAsignaciones',asignaciones).then((resp)=>{console.log('resp:',resp)});
-      });
+      this._socketIoService.enviarEvento('actualizarAsignaciones').then();
       this.router.navigate(['/asignacion', asignacion._id]);
+    }, (error) => {
+      console.log(error);
     });
   }
 
@@ -108,7 +110,7 @@ export class AsignacionComponent implements OnInit {
       return;
     }
     this._vehiculoService.cargarVehiculo(id)
-      .subscribe(vehiculo =>{
+      .subscribe(vehiculo => {
         this.vehiculo = vehiculo;
         this.asignacion.vehiculo = this.vehiculo._id; 
       });
@@ -125,4 +127,6 @@ export class AsignacionComponent implements OnInit {
         this.asignacion.operario = this.operario._id;
       });
   }
+
+
 }

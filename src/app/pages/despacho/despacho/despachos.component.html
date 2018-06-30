@@ -1,130 +1,125 @@
 <!-- ============================================================== -->
 <!-- Start Page Content -->
 <!-- ============================================================== -->
-<!-- <div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Soporte  lista viajes</h4>
-        <h6 class="card-subtitle">Lista de asignaciones disponibles para operar</h6>
-        <div class="row m-t-40">
-          <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card">
-              <div class="box bg-info text-center">
-                <h1 class="font-light text-white">2,064</h1>
-                <h6 class="text-white">Total despachos</h6>
-              </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Lista de operarios disponibles para despachar</h4>
+                <h6 class="card-subtitle">la lista contiene solo vehiculos que no esten ruta</h6>
+                <div class="row m-t-40">
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-info text-center">
+                                <h1 class="font-light text-white">2,064</h1>
+                                <h6 class="text-white">Total despachos</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-primary text-center">
+                                <h1 class="font-light text-white">1,738</h1>
+                                <h6 class="text-white">Disponibles</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-success text-center">
+                                <h1 class="font-light text-white">1100</h1>
+                                <h6 class="text-white">Resueltos</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-dark text-center">
+                                <h1 class="font-light text-white">964</h1>
+                                <h6 class="text-white">Pendientes</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card">
-              <div class="box bg-primary text-center">
-                <h1 class="font-light text-white">1,738</h1>
-                <h6 class="text-white">Disponibles</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card">
-              <div class="box bg-success text-center">
-                <h1 class="font-light text-white">1100</h1>
-                <h6 class="text-white">Resueltos</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card">
-              <div class="box bg-dark text-center">
-                <h1 class="font-light text-white">964</h1>
-                <h6 class="text-white">Pendientes</h6>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div> -->
+</div>
 
 
-        
-        <div class="row animated fadeIn">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-        
-                        <input #input (keyup)="buscarDispositivo( input.value )" type="text" class="form-control" placeholder="Buscar dispositivo...">
-        
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row animated fadeIn" *ngIf="cargando">
-        
-            <div class="col-sm-12">
-        
-                <div class="alert alert-warning text-center">
-                    <strong>Cargando</strong>
-                    <br>
-                    <i class="fa fa-refresh fa-spin fa-2x"></i>
-                    <br>
-                    <span>Espere por favor</span>
-                </div>
-            </div>
-        </div>
-        
-        
-        <div class="row" *ngIf="!cargando">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-        
-        
-                        <h3 class="card-title">Asignaciones  ( <small>  {{ _asignacionService.total }} </small> )</h3>
-        
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Foto</th>
-                                    <th>Operario</th>
-                                    <th>Vehiculo</th>
-                                    <th>Estado</th>
-                                    <th>Acion</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let asignacion of _asignacionService.asignaciones">
-                                    <td>
-                                        <img [src]="asignacion.operario.img | imagen:'operario'" class="img-50 pointer">
-                                    </td>
-                                    <td>
-                                        {{ asignacion.operario.nombre }}
-                                    </td>
-                                    <td>
-                                        {{ asignacion.vehiculo.placa }} >>> {{ asignacion.vehiculo.interno }}
-                                    </td>
-                                    <td>
-                                        {{asignacion.disponible}}
-                                    </td>
-                                    <td>
-                                        <button [routerLink]="['/asignacion', asignacion._id ]" class="btn btn-primary">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-        
-                                        <button  class="btn btn-success">
-                                        <i class="fa fa-save"></i>
-                                    </button>
-        
-                                        <!--<button (click)="borrarDispositivo( dispositivo )" class="btn btn-danger">
-                                        <i class="fa fa-trash-o"></i>
-                                    </button>-->
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
 
-                    </div>
-                </div>
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar por operario o vehiculo...">
+
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" *ngIf="!cargando">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <h3 class="card-title">Asignaciones ( <small>  {{ total }} </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Operario</th>
+                            <th>Vehiculo</th>
+                            <th>Estado</th>
+                            <th>Cargar Ruta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let asignacion of asignaciones">
+                            <td>
+                                <img [src]="asignacion.operario.img | imagen:'operario'" class="img-50 pointer">
+                            </td>
+                            <td>
+                                {{ asignacion.operario.nombre }}
+                            </td>
+                            <td>
+                                {{ asignacion.vehiculo.placa }} >>> {{ asignacion.vehiculo.interno }}
+                            </td>
+                            <td *ngIf="asignacion.disponible">
+                                Disponible
+                            </td>
+                            <td *ngIf="!asignacion.disponible">
+                                No disponible
+                            </td>
+                            <td>
+                                <button [routerLink]="['/viaje', asignacion._id ]" class="btn btn-primary btn-block">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

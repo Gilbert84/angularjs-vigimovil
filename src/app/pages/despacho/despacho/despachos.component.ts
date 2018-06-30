@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AsignacionService, SocketIoService } from '../../../services/service.index';
+import { SocketIoService } from '../../../services/service.index';
+import { Asignacion, Viaje } from '../../../models/despacho/despacho.model';
+import { Ruta } from '../../../class/google-maps.class';
 
-declare function init_plugins();
+
 
 @Component({
   selector: 'app-despachos',
@@ -9,26 +11,40 @@ declare function init_plugins();
   styleUrls: ['./despachos.component.css']
 })
 export class DespachosComponent implements OnInit {
-
   cargando = false;
+  asignaciones: Asignacion;
+  total: number;
+
 
   constructor(
-    private _asignacionService:AsignacionService,
-    private _socketIoService:SocketIoService
+    private _socketIoService: SocketIoService,
   ) {
-
+    this.observar();
   }
 
   ngOnInit() {
-    init_plugins();
-    this.cargando=true;
-    this._socketIoService.enviarEvento('obtenerAsignaciones')
-        .then((asignaciones:any)=>{
-          this._asignacionService.asignaciones=asignaciones;
-          console.log('obteniendo asignaciones:',asignaciones);
-          this.cargando=false;
+    this.cargando = true;
+    this._socketIoService
+      .enviarEvento('obtenerAsignaciones')
+      .then((resp: any) => {
+        this.total = resp.total;
+        this.asignaciones = resp.asignaciones;
+        this.cargando = false;
+      });
+  }
 
+  buscar(termino: string) {
+
+  }
+
+
+  observar() {
+    this._socketIoService.observarInfo('asigancionesActulaes')
+    .subscribe((resp) => {
+      this.total = resp.total;
+      this.asignaciones = resp.asignaciones;
     });
   }
+
 
 }

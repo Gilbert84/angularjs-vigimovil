@@ -1,4 +1,4 @@
-import { Dispositivo } from "../models/dispositivo.model";
+import { Dispositivo } from '../models/dispositivo.model';
 
 //************************************************************************/
 //*****************clase para el manejo de dispositivos******************/
