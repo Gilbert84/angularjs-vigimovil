@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Dispositivo } from '../../models/dispositivo.model';
-import { DispositivoService } from '../../services/service.index';
+import { DispositivoService, SocketIoService } from '../../services/service.index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ModalUploadService } from '../../components/service.components.index';
@@ -18,16 +18,22 @@ export class DispositivosComponent implements OnInit {
 
   totalRegistros: number = 0;
   cargando: boolean = true;
-  mostrar={
-    anterior:false,
-    siguiente:true
-  }
+  mostrar= {
+    anterior: false,
+    siguiente: true
+  };
 
   constructor(
-                private dispositivoService:DispositivoService,
+                private dispositivoService: DispositivoService,
                 public _modalUploadService: ModalUploadService,
-                public router: Router 
-              ) { }
+                public router: Router,
+                private _socket: SocketIoService 
+              ) { 
+
+                this._socket.observar('listaDispositivos').subscribe((dispositivos) => {
+                  console.log(dispositivos);
+                });
+              }
 
   ngOnInit() {
     this.cargarDispositivos();
@@ -35,11 +41,11 @@ export class DispositivosComponent implements OnInit {
 
   cargarDispositivos() {
     this.dispositivoService.cargarDispositivos(this.desde)
-          .subscribe( (resp:any) => {
+          .subscribe( (resp: any) => {
             this.totalRegistros = resp.total;
             this.dispositivos = resp.dispositivos; 
             this.cargando = false;
-            console.log('dispositivos: ',this.dispositivos);
+            //console.log('dispositivos: ',this.dispositivos);
           });
             
   }
@@ -68,25 +74,25 @@ export class DispositivosComponent implements OnInit {
 
     if ( desde >= this.totalRegistros ) {
       //no hay mas registros
-      this.mostrar.siguiente=false;
-      this.mostrar.anterior=true;
+      this.mostrar.siguiente = false;
+      this.mostrar.anterior = true;
       return;
     }
 
     if ( desde < 0 ) {
       //primera pagina
-      this.mostrar.siguiente=true;
-      this.mostrar.anterior=false;
+      this.mostrar.siguiente = true;
+      this.mostrar.anterior = false;
       return;
     }
-    this.mostrar.siguiente=true;
-    this.mostrar.anterior=true;
+    this.mostrar.siguiente = true;
+    this.mostrar.anterior = true;
     this.desde += valor;
     this.cargarDispositivos();
 
   }
 
-  guardarCambios( dispositivo: Dispositivo ){
+  guardarCambios( dispositivo: Dispositivo ) {
     this.dispositivoService.actualizarDispositivo(dispositivo)
             .subscribe( dispositivo => {
               //this.router.navigate(['/dispositivos', dispositivo._id ]);

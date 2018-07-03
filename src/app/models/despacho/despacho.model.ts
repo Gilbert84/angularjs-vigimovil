@@ -15,10 +15,10 @@ export class Asignacion {
 }
 
 export class Pasajeros {
-  public ingresosPuerta1: number;
-  public ingresosPuerta2: number;
-  public salidasPuerta1: number;
-  public salidasPuerta2: number;
+  public ingresosPuerta1: number = 0;
+  public ingresosPuerta2: number = 0;
+  public salidasPuerta1: number = 0;
+  public salidasPuerta2: number = 0;
     constructor () {
       this.ingresosPuerta1 = this.ingresosPuerta1;
       this.ingresosPuerta2 = this.ingresosPuerta2;
@@ -28,8 +28,8 @@ export class Pasajeros {
 }
 
 export class Estado {
-  public mensaje: string;
-  public codigo: number;
+  public mensaje: string = 'sin definir';
+  public codigo: number = 0;
   constructor() {
     this.mensaje = this.mensaje;
     this.codigo = this.codigo;
@@ -46,7 +46,7 @@ export class Viaje {
   public _id?: string;
 
   constructor() {
-    this.fechaHoraInicio = new Date();
+    this.fechaHoraInicio = this.fechaHoraInicio;
     this.fechaHoraFin = this.fechaHoraFin;
     this.pasajeros = new Pasajeros();
     this.estado = new Estado;

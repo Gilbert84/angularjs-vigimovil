@@ -5,6 +5,9 @@
     width: 100vw !important;
 }
 
+agm-map {
+    height: 400px;
+}
 
 
 /* width: 100vw  toma el 100 % de la pantalla*/

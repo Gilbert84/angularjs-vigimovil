@@ -47,7 +47,7 @@ export class Ruta {
   public duraccion?:Object = {};
   public pasos?: any = [];
 
-  constructor(origen: Marcador, destino: Marcador) {
+  constructor(origen?: Marcador, destino?: Marcador) {
     this.origen = new Marcador(
       origen.lat,
       origen.lng,

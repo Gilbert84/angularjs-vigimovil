@@ -13,43 +13,107 @@
 <div class="row animated fadeIn" *ngIf="!cargando">
     <div class="col-md-4">
         <div class="card card-body">
-            <h3 class="box-title m-b-0">Ruta: {{ ruta.nombre }}</h3>
-            <hr>
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
                     <form #f="ngForm" ngNativeValidate (ngSubmit)="guardar(f)">
-                        <div class="form-group">
-                            <label>Nombre de la ruta</label>
-                        </div>
-                        <div class="form-group">
-                            <label>Codigo de la ruta</label>
-                        </div>
+                            <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img [src]="asignacion.operario.img | imagen:'operario'" class="img-50 pointer">
+                                            </td>
+                                            <td>
+                                                {{ asignacion.operario.nombre }}
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td>
+                                                {{asignacion.vehiculo.placa}} 
+                                            </td>
+                                            <td>
+                                                {{ asignacion.vehiculo.interno }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
 
-                        <!-- <div class="form-group" *ngIf="ruta._id">
-                            <label>Ruta</label>
+                        <div class="form-group">
                             <select (change)="cambiarRuta( $event.target.value )" [(ngModel)]="viaje.ruta" name="ruta" class="form-control selectpicker text-themecolor" data-live-search="true" required>
                                 <option value="">Seleccione Ruta</option>
                                 <option *ngFor="let ruta of rutas" [value]="ruta._id">
                                 {{ ruta.origen.nombre }}:{{ruta.destino.nombre}}
                                 </option>
                             </select>
-                        </div> -->
+                        </div>
+                        <button *ngIf="!viaje._id" type="submit" class="btn btn-outline-info btn-block waves-effect waves-light m-r-10">
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                Crear y enviar
+                        </button>
 
-
-                        <!-- <button *ngIf="ruta._id" type="submit" class="btn btn-outline-info btn-block waves-effect waves-light m-r-10">
+                        <button *ngIf="viaje._id" type="submit" class="btn btn-outline-info btn-block waves-effect waves-light m-r-10">
                             <i class="fa fa-globe" aria-hidden="true"></i>
                             Actualizar y enviar
-                          </button> -->
-                        <a routerLink="/viajes" class="btn btn-outline-inverse btn-block waves-effect waves-light m-r-10">Cancelar</a>
+                          </button>
+                        <a routerLink="/viajes" class="btn btn-outline-danger btn-block waves-effect waves-light m-r-10">Cancelar</a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-8" *ngIf="ruta._id">
-        <agm-map [latitude]="lat" [longitude]="lng" zoom="12" maxZoom="21" minZoom="12" mapTypeControl="true" streetViewControl="false" keyboardShortcuts="false" disableDoubleClickZoom="true">
+    <div class="jumbotron jumbotron-fluid col-md-8" *ngIf="!ruta">
+            <div class="container">
+              <h1 class="display-4 text-center">Selecione una ruta </h1>
+              <p class="lead text-center">aqui se mostrara toda la informacion de la ruta</p>
+            </div>
+    </div>
+
+    <div class="col-md-8" *ngIf="ruta">
+            <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title text-center">{{ruta.nombre}}</h4>
+                                <div class="row m-t-40">
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card">
+                                            <div class="box bg-info text-center">
+                                                <h2 class="font-light text-white">{{ruta.distancia.text}}</h2>
+                                                <h6 class="text-white">Distancia</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card">
+                                            <div class="box bg-primary text-center">
+                                                <h2 class="font-light text-white">{{ruta.duraccion.text}}</h2>
+                                                <h6 class="text-white">Duraccion</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card">
+                                            <div class="box bg-success text-center">
+                                                <h2 class="font-light text-white">{{ruta.puntosControl.length}}</h2>
+                                                <h6 class="text-white">Controles</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card">
+                                            <div class="box bg-dark text-center">
+                                                <h2 class="font-light text-white">{{ruta.pasos.length}}</h2>
+                                                <h6 class="text-white">Pasos</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [maxZoom]="21" [minZoom]="12" mapTypeControl="true" streetViewControl="false" keyboardShortcuts="false" disableDoubleClickZoom="true" [mapDraggable]="mapDraggable"> -->
 
             <!-- Marcador para el origen [label]="label" -->
             <agm-marker [latitude]="ruta.origen.lat" [longitude]="ruta.origen.lng" iconUrl="assets/images/icon/origen.png" [visible]="ruta.visible" [label]="ruta.origen.nombre">
@@ -61,17 +125,15 @@
                         <div class="card-body">
                             <h5 class="card-title">Origen : {{ruta.origen.nombre}}</h5>
                             <h5 class="card-title">{{ruta.nombre}}</h5>
-                            <!--<p class="card-text">ruta info</p>-->
-                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
-                                      Borrar
-                            </button>-->
+                            <p class="card-text">ruta info</p>
+
                         </div>
                         <div class="card-footer bg-transparent border-success">
                             <h4>{{ruta.codigo}}</h4>
                         </div>
                     </div>
                 </agm-info-window>
-            </agm-marker>
+            </agm-marker> 
 
             <!-- Marcador para el destino [label]="label" -->
             <agm-marker [latitude]="ruta.destino.lat" [longitude]="ruta.destino.lng" iconUrl="assets/images/icon/destino.png" [visible]="ruta.visible" [label]="ruta.destino.nombre">
@@ -83,10 +145,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Destino : {{ruta.destino.nombre}}</h5>
                             <h5 class="card-title">{{ruta.nombre}}</h5>
-                            <!--<p class="card-text">ruta info</p>-->
-                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
-                                      Borrar
-                              </button>-->
+                            <p class="card-text">ruta info</p>
                         </div>
                         <div class="card-footer bg-transparent border-success">
                             <h4>{{ruta.codigo}}</h4>
@@ -94,9 +153,9 @@
                     </div>
                 </agm-info-window>
             </agm-marker>
-            <!-- [markerOptions]="markerOptions"  -->
             <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions">
             </agm-direction>
         </agm-map>
     </div>
+
 </div>
