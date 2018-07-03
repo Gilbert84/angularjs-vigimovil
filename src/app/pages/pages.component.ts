@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 declare function init_plugins();
 declare function init_plugin_select(); 
 
@@ -10,7 +11,8 @@ declare function init_plugin_select();
 })
 export class PagesComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit() {
     init_plugins();

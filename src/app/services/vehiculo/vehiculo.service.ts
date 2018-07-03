@@ -71,7 +71,12 @@ export class VehiculoService {
                   swal('Vehiculo Actualizado', vehiculo.placa, 'success');
                   return resp.vehiculo;
 
+                })
+                .catch( err => {
+                  swal( err.error.mensaje, err.error.errors.message, 'error' );
+                  return err;
                 });
+      
 
     }else {
       // creando
@@ -80,6 +85,10 @@ export class VehiculoService {
               .map( (resp: any) => {
                 swal('Vehiculo Creado', vehiculo.placa, 'success');
                 return resp.vehiculo;
+              })
+              .catch( err => {
+                swal( err.error.mensaje, err.error.errors.message, 'error' );
+                return err;
               });
     }
 
