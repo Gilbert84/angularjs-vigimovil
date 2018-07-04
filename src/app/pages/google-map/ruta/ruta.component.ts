@@ -108,7 +108,7 @@ export class RutaComponent implements OnInit {
     this._rutaService.cargarRuta(id).subscribe(ruta => {
       this.cargando = false;
       this.ruta = ruta;
-      console.log('ruta se cargo:', ruta);
+      //console.log('ruta se cargo:', ruta);
     });
   }
 
@@ -173,6 +173,6 @@ export class RutaComponent implements OnInit {
     this.ruta.distancia = evento.routes['0'].legs['0'].distance;
     this.ruta.duraccion = evento.routes['0'].legs['0'].duration;
     this.ruta.pasos = evento.routes['0'].legs['0'].steps;
-    console.log('ruta:', this.ruta);
+    //console.log('ruta:', this.ruta);
   }
 }

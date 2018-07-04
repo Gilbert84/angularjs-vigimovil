@@ -32,7 +32,7 @@ export class VehiculosComponent implements OnInit {
       .subscribe((vehiculos: any) => {
         this.totalRegistros = vehiculos.total;
         this.vehiculos = vehiculos;
-        console.log('vehiculos', vehiculos);
+        //console.log('vehiculos', vehiculos);
         this.cargando = false;
       });
   }
