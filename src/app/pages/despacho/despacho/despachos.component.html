@@ -80,12 +80,10 @@
         <div class="card">
             <div class="card-body">
 
-
-                <h3 class="card-title">Asignaciones ( <small>  {{ total }} </small> )</h3>
-
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>posicion</th>
                             <th>Foto</th>
                             <th>Operario</th>
                             <th>Vehiculo</th>
@@ -94,23 +92,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let asignacion of asignaciones">
-                            <td>
+                        <tr *ngFor="let asignacion of asignaciones;let posicion = index">
+                            <td *ngIf="asignacion.disponible">
+                                {{posicion + 1}}
+                            </td>
+                            <td *ngIf="asignacion.disponible">
                                 <img [src]="asignacion.operario.img | imagen:'operario'" class="img-50 pointer">
                             </td>
-                            <td>
+                            <td *ngIf="asignacion.disponible">
                                 {{ asignacion.operario.nombre }}
                             </td>
-                            <td>
+                            <td *ngIf="asignacion.disponible">
                                 {{ asignacion.vehiculo.placa }} >>> {{ asignacion.vehiculo.interno }}
                             </td>
                             <td *ngIf="asignacion.disponible">
                                 Disponible
                             </td>
-                            <td *ngIf="!asignacion.disponible">
-                                No disponible
-                            </td>
-                            <td>
+                            <td *ngIf="asignacion.disponible">
                                 <button [routerLink]="['/viaje', asignacion._id ]" class="btn btn-primary btn-block">
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </button>
