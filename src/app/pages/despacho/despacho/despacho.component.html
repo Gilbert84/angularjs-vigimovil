@@ -10,6 +10,9 @@
     </div>
 </div>
 
+
+
+
 <div class="row animated fadeIn" *ngIf="!cargando">
     <div class="col-md-4">
         <div class="card card-body">
@@ -46,6 +49,14 @@
                                 </option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label class="m-t-20">Seleccione Hora Salida</label>
+                            <div class="input-group clockpicker" data-autoclose="true" data-align="top" data-placement="bottom" >
+                                <input class="form-control" id="single-input" value="" placeholder="Hora actual" [(ngModel)]="horaSalida" name="horaSalida" required> 
+                                    <span class="input-group-addon"> <span class="fa fa-clock-o"></span> </span>
+                            </div>
+                        </div>
+                        
                         <button *ngIf="!viaje._id" type="submit" class="btn btn-outline-info btn-block waves-effect waves-light m-r-10">
                                 <i class="fa fa-globe" aria-hidden="true"></i>
                                 Crear y enviar
@@ -58,6 +69,15 @@
                         <a routerLink="/viajes" class="btn btn-outline-danger btn-block waves-effect waves-light m-r-10">Cancelar</a>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="alert alert-danger text-center">
+                <strong>Cerrando en:</strong>
+                <br>
+                <i class="fa fa-refresh fa-spin fa-2x"></i>
+                <br>
+                <span>{{contador}}</span>
             </div>
         </div>
     </div>

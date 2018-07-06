@@ -12,6 +12,8 @@ import { Asignacion, Viaje } from '../../../models/despacho/despacho.model';
 import { Ruta } from '../../../class/google-maps.class';
 
 declare function init_plugin_select();
+declare function init_plugin_clockpicker();
+declare function init_plugin_material_clock();
 
 
 @Component({
@@ -38,6 +40,11 @@ export class DespachoComponent implements OnInit {
     suppressInfoWindows: true
   };
 
+  contador:number = 60000;
+
+  horaSalida:string;
+
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -60,6 +67,16 @@ export class DespachoComponent implements OnInit {
     });
 
 
+
+    const salir = setInterval(()=>{
+      this.contador-=1;
+      if(this.contador <=0){
+        this.router.navigate(['/viajes']);
+        clearInterval(salir);
+      }
+    },1000);
+
+
   }
 
   ngOnInit() {
@@ -67,6 +84,8 @@ export class DespachoComponent implements OnInit {
     this._rutaService.cargarRutas().subscribe((rutas) => {
       this.rutas = rutas;
       init_plugin_select();
+      init_plugin_clockpicker();
+      init_plugin_material_clock();
       this.cargando = false;
     });
   }
@@ -76,37 +95,43 @@ export class DespachoComponent implements OnInit {
   }
 
   guardar(f: NgForm) {
-    //console.log(f.valid);
-    //console.log(f.value);
+    console.log(f.valid);
+    console.log(f.value);
 
     if (f.invalid) {
       return;
     }
 
+
     this.viaje.asignacion = this.asignacion._id;
+    let horaSalida = this.horaSalida.split(':');
+ 
+    this.viaje.horaSalidaAsignada = new Date();
+    this.viaje.horaSalidaAsignada.setHours(horaSalida['0'],horaSalida['1']);
 
-    this._viajeService.guardar(this.viaje).subscribe(viaje => {
-      this.viaje._id = viaje._id;
+    console.log('hora formateada',this.viaje);
 
-      this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-          console.log('viaje atual', viajeActual);
-          let para: any = this.asignacion.vehiculo;
+    // this._viajeService.guardar(this.viaje).subscribe(viaje => {
+    //   this.viaje._id = viaje._id;
 
-          let mensaje = {
-            para: para.dispositivo.socket_id,
-            mensaje: 'Enviando Viaje',
-            viaje: viajeActual,
-          };
+    //   this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+    //       console.log('viaje atual', viajeActual);
+    //       let para: any = this.asignacion.vehiculo;
+
+    //       let mensaje = {
+    //         para: para.dispositivo.socket_id,
+    //         viaje: viajeActual,
+    //       };
     
-          this._socketIoService.enviarEvento('dispositivoMensajePrivado', mensaje).then((resp) => {
-            console.log('resp', resp);
-          });
-      });
+    //       this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+    //         console.log('resp', resp);
+    //       });
+    //   });
 
-      this.router.navigate(['/viaje', this.asignacion._id]);
-    }, (error) => {
-      console.log(error);
-    });
+    //   this.router.navigate(['/viaje', this.asignacion._id]);
+    // }, (error) => {
+    //   console.log(error);
+    // });
   }
 
   cambiarRuta(id) {
@@ -118,5 +143,9 @@ export class DespachoComponent implements OnInit {
   asignarOperario(operario) {
     //console.log(operario);
     this.despachoService.siguiente();
+  }
+
+  cambiarHoraSalidaAsignada(evento?){
+    console.log(evento);
   }
 }
