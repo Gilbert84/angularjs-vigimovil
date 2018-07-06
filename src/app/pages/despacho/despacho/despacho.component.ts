@@ -94,11 +94,10 @@ export class DespachoComponent implements OnInit {
 
           let mensaje = {
             para: para.dispositivo.socket_id,
-            mensaje: 'Enviando Viaje',
             viaje: viajeActual,
           };
     
-          this._socketIoService.enviarEvento('dispositivoMensajePrivado', mensaje).then((resp) => {
+          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
             console.log('resp', resp);
           });
       });

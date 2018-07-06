@@ -28,7 +28,7 @@ export class Pasajeros {
 }
 
 export class Estado {
-  public mensaje: string = 'sin definir';
+  public mensaje: string = 'Enviando ruta';
   public codigo: number = 0;
   constructor() {
     this.mensaje = this.mensaje;
@@ -37,8 +37,10 @@ export class Estado {
 }
 
 export class Viaje {
-  public fechaHoraInicio?: Date;
-  public fechaHoraFin?: Date;
+  public horaSalidaOperario: Date;
+  public horallegadaOperario: Date;
+  public horaSalidaAsignada: Date;
+  public horaLlegadaAsignada: Date;
   public pasajeros?: Pasajeros;
   public estado?: Estado;
   public asignacion?: string;
@@ -46,8 +48,10 @@ export class Viaje {
   public _id?: string;
 
   constructor() {
-    this.fechaHoraInicio = this.fechaHoraInicio;
-    this.fechaHoraFin = this.fechaHoraFin;
+    this.horaSalidaOperario = this.horaSalidaOperario;
+    this.horallegadaOperario = this.horallegadaOperario;
+    this.horaSalidaAsignada = this.horaSalidaAsignada;
+    this.horaLlegadaAsignada = this.horaLlegadaAsignada;
     this.pasajeros = new Pasajeros();
     this.estado = new Estado;
     this.asignacion = this.asignacion;

@@ -67,10 +67,11 @@ export class ViajeService {
       // actualizando
       url += '/' + viaje._id;
       url += '?token=' + this._usuarioService.token;
+      viaje.estado.codigo = 1;
+      viaje.estado.mensaje = 'Actualizando viaje';
 
       return this.http.put( url, viaje )
                 .map( (resp: any) => {
-                  console.log('actualizando viaje', resp);
                   swal('Viaje Actualizado', viaje.ruta, 'success');
                   return resp.viaje;
 
@@ -81,7 +82,6 @@ export class ViajeService {
       url += '?token=' + this._usuarioService.token;
       return this.http.post( url, viaje )
               .map( (resp: any) => {
-                console.log('creando viaje', resp);
                 swal('Viaje Creado', viaje.ruta, 'success');
                 return resp.viaje;
               })
