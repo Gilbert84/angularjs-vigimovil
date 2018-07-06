@@ -1,0 +1,99 @@
+<div class="row animated fadeIn">
+    <div class="align-self-center col-md-6">
+        <h3 class="text-themecolor"> {{ titulo }} </h3>
+    </div>
+
+    <div class="align-self-center col-md-6">
+        <button [routerLink]="['/vehiculo','nuevo']" type="button" class="btn waves-effect waves-light btn-primary">
+            <i class="fa fa-plus"></i>
+            Nuevo Vehiculo
+        </button>
+    </div>
+</div>
+<hr>
+
+
+<div class="row animated fadeIn">
+
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h3 class="box-title m-b-0">Vehiculo: {{ vehiculo.placa }}</h3>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarVehiculo(f)">
+                        <div class="form-group">
+                            <label>Placa del Vehiculo</label>
+                            <input [(ngModel)]="vehiculo.placa" name="placa" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Codigo interno</label>
+                            <input [(ngModel)]="vehiculo.interno" name="interno" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <input [(ngModel)]="vehiculo.categoria" name="categoria" type="text" class="form-control" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Capacidad</label>
+                            <input [(ngModel)]="vehiculo.capacidad" name="capacidad" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Modelo</label>
+                            <input [(ngModel)]="vehiculo.modelo" name="modelo" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Empresa</label>
+                            <select (change)="cambiarEmpresa( $event.target.value )" [(ngModel)]="vehiculo.empresa" name="empresa" class="form-control selectpicker" data-live-search="true" required>
+                              <option value="">Seleccione Empresa</option>
+                              <option *ngFor="let empresa of empresas" [value]="empresa._id">
+                                {{ empresa.nombre }}
+                              </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dispositivo</label>
+                            <select (change)="cambiarDispositivo( $event.target.value )" [(ngModel)]="vehiculo.dispositivo" name="dispositivo" class="form-control selectpicker" data-live-search="true" required>
+                              <option value="">Seleccione Dispositivo</option>
+                              <option *ngFor="let dispositivo of dispositivos" [value]="dispositivo._id">
+                                {{ dispositivo.nombre }}
+                              </option>
+                            </select>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">
+                          <i class="fa fa-save"></i>
+                          Guardar
+                        </button>
+                        <a routerLink="/vehiculos" class="btn btn-inverse waves-effect waves-light m-r-10">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card-deck">
+
+            <div class="card" *ngIf="vehiculo._id">
+                <img class="card-img rounded pointer" (click)="cambiarFoto('vehiculos',vehiculo._id)" [src]="vehiculo.img | imagen:'vehiculo'">
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{vehiculo.placa}}-{{vehiculo.interno}} </h5>
+            </div>
+
+            <div class="card" *ngIf="empresa._id">
+                <img class="card-img rounded" [src]="empresa.img | imagen:'empresa'">
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{empresa.nombre}}</h5>
+            </div>
+
+            <div class="card" *ngIf="dispositivo._id">
+                <img class="card-img rounded" [src]="dispositivo.img | imagen:'dispositivo'">
+                <h5 class="box-title m-b-0 text-center text-themecolor">{{dispositivo.categoria}}</h5>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

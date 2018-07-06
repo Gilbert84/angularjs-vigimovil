@@ -1,0 +1,1 @@
+export { ModalUploadService } from './services/modal-upload.service'

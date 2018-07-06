@@ -1,0 +1,10 @@
+.chat-list {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    height: 500px !important;
+    width: 100vw !important;
+}
+
+
+
+/* width: 100vw  toma el 100 % de la pantalla*/
