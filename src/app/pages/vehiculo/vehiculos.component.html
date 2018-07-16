@@ -1,0 +1,90 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarVehiculo( input.value )" type="text" class="form-control" placeholder="Buscar vehiculo...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row animated fadeIn" *ngIf="!cargando">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="text-right">
+                    <button [routerLink]="['/vehiculo','nuevo']" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                    <i class="fa fa-plus"></i> 
+                    Crear Vehiculo
+                  </button>
+                </div>
+
+                <h3 class="card-title">Vehiculos registrados ( <small> {{ _vehiculoService.totalVehiculos }} </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Placa</th>
+                            <th>Interno</th>
+                            <th>Empresa</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let vehiculo of vehiculos">
+                            <td>
+                                <img [src]="vehiculo.img | imagen:'vehiculo'" class="img-50 img-circle">
+                            </td>
+                            <td>
+                                {{ vehiculo.placa }}
+                            </td>
+                            <td>
+                                {{ vehiculo.interno }}
+                            </td>
+                            <td>
+                                {{ vehiculo.empresa.nombre }}
+                            </td>
+                            <td>
+                                <button [routerLink]="['/vehiculo', vehiculo._id ]" class="btn btn-primary">
+                                <i class="fa fa-edit"></i>
+                              </button>
+
+                                <button (click)="borrarVehiculo( vehiculo )" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i>
+                              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                    Anteriores
+                </button>
+  
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                    Siguientes
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
