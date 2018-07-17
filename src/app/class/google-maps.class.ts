@@ -22,8 +22,8 @@ export class Marcador {
   public _id?: string;
 
   constructor(lat: number, lng: number, direccion: string, codigo: string) {
-    this.lat = lat;
-    this.lng = lng;
+    this.lat = lat || 6.123456;
+    this.lng = lng || -75.123456;
     this.direccion = direccion;
     this.codigo = codigo;
     this.nombre = this.nombre;
@@ -31,6 +31,15 @@ export class Marcador {
     this.arrastable = true;
     this.tipo = new TipoMarcador();
     this._id = this._id;
+  }
+}
+
+class Duraccion {
+  text:string;
+  value:number;
+  constructor(){
+    this.text = this.text || '';
+    this.value = this.value || 0;
   }
 }
 
@@ -44,7 +53,7 @@ export class Ruta {
   public nombre: string = '';
   public codigo?: string = '';
   public distancia?:Object = {};
-  public duraccion?:Object = {};
+  public duraccion:Duraccion;
   public pasos?: any = [];
 
   constructor(origen?: Marcador, destino?: Marcador) {

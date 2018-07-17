@@ -26,7 +26,7 @@ import { Graficas1Component } from './graficas1/graficas1.component';
 // Pipe Module
 import { PipesModule } from '../pipes/pipes.module';
 import { ComponentsModule } from '../components/components.module';
-import { FormasModule }  from '../components/forms/forms.module'
+import { FormasModule } from '../components/forms/forms.module';
 
 
 //import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component';
@@ -62,6 +62,9 @@ import { EstadoRutaComponent } from './dashboard/estado-ruta/estado-ruta.compone
 import { IndexDespachoComponent } from './despacho/index-despacho/index-despacho.component';
 import { AsignacionComponent } from './despacho/asignacion/asignacion.component';
 import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.component';
+
+import { ClockPickerDirective } from '../directives/clockpicker.directive';
+
 
 
 @NgModule({
@@ -100,7 +103,8 @@ import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.comp
         AsignacionComponent,
         DespachosComponent,
         DespachoComponent,
-        AsignacionesComponent
+        AsignacionesComponent,
+        ClockPickerDirective,
     ],
     exports: [
         DashboardComponent,

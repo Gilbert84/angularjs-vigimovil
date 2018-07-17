@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -11,22 +11,29 @@ import {
 import { Asignacion, Viaje } from '../../../models/despacho/despacho.model';
 import { Ruta } from '../../../class/google-maps.class';
 
+
 declare function init_plugin_select();
 declare function init_plugin_clockpicker();
 declare function init_plugin_material_clock();
 
 
+
+
 @Component({
   selector: 'app-despacho',
   templateUrl: './despacho.component.html',
-  styleUrls: ['./despacho.component.css']
+  styleUrls: ['./despacho.component.css'],
+  
 })
 export class DespachoComponent implements OnInit {
+
+
+  
   titulo: string = 'Nueva Ruta';
   ruta: Ruta;
   rutas: Ruta [] = [];
   asignacion: Asignacion;
-  viaje = new Viaje();
+  viaje: Viaje = new Viaje();
   cargando: boolean = false;
 
   lat: number = 6.34462;
@@ -40,10 +47,12 @@ export class DespachoComponent implements OnInit {
     suppressInfoWindows: true
   };
 
-  contador:number = 60000;
+  contador: number = 60000;
+  horaSalida: any;
+  hora: number;
+  min: number;
 
-  horaSalida:string;
-
+  reloj: any;
 
   constructor(
     public router: Router,
@@ -52,7 +61,8 @@ export class DespachoComponent implements OnInit {
     private _rutaService: RutaService,
     private _viajeService: ViajeService,
     private _asignacionService: AsignacionService,
-    private _socketIoService: SocketIoService
+    private _socketIoService: SocketIoService,
+    private elem: ElementRef
   ) {
     activatedRoute.params.subscribe(params => {
       let id = params['id']; 
@@ -60,6 +70,8 @@ export class DespachoComponent implements OnInit {
       this._asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
+        console.log('asignacion',this.asignacion);
+        this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
         console.log('error', error);
@@ -68,18 +80,21 @@ export class DespachoComponent implements OnInit {
 
 
 
-    const salir = setInterval(()=>{
-      this.contador-=1;
-      if(this.contador <=0){
+    const salir = setInterval(() => {
+      this.contador -= 1;
+      if (this.contador <= 0) {
         this.router.navigate(['/viajes']);
         clearInterval(salir);
       }
-    },1000);
-
+    }, 1000);
+    
 
   }
 
   ngOnInit() {
+
+
+  
     this.cargando = true;
     this._rutaService.cargarRutas().subscribe((rutas) => {
       this.rutas = rutas;
@@ -90,48 +105,36 @@ export class DespachoComponent implements OnInit {
     });
   }
 
-  cargarViaje(id) {
-
-  }
-
   guardar(f: NgForm) {
-    console.log(f.valid);
-    console.log(f.value);
-
+    //console.log(f);
+    //console.log(f.valid);
     if (f.invalid) {
       return;
     }
 
+    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), this.viaje.horaSalidaAsignada.getMinutes() , this.viaje.horaSalidaAsignada.getSeconds(),this.ruta.duraccion.value );
 
-    this.viaje.asignacion = this.asignacion._id;
-    let horaSalida = this.horaSalida.split(':');
- 
-    this.viaje.horaSalidaAsignada = new Date();
-    this.viaje.horaSalidaAsignada.setHours(horaSalida['0'],horaSalida['1']);
+    this._viajeService.guardar(this.viaje).subscribe(viaje => {
+      this.viaje._id = viaje._id;
 
-    console.log('hora formateada',this.viaje);
+      this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+          console.log('viaje atual', viajeActual);
+          let para: any = this.asignacion.vehiculo;
 
-    // this._viajeService.guardar(this.viaje).subscribe(viaje => {
-    //   this.viaje._id = viaje._id;
-
-    //   this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-    //       console.log('viaje atual', viajeActual);
-    //       let para: any = this.asignacion.vehiculo;
-
-    //       let mensaje = {
-    //         para: para.dispositivo.socket_id,
-    //         viaje: viajeActual,
-    //       };
+          let mensaje = {
+            para: para.dispositivo.socket_id,
+            viaje: viajeActual,
+          };
     
-    //       this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
-    //         console.log('resp', resp);
-    //       });
-    //   });
+          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+            console.log('resp', resp);
+          });
+      });
 
-    //   this.router.navigate(['/viaje', this.asignacion._id]);
-    // }, (error) => {
-    //   console.log(error);
-    // });
+      this.router.navigate(['/viaje', this.asignacion._id]);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   cambiarRuta(id) {
@@ -145,7 +148,32 @@ export class DespachoComponent implements OnInit {
     this.despachoService.siguiente();
   }
 
-  cambiarHoraSalidaAsignada(evento?){
-    console.log(evento);
+  cambiarHoraSalidaAsignada(reloj) {
+    this.viaje.horaSalidaAsignada = new Date();
+    this.viaje.horaSalidaAsignada.setHours(reloj.hora, reloj.minuto);
+  }
+
+  private cambiarHoraLlegadaAsignada(hora,min,seg,sumaSeg){
+    let horas = hora;
+    let minutos = min;
+    let segundos = seg;
+     
+    let  horas_Segundos = hora * 3600;
+    let minutos_Segundos = min * 60;
+    segundos = horas_Segundos + minutos_Segundos + segundos + sumaSeg;
+     
+    horas= segundos / 3600;
+    this.viaje.horaLlegadaAsignada = new Date();
+    
+    if(horas >=24){
+      segundos -= 24 * 3600;
+      let dia = this.viaje.horaLlegadaAsignada.getDate()+1;
+      this.viaje.horaLlegadaAsignada.setDate(dia);
+    }
+    horas = Math.floor( segundos / 3600 );
+    minutos = Math.floor( (segundos % 3600) / 60 );
+    segundos = segundos % 60;
+
+    this.viaje.horaLlegadaAsignada.setHours(horas,minutos,segundos);
   }
 }

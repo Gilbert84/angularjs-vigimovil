@@ -1,4 +1,4 @@
-import { Directive ,ElementRef , HostListener } from '@angular/core';
+import { Directive , ElementRef , HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appMarcador]'
@@ -6,12 +6,12 @@ import { Directive ,ElementRef , HostListener } from '@angular/core';
 export class MarcadorDirective {
 
   constructor(
-    private element:ElementRef
+    private element: ElementRef
   ) { }
 
 
-  @HostListener('mouseenter') mouseEntro(){
-    this.element.nativeElement.style.backgroudColor ="blue";
+  @HostListener('mouseenter') mouseEntro() {
+    this.element.nativeElement.style.backgroudColor = 'blue';
   }
 
 }

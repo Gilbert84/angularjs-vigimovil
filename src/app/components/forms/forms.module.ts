@@ -5,16 +5,19 @@ import { CommonModule } from '@angular/common';
 
 
 
-import { NombreForma }  from './nombre/nombre.component'
+import { NombreForma } from './nombre/nombre.component';
+import { RelojComponent } from './reloj/reloj.component';
 
 @NgModule({
     declarations: [
         // Formularios personalizados
-        NombreForma
+        NombreForma,
+        RelojComponent
 
     ],
     exports: [
-        NombreForma
+        NombreForma,
+        RelojComponent
     ],
     imports: [
         CommonModule,
