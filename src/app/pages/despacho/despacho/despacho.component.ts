@@ -70,6 +70,8 @@ export class DespachoComponent implements OnInit {
       this._asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
+        console.log('asignacion',this.asignacion);
+        this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
         console.log('error', error);
@@ -104,46 +106,35 @@ export class DespachoComponent implements OnInit {
   }
 
   guardar(f: NgForm) {
-    console.log(f);
+    //console.log(f);
     //console.log(f.valid);
-    console.log('value', f.value);
-    console.log('hora salida', this.horaSalida);
-    console.log('viaje', this.viaje);
-
-    f.control.controls.horaSalida.valueChanges.subscribe((data) => {
-      console.log('data', data );
-    });
-
     if (f.invalid) {
       return;
     }
-    this.viaje.horaSalidaAsignada = new Date();
-    //this.viaje.horaSalidaAsignada.setHours(this.horaSalida.hora, this.horaSalida.min);
 
-     console.log('viaje', this.viaje);
+    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), this.viaje.horaSalidaAsignada.getMinutes() , this.viaje.horaSalidaAsignada.getSeconds(),this.ruta.duraccion.value );
+
+    this._viajeService.guardar(this.viaje).subscribe(viaje => {
+      this.viaje._id = viaje._id;
+
+      this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+          console.log('viaje atual', viajeActual);
+          let para: any = this.asignacion.vehiculo;
+
+          let mensaje = {
+            para: para.dispositivo.socket_id,
+            viaje: viajeActual,
+          };
     
+          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+            console.log('resp', resp);
+          });
+      });
 
-    // this._viajeService.guardar(this.viaje).subscribe(viaje => {
-    //   this.viaje._id = viaje._id;
-
-    //   this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-    //       console.log('viaje atual', viajeActual);
-    //       let para: any = this.asignacion.vehiculo;
-
-    //       let mensaje = {
-    //         para: para.dispositivo.socket_id,
-    //         viaje: viajeActual,
-    //       };
-    
-    //       this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
-    //         console.log('resp', resp);
-    //       });
-    //   });
-
-    //   this.router.navigate(['/viaje', this.asignacion._id]);
-    // }, (error) => {
-    //   console.log(error);
-    // });
+      this.router.navigate(['/viaje', this.asignacion._id]);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   cambiarRuta(id) {
@@ -156,11 +147,33 @@ export class DespachoComponent implements OnInit {
     //console.log(operario);
     this.despachoService.siguiente();
   }
-  otroclick() {
-    console.log('otro clck');
-  }
 
   cambiarHoraSalidaAsignada(reloj) {
-  console.log('hora', reloj);
+    this.viaje.horaSalidaAsignada = new Date();
+    this.viaje.horaSalidaAsignada.setHours(reloj.hora, reloj.minuto);
+  }
+
+  private cambiarHoraLlegadaAsignada(hora,min,seg,sumaSeg){
+    let horas = hora;
+    let minutos = min;
+    let segundos = seg;
+     
+    let  horas_Segundos = hora * 3600;
+    let minutos_Segundos = min * 60;
+    segundos = horas_Segundos + minutos_Segundos + segundos + sumaSeg;
+     
+    horas= segundos / 3600;
+    this.viaje.horaLlegadaAsignada = new Date();
+    
+    if(horas >=24){
+      segundos -= 24 * 3600;
+      let dia = this.viaje.horaLlegadaAsignada.getDate()+1;
+      this.viaje.horaLlegadaAsignada.setDate(dia);
+    }
+    horas = Math.floor( segundos / 3600 );
+    minutos = Math.floor( (segundos % 3600) / 60 );
+    segundos = segundos % 60;
+
+    this.viaje.horaLlegadaAsignada.setHours(horas,minutos,segundos);
   }
 }

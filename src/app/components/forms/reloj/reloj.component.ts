@@ -32,9 +32,13 @@ export class RelojComponent implements OnInit {
       });
     });
 
-    this.reloj.subscribe(hora => {
-      console.log(hora);
-      this.cambioValor.emit(hora);
+    this.reloj.subscribe( (hora) => {
+      let reloj = hora.split(':');
+      reloj = {
+        hora: parseInt(reloj['0']),
+        minuto: parseInt(reloj['1'])
+      };
+      this.cambioValor.emit(reloj);
     });
 
   }

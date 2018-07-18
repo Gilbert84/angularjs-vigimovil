@@ -50,7 +50,7 @@ export class Viaje {
   constructor() {
     this.horaSalidaOperario = this.horaSalidaOperario;
     this.horallegadaOperario = this.horallegadaOperario;
-    this.horaSalidaAsignada = this.horaSalidaAsignada || new Date();
+    this.horaSalidaAsignada = this.horaSalidaAsignada;
     this.horaLlegadaAsignada = this.horaLlegadaAsignada;
     this.pasajeros = new Pasajeros();
     this.estado = new Estado;
