@@ -70,7 +70,7 @@ export class DespachoComponent implements OnInit {
       this._asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
-        console.log('asignacion',this.asignacion);
+        console.log('asignacion', this.asignacion);
         this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
@@ -112,7 +112,10 @@ export class DespachoComponent implements OnInit {
       return;
     }
 
-    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), this.viaje.horaSalidaAsignada.getMinutes() , this.viaje.horaSalidaAsignada.getSeconds(),this.ruta.duraccion.value );
+    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), 
+                                    this.viaje.horaSalidaAsignada.getMinutes(), 
+                                    this.viaje.horaSalidaAsignada.getSeconds(),
+                                    this.ruta.duraccion.value );
 
     this._viajeService.guardar(this.viaje).subscribe(viaje => {
       this.viaje._id = viaje._id;
@@ -153,7 +156,7 @@ export class DespachoComponent implements OnInit {
     this.viaje.horaSalidaAsignada.setHours(reloj.hora, reloj.minuto);
   }
 
-  private cambiarHoraLlegadaAsignada(hora,min,seg,sumaSeg){
+  private cambiarHoraLlegadaAsignada(hora, min, seg, sumaSeg) {
     let horas = hora;
     let minutos = min;
     let segundos = seg;
@@ -162,18 +165,18 @@ export class DespachoComponent implements OnInit {
     let minutos_Segundos = min * 60;
     segundos = horas_Segundos + minutos_Segundos + segundos + sumaSeg;
      
-    horas= segundos / 3600;
+    horas = segundos / 3600;
     this.viaje.horaLlegadaAsignada = new Date();
     
-    if(horas >=24){
+    if (horas >= 24) {
       segundos -= 24 * 3600;
-      let dia = this.viaje.horaLlegadaAsignada.getDate()+1;
+      let dia = this.viaje.horaLlegadaAsignada.getDate() + 1;
       this.viaje.horaLlegadaAsignada.setDate(dia);
     }
     horas = Math.floor( segundos / 3600 );
     minutos = Math.floor( (segundos % 3600) / 60 );
     segundos = segundos % 60;
 
-    this.viaje.horaLlegadaAsignada.setHours(horas,minutos,segundos);
+    this.viaje.horaLlegadaAsignada.setHours(horas, minutos, segundos);
   }
 }

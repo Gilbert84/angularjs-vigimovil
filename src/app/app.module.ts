@@ -19,6 +19,9 @@ import { ServiceModule } from './services/service.module';
 import { SocketIoModule } from 'ng-socket-io';
 import { config } from './config/socket-io.config';
 
+//ngx-electron
+import { NgxElectronModule } from 'ngx-electron';
+
 
 //angular material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,7 +57,8 @@ import { MarcadorDirective } from './directives/marcador.directive';
     BrowserAnimationsModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    NgxElectronModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
+import { SocketIoService } from '../../../vigimovil-win32-x64/resources/app/src/app/services/socket-io/socket-io.service';
+import { Subscription } from 'rxjs/Subscription';
 
 declare function init_plugins();
 declare const gapi: any;
@@ -17,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   email: string;
   recuerdame: boolean = false;
+  ingresoUsuario: Subscription;
 
   auth2: any;
 
@@ -76,9 +79,11 @@ export class LoginComponent implements OnInit {
     let usuario = new Usuario(null, forma.value.email, forma.value.password );
 
     this._usuarioService.login( usuario, forma.value.recuerdame )
-                  .subscribe( correcto => this.router.navigate(['/dashboard'])  );
-
-    // this.router.navigate([ '/dashboard' ]);
+                  .subscribe( correcto => {
+                    if (correcto) {
+                      this.router.navigate(['/dashboard']);
+                    }
+                  });
 
   }
 
