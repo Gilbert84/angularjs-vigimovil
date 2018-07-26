@@ -57,7 +57,7 @@ export class OperarioComponent implements OnInit {
     this._operarioService.cargarOperario( id )
           .subscribe( operario => {
 
-            console.log( operario );
+            //console.log( operario );
             this.operario = operario;
             this.operario.empresa = operario.empresa._id;
             this.cambioEmpresa( this.operario.empresa );

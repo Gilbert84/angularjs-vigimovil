@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -25,7 +25,7 @@ declare function init_plugin_material_clock();
   styleUrls: ['./despacho.component.css'],
   
 })
-export class DespachoComponent implements OnInit {
+export class DespachoComponent implements OnInit, OnDestroy{
 
 
   
@@ -47,12 +47,14 @@ export class DespachoComponent implements OnInit {
     suppressInfoWindows: true
   };
 
-  contador: number = 60000;
+  cerrarPagina: number = 120;
   horaSalida: any;
   hora: number;
   min: number;
 
   reloj: any;
+
+  salir;
 
   constructor(
     public router: Router,
@@ -61,7 +63,6 @@ export class DespachoComponent implements OnInit {
     private _rutaService: RutaService,
     private _viajeService: ViajeService,
     private _asignacionService: AsignacionService,
-    private _socketIoService: SocketIoService,
     private elem: ElementRef
   ) {
     activatedRoute.params.subscribe(params => {
@@ -70,21 +71,21 @@ export class DespachoComponent implements OnInit {
       this._asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
-        console.log('asignacion',this.asignacion);
+        //console.log('asignacion', this.asignacion);
         this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
-        console.log('error', error);
+        //console.log('error', error);
       });
     });
 
 
 
-    const salir = setInterval(() => {
-      this.contador -= 1;
-      if (this.contador <= 0) {
+     this.salir = setInterval(() => {
+      this.cerrarPagina -= 1;
+      if (this.cerrarPagina <= 0) {
         this.router.navigate(['/viajes']);
-        clearInterval(salir);
+        clearInterval(this.salir);
       }
     }, 1000);
     
@@ -93,7 +94,7 @@ export class DespachoComponent implements OnInit {
 
   ngOnInit() {
 
-
+    this._viajeService.observarConfirmacionAsignacion();
   
     this.cargando = true;
     this._rutaService.cargarRutas().subscribe((rutas) => {
@@ -105,6 +106,11 @@ export class DespachoComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this._viajeService.confirmacionAsignacionViaje.unsubscribe();
+    clearInterval(this.salir);
+  }
+
   guardar(f: NgForm) {
     //console.log(f);
     //console.log(f.valid);
@@ -112,28 +118,27 @@ export class DespachoComponent implements OnInit {
       return;
     }
 
-    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), this.viaje.horaSalidaAsignada.getMinutes() , this.viaje.horaSalidaAsignada.getSeconds(),this.ruta.duraccion.value );
+    this.cambiarHoraLlegadaAsignada(this.viaje.horaSalidaAsignada.getHours(), 
+                                    this.viaje.horaSalidaAsignada.getMinutes(), 
+                                    this.viaje.horaSalidaAsignada.getSeconds(),
+                                    this.ruta.duraccion.value );
 
     this._viajeService.guardar(this.viaje).subscribe(viaje => {
       this.viaje._id = viaje._id;
 
       this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-          console.log('viaje atual', viajeActual);
           let para: any = this.asignacion.vehiculo;
-
           let mensaje = {
             para: para.dispositivo.socket_id,
             viaje: viajeActual,
           };
-    
-          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
-            console.log('resp', resp);
-          });
+          //console.log(viajeActual);
+          this._viajeService.eventoAsignarNuevoViaje(mensaje);
       });
 
       this.router.navigate(['/viaje', this.asignacion._id]);
     }, (error) => {
-      console.log(error);
+      //console.log(error);
     });
   }
 
@@ -153,7 +158,7 @@ export class DespachoComponent implements OnInit {
     this.viaje.horaSalidaAsignada.setHours(reloj.hora, reloj.minuto);
   }
 
-  private cambiarHoraLlegadaAsignada(hora,min,seg,sumaSeg){
+  private cambiarHoraLlegadaAsignada(hora, min, seg, sumaSeg) {
     let horas = hora;
     let minutos = min;
     let segundos = seg;
@@ -162,18 +167,18 @@ export class DespachoComponent implements OnInit {
     let minutos_Segundos = min * 60;
     segundos = horas_Segundos + minutos_Segundos + segundos + sumaSeg;
      
-    horas= segundos / 3600;
+    horas = segundos / 3600;
     this.viaje.horaLlegadaAsignada = new Date();
     
-    if(horas >=24){
+    if (horas >= 24) {
       segundos -= 24 * 3600;
-      let dia = this.viaje.horaLlegadaAsignada.getDate()+1;
+      let dia = this.viaje.horaLlegadaAsignada.getDate() + 1;
       this.viaje.horaLlegadaAsignada.setDate(dia);
     }
     horas = Math.floor( segundos / 3600 );
     minutos = Math.floor( (segundos % 3600) / 60 );
     segundos = segundos % 60;
 
-    this.viaje.horaLlegadaAsignada.setHours(horas,minutos,segundos);
+    this.viaje.horaLlegadaAsignada.setHours(horas, minutos, segundos);
   }
 }

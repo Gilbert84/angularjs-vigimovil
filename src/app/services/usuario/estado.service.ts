@@ -11,7 +11,7 @@ import swal from 'sweetalert';
 export class EstadoService {
 
   totalEstados: number = 0;
-  estados: Estado []=[];
+  estados: Estado []= [];
 
   constructor(
     public http: HttpClient,

@@ -30,6 +30,7 @@
                         <tr>
                             <th>Foto</th>
                             <th>Empresa</th>
+                            <th>Nit</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -40,7 +41,10 @@
                                 <img (click)="actualizarImagen( empresa )" [src]="empresa.img | imagen:'empresa'" class="img-50 pointer">
                             </td>
                             <td>
-                                <input [(ngModel)]="empresa.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del empresa">
+                                <input [(ngModel)]="empresa.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre">
+                            </td>
+                            <td>
+                                <input [(ngModel)]="empresa.nit" name="nombre" type="text" class="form-control" placeholder="Nit">
                             </td>
                             <td>
                                 <button (click)="guardarEmpresa( empresa )" class="btn btn-primary">

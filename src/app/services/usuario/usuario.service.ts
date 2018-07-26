@@ -12,6 +12,8 @@ import 'rxjs/add/operator/catch';
 
 import { Router } from '@angular/router';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
+import { Subscription } from 'rxjs/Subscription';
+import { SocketIoService } from '../socket-io/socket-io.service';
 
 @Injectable()
 export class UsuarioService {
@@ -19,13 +21,39 @@ export class UsuarioService {
   usuario: Usuario;
   token: string;
   menu: any[] = [];
+  ingresoUsuario: Subscription;
 
   constructor(
     public http: HttpClient,
     public router: Router,
-    public _subirArchivoService: SubirArchivoService
+    public _subirArchivoService: SubirArchivoService,
+    private socketIoService: SocketIoService
   ) {
     this.cargarStorage();
+  }
+
+  ingresoUsuarioObservar () {
+    this.ingresoUsuario = this.socketIoService.observar('ingresoUsuario').subscribe((res) => {
+      //console.log(res);
+    }); 
+  }
+
+  usuarioDesconectadoObservar() {
+    this.socketIoService.observar('usuarioDesconectado').subscribe((res) => {
+      //console.log(res);
+    });
+  }
+
+  listaActualUsuariosObservar() {
+    this.socketIoService.observar('listaActualUsuarios').subscribe((res) => {
+      //console.log('usuarios', res);
+    });    
+  }
+
+  ingresoUsuarioConectar() {
+    this.socketIoService.enviarEvento('ingresoUsuario', { usuario: this.usuario }).then( (res) => {
+      //console.log(res);
+    });
   }
 
 
@@ -39,7 +67,7 @@ export class UsuarioService {
 
                   this.token = resp.token;
                   localStorage.setItem('token', this.token );
-                  console.log('Token renovado');
+                  //console.log('Token renovado');
 
                   return true;
                 })
@@ -181,7 +209,7 @@ export class UsuarioService {
 
           })
           .catch( resp => {
-            console.log( resp );
+            //console.log( resp );
           }) ;
 
   }

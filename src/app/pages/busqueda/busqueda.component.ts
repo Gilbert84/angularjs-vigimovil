@@ -41,7 +41,7 @@ export class BusquedaComponent implements OnInit {
     this.http.get( url )
         .subscribe( (resp: any) => {
 
-          console.log( resp );
+          //console.log( resp );
           this.empresas = resp.empresas;
           this.operarios = resp.operarios;
           this.usuarios = resp.usuarios;

@@ -91,7 +91,7 @@ export class EstadoRutaComponent implements OnInit {
       this.cargando = false;
       this.ruta = ruta;
       this.titulo = this.ruta.nombre;
-      console.log('ruta se cargo:', ruta);
+      //console.log('ruta se cargo:', ruta);
     });
   }
 

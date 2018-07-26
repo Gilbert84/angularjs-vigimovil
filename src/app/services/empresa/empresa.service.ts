@@ -46,17 +46,18 @@ export class EmpresaService {
 
   }
 
-  crearEmpresa( nombre: string ) {
+  crearEmpresa( empresa:Empresa ) {
 
     let url = URL_SERVICIOS + '/empresa';
     url += '?token=' + this._usuarioService.token;
 
-    return this.http.post( url, { nombre } )
+    return this.http.post( url, empresa )
               .map( (resp: any) =>{
+                swal( resp.mensaje, resp.empresa.nombre,'success' );
                 return resp.empresa;
               }  )
               .catch( err => {
-                swal( err.error.mensaje, err.error.errors.message, 'error' );
+                swal( err.error.mensaje, err.error.errors.errmsg,'error' );
                 return Observable.throw( err );
               });;
 

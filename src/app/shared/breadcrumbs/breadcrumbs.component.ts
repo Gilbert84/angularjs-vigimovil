@@ -1,4 +1,4 @@
-import { Component, OnInit ,OnChanges} from '@angular/core';
+import { Component, OnInit , OnChanges} from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
 import { SocketIoService } from '../../services/service.index';
@@ -11,16 +11,16 @@ import { SocketIoService } from '../../services/service.index';
 export class BreadcrumbsComponent  {
 
   label: string = '';
-  servidor={
-    online:false,
-    mensaje:''
+  servidor= {
+    online: false,
+    mensaje: ''
   };
 
   constructor(
     private router: Router,
     public title: Title,
     public meta: Meta,
-    private socketIoService:SocketIoService
+    public socketIoService: SocketIoService
    ) {
 
 

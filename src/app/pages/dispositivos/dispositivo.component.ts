@@ -45,8 +45,8 @@ export class DispositivoComponent implements OnInit {
 
   guardarCambios( f: NgForm ) {
 
-    console.log( f.valid );
-    console.log( f.value );
+    //console.log( f.valid );
+    //console.log( f.value );
 
     if ( f.invalid ) {
       return;

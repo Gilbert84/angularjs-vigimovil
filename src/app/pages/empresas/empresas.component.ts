@@ -68,18 +68,29 @@ export class EmpresasComponent implements OnInit {
       icon: 'info',
       buttons: true,
       dangerMode: true
-    }).then( (valor: string ) => {
-
-      if ( !valor || valor.length === 0 ) {
+    }).then( (nombre: string ) => {
+      if ( !nombre || nombre.length === 0 ) {
         return;
       }
 
-      this._empresaService.crearEmpresa( valor )
-              .subscribe( (resp) => {
-                this.cargarEmpresas() 
-                //console.log(resp);
-              });
+      swal({
+        text: 'Ingrese el nit',
+        content: 'input',
+        icon: 'info',
+        buttons: true,
+        dangerMode: true
+      }).then( (nit: string ) => {
 
+        if ( !nit || nit.length === 0 ) {
+          return;
+        }
+
+        let empresa = new Empresa(nombre,nit);
+        this._empresaService.crearEmpresa( empresa )
+        .subscribe( (resp) => {
+          this.cargarEmpresas(); 
+        });
+      });
     });
 
   }

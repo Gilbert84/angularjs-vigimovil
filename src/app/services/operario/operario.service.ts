@@ -75,7 +75,7 @@ export class OperarioService {
                   return resp.operario;
 
                 }).catch((err)=>{
-                  console.log('err:',err);
+                  //console.log('err:',err);
                   swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
                   return Observable.throw( err );
                 });
@@ -88,7 +88,7 @@ export class OperarioService {
                 swal('Operario Creado', operario.nombre, 'success');
                 return resp.operario;
               }).catch((err)=>{
-                console.log('err:',err);
+                //console.log('err:',err);
                 swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
                 return Observable.throw( err );
               });

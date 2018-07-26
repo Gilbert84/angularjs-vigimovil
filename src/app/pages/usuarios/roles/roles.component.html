@@ -1,57 +1,57 @@
 <div class="row animated fadeIn">
-  <div class="col-12">
-      <div class="card">
-          <div class="card-body">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
 
-              <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar roles...">
+                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar roles...">
 
-          </div>
-      </div>
-  </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div class="row">
-  <div class="col-12">
-      <div class="card">
-          <div class="card-body">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
 
-              <div class="text-right">
-                  <button (click)="crear()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                <div class="text-right">
+                    <button (click)="crear()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
                     <i class="fa fa-plus"></i> 
                     Crear role
                   </button>
-              </div>
+                </div>
 
-              <h3 class="card-title">Roles registrados ( <small>  {{_roleService.totalroles}}  </small> )</h3>
+                <h3 class="card-title">Roles registrados ( <small>  {{_roleService.totalRoles}}  </small> )</h3>
 
-              <table class="table table-hover">
-                  <thead>
-                      <tr>
-                          <th>Nombre</th>
-                          <th>Accion</th>
-                      </tr>
-                  </thead>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
 
-                  <tbody>
-                      <tr *ngFor="let role of roles">
-                          <td>
-                              <input [(ngModel)]="role.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del role">
-                          </td>
-                          <td>
-                              <button (click)="guardar( role )" class="btn btn-primary">
+                    <tbody>
+                        <tr *ngFor="let role of roles">
+                            <td>
+                                <input [(ngModel)]="role.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del role">
+                            </td>
+                            <td>
+                                <button (click)="guardar( role )" class="btn btn-primary">
                                 <i class="fa fa-save"></i>
                               </button>
 
-                              <button (click)="borrar( role )" class="btn btn-danger">
+                                <button (click)="borrar( role )" class="btn btn-danger">
                                 <i class="fa fa-trash-o"></i>
                               </button>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-          </div>
-      </div>
-  </div>
+            </div>
+        </div>
+    </div>
 </div>

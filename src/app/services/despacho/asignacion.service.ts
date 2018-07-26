@@ -5,12 +5,13 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { Asignacion } from '../../models/despacho/despacho.model';
 
 import swal from 'sweetalert';
+import { SocketIoService } from '../socket-io/socket-io.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class AsignacionService {
 
     total: number = 0;
-
 
     constructor(
       public http: HttpClient,
@@ -18,6 +19,7 @@ export class AsignacionService {
     ) { 
 
     }
+
   
     cargar(desde: number = 0) {
   
@@ -75,7 +77,6 @@ export class AsignacionService {
                   .map( (resp: any) => {
                     swal('Asignacion Actualizada', resp.asignacion.fechaHora, 'success');
                     return resp.asignacion;
-  
                   });
   
       }else {

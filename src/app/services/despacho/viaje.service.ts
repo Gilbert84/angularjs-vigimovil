@@ -5,16 +5,44 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { Viaje } from '../../models/despacho/despacho.model';
 
 import swal from 'sweetalert';
+import { SocketIoService } from '../socket-io/socket-io.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class ViajeService {
 
   total: number = 0;
 
+  confirmacionAsignacionViaje: Subscription = new Subscription();
+
+  
+
   constructor(
     public http: HttpClient,
-    public _usuarioService: UsuarioService
+    public _usuarioService: UsuarioService,
+    private socketIoService: SocketIoService,
+    private snackBar:MatSnackBar
   ) { }
+
+  eventoAsignarNuevoViaje(mensaje) {
+    this.socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+      //('resp', resp);
+    });
+  }
+
+  observarConfirmacionAsignacion() {
+      this.confirmacionAsignacionViaje =this.socketIoService.observar('confirmacionAsignacion').subscribe((res) => {
+        //console.log(res);
+        this.snackBar.open(
+          'Dispositivo dice :' + 'despacho recibido',
+          'Aceptar',
+          { duration: 10000 }
+        );        
+      });   
+
+  }
 
   cargar(desde: number = 0) {
 

@@ -48,7 +48,7 @@ export class RolesComponent implements OnInit {
 
       this._roleService.crear( valor )
               .subscribe( (resp) => {
-                this.cargar() 
+                this.cargar();
                 //console.log(resp);
               });
 

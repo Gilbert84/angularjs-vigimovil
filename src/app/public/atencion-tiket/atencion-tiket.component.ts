@@ -9,10 +9,19 @@ declare function init_plugins();
 })
 export class AtencionTiketComponent implements OnInit {
 
+  email: string;
+  recuerdame: boolean = false;
+
+  auth2: any;
+
   constructor() { }
 
   ngOnInit() {
     init_plugins();
+  }
+
+  ingresar(event) {
+
   }
 
 }

@@ -47,8 +47,8 @@ export class RutasComponent implements OnInit {
   };
 
   constructor(
-    private _marcadorService: MarcadorService,
-    private _rutaService: RutaService
+    public _marcadorService: MarcadorService,
+    public _rutaService: RutaService
   ) {}
 
   ngOnInit() {

@@ -143,7 +143,7 @@
                 </agm-info-window>
             </agm-marker>
             <!-- [markerOptions]="markerOptions"  -->
-            <agm-direction *ngFor="let ruta of rutas; let posicion = index" [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions" >
+            <agm-direction *ngFor="let ruta of rutas; let posicion = index" [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions">
             </agm-direction>
             <!--<agm-data-layer [geoJson]="geoJsonObject" (layerClick)="clicked($event)" [style]="styleFunc">
             </agm-data-layer>-->

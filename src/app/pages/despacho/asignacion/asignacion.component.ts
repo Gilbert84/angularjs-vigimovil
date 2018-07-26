@@ -101,7 +101,7 @@ export class AsignacionComponent implements OnInit {
       this._socketIoService.enviarEvento('actualizarAsignaciones').then();
       this.router.navigate(['/asignacion', asignacion._id]);
     }, (error) => {
-      console.log(error);
+      //console.log(error);
     });
   }
 

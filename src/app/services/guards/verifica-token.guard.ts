@@ -14,7 +14,7 @@ export class VerificaTokenGuard implements CanActivate {
 
   canActivate(): Promise<boolean> | boolean {
 
-    console.log('Token guard');
+    //console.log('Token guard');
 
     let token = this._usuarioService.token;
     let payload = JSON.parse( atob( token.split('.')[1] ));

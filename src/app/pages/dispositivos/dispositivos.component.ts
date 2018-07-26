@@ -24,7 +24,7 @@ export class DispositivosComponent implements OnInit {
   };
 
   constructor(
-                private dispositivoService: DispositivoService,
+                public dispositivoService: DispositivoService,
                 public _modalUploadService: ModalUploadService,
                 public router: Router,
                 private _socket: SocketIoService 

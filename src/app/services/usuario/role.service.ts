@@ -11,7 +11,7 @@ import swal from 'sweetalert';
 export class RoleService {
 
   totalRoles: number = 0;
-  roles: Role []=[];
+  roles: Role []= [];
 
   constructor(
     public http: HttpClient,

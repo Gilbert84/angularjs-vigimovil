@@ -74,7 +74,7 @@ const pagesRoutes: Routes = [
     { path: 'rutas', component: RutasComponent, data: { titulo: 'Mantenimiento de rutas' } },
     { path: 'ruta/:id', component: RutaComponent, data: { titulo: 'Mantenimento ruta' } },
     { path: 'google-map', component: GoogleMapComponent, data: { titulo: 'Mantenimiento' } },
-    { path: 'marcador/:id', component: MarcadoresComponent, data: { titulo: 'Mantenimento marcador' } },
+    { path: 'marcador/:id', component: MarcadoresComponent, data: { titulo: 'Mantenimento marcadores' } },
     { path: 'tipo-marcador', component: TipoMarcadorComponent, data: { titulo: 'Mantenimento de tipo marcador' } },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];

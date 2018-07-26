@@ -1883,7 +1883,7 @@ $(document).ready(()=>{
     
         maxOptionsText: function (numAll, numGroup) {
     
-            console.log('render');
+            //console.log('render');
     
           return [
     
