@@ -21,7 +21,7 @@ export class DespachoService {
         if(this.io.server.online){
             this.io.enviarEvento('siguienteTiket',{})
                 .then((resp)=>{
-                    //console.log('server:',resp);
+                    console.log('server:',resp);
                     this.despacho.actual=resp;
                 });
         }
@@ -31,7 +31,7 @@ export class DespachoService {
         this.io.observarInfo('estadoActual')
             .subscribe((resp)=>{
                 this.despacho=resp;
-                //console.log('estado actual:', this.despacho);
+                console.log('estado actual:', this.despacho);
             })
     }
 

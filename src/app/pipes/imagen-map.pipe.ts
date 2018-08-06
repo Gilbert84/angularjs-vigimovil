@@ -25,7 +25,7 @@ export class ImagenMapPipe implements PipeTransform {
       break;
 
       default:
-        //console.log('tipo de imagen no existe, usuario, operarios, empresas, dispositivos,tipo-marcadores');
+        console.log('tipo de imagen no existe, usuario, operarios, empresas, dispositivos,tipo-marcadores');
         url += '/tipo-marcadores/xxx';
     }
 

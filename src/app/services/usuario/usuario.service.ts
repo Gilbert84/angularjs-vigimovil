@@ -34,25 +34,25 @@ export class UsuarioService {
 
   ingresoUsuarioObservar () {
     this.ingresoUsuario = this.socketIoService.observar('ingresoUsuario').subscribe((res) => {
-      //console.log(res);
+      console.log(res);
     }); 
   }
 
   usuarioDesconectadoObservar() {
     this.socketIoService.observar('usuarioDesconectado').subscribe((res) => {
-      //console.log(res);
+      console.log(res);
     });
   }
 
   listaActualUsuariosObservar() {
     this.socketIoService.observar('listaActualUsuarios').subscribe((res) => {
-      //console.log('usuarios', res);
+      console.log('usuarios', res);
     });    
   }
 
   ingresoUsuarioConectar() {
     this.socketIoService.enviarEvento('ingresoUsuario', { usuario: this.usuario }).then( (res) => {
-      //console.log(res);
+      console.log(res);
     });
   }
 
@@ -67,7 +67,7 @@ export class UsuarioService {
 
                   this.token = resp.token;
                   localStorage.setItem('token', this.token );
-                  //console.log('Token renovado');
+                  console.log('Token renovado');
 
                   return true;
                 })
@@ -209,7 +209,7 @@ export class UsuarioService {
 
           })
           .catch( resp => {
-            //console.log( resp );
+            console.log( resp );
           }) ;
 
   }

@@ -16,9 +16,9 @@ export class VehiculoService {
     public _usuarioService: UsuarioService
   ) { }
 
-  cargarVehiculos(desde: number = 0) {
+  cargarVehiculos(desde: number = 0,hasta:number = 5) {
 
-    let url = URL_SERVICIOS + '/vehiculo?desde=' + desde;
+    let url = URL_SERVICIOS + '/vehiculo?desde=' + desde + '&hasta=' + hasta;
 
     return this.http.get( url )
               .map( (resp: any) => {

@@ -15,7 +15,7 @@ export class ClockPickerDirective implements OnInit {
 
   //valor: Observable<any>;
    constructor(private el: ElementRef) {
-     //console.log('directiva');
+     console.log('directiva');
    }
 
    ngOnInit(): void {

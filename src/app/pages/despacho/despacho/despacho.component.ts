@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, OnDestroy} from '@angular/core';
+import { Component, OnInit, ElementRef} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -25,7 +25,7 @@ declare function init_plugin_material_clock();
   styleUrls: ['./despacho.component.css'],
   
 })
-export class DespachoComponent implements OnInit, OnDestroy{
+export class DespachoComponent implements OnInit {
 
 
   
@@ -47,14 +47,12 @@ export class DespachoComponent implements OnInit, OnDestroy{
     suppressInfoWindows: true
   };
 
-  cerrarPagina: number = 120;
+  contador: number = 180;
   horaSalida: any;
   hora: number;
   min: number;
 
   reloj: any;
-
-  salir;
 
   constructor(
     public router: Router,
@@ -63,6 +61,7 @@ export class DespachoComponent implements OnInit, OnDestroy{
     private _rutaService: RutaService,
     private _viajeService: ViajeService,
     private _asignacionService: AsignacionService,
+    private _socketIoService: SocketIoService,
     private elem: ElementRef
   ) {
     activatedRoute.params.subscribe(params => {
@@ -71,21 +70,21 @@ export class DespachoComponent implements OnInit, OnDestroy{
       this._asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
-        //console.log('asignacion', this.asignacion);
+        console.log('asignacion', this.asignacion);
         this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
-        //console.log('error', error);
+        console.log('error', error);
       });
     });
 
 
 
-     this.salir = setInterval(() => {
-      this.cerrarPagina -= 1;
-      if (this.cerrarPagina <= 0) {
+    const salir = setInterval(() => {
+      this.contador -= 1;
+      if (this.contador <= 0) {
         this.router.navigate(['/viajes']);
-        clearInterval(this.salir);
+        clearInterval(salir);
       }
     }, 1000);
     
@@ -94,21 +93,16 @@ export class DespachoComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
 
-    this._viajeService.observarConfirmacionAsignacion();
+
   
     this.cargando = true;
-    this._rutaService.cargarRutas().subscribe((rutas) => {
+    this._rutaService.cargarRutas(0,0).subscribe((rutas) => {
       this.rutas = rutas;
       init_plugin_select();
       init_plugin_clockpicker();
       init_plugin_material_clock();
       this.cargando = false;
     });
-  }
-
-  ngOnDestroy() {
-    this._viajeService.confirmacionAsignacionViaje.unsubscribe();
-    clearInterval(this.salir);
   }
 
   guardar(f: NgForm) {
@@ -127,18 +121,22 @@ export class DespachoComponent implements OnInit, OnDestroy{
       this.viaje._id = viaje._id;
 
       this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+          console.log('viaje atual', viajeActual);
           let para: any = this.asignacion.vehiculo;
+
           let mensaje = {
             para: para.dispositivo.socket_id,
             viaje: viajeActual,
           };
-          //console.log(viajeActual);
-          this._viajeService.eventoAsignarNuevoViaje(mensaje);
+    
+          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+            console.log('resp', resp);
+          });
       });
 
       this.router.navigate(['/viaje', this.asignacion._id]);
     }, (error) => {
-      //console.log(error);
+      console.log(error);
     });
   }
 

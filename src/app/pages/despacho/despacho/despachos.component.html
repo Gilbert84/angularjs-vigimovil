@@ -103,7 +103,7 @@
                                 {{ asignacion.operario.nombre }}
                             </td>
                             <td *ngIf="asignacion.disponible">
-                                {{ asignacion.vehiculo.placa }} >>> {{ asignacion.vehiculo.interno }}
+                                {{ asignacion.vehiculo.interno }}-{{ asignacion.vehiculo.placa }} 
                             </td>
                             <td *ngIf="asignacion.disponible">
                                 Disponible

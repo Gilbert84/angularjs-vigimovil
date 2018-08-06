@@ -1883,7 +1883,7 @@ $(document).ready(()=>{
     
         maxOptionsText: function (numAll, numGroup) {
     
-            //console.log('render');
+            console.log('render');
     
           return [
     
@@ -1945,7 +1945,7 @@ $(document).ready(()=>{
     
         liveSearchStyle: 'contains',
     
-        actionsBox: false,
+        actionsBox: true,
     
      
     
@@ -1980,7 +1980,7 @@ $(document).ready(()=>{
     
         // e.g. [top, right, bottom, left]
     
-        windowPadding: 0
+        //windowPadding: bottom
     
     });
     $('.selectpicker').selectpicker('render');

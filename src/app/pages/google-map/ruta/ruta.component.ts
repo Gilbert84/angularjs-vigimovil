@@ -9,6 +9,11 @@ import { MarcadorService, RutaService } from '../../../services/service.index';
 
 import { ModalUploadService } from '../../../components/service.components.index';
 import { Marcador, Ruta } from '../../../class/google-maps.class';
+import { PuntosReferencia } from '../../../models/google-map/puntos-referencia'
+
+
+
+
 
 @Component({
   selector: 'app-ruta',
@@ -28,7 +33,8 @@ export class RutaComponent implements OnInit {
   lng: number = -75.562874;
   zoom: number = 12;
   opacidad: number = 0.5;
-  visible = true;
+  visible = false;
+  retorno = true;
 
   origen: Marcador = new Marcador(this.lat, this.lng, '', '');
   destino: Marcador = new Marcador(this.lat, this.lng, '', '');
@@ -37,6 +43,8 @@ export class RutaComponent implements OnInit {
     origen: false,
     destino: false
   };
+
+  location:PuntosReferencia;
 
 
 
@@ -50,6 +58,7 @@ export class RutaComponent implements OnInit {
   };
 
   transitOptions: string = 'TRANSIT';
+  
 
   constructor(
     public router: Router,
@@ -139,6 +148,7 @@ export class RutaComponent implements OnInit {
 
   cambiarOrigen(id) {
     
+    if(id === '') return;
     this.estado.origen = true;
     if (this.estado.origen && this.estado.destino) {
       this.ruta.visible = true;
@@ -147,13 +157,15 @@ export class RutaComponent implements OnInit {
       this.origen = origen;
       //console.log('origen :', this.origen);
       this.ruta.origen = this.origen;
-      this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
-      this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
+      this.ruta.nombre = this.origen.nombre + '-' + this.destino.nombre;
+      this.ruta.codigo = this.origen.codigo + '-' + this.destino.codigo;
       this.ruta.puntosRef = [];
     });
   }
 
   cambiarDestino(id) {
+
+    if(id === '') return;
     this.estado.destino = true;
     if (this.estado.origen && this.estado.destino) {
       this.ruta.visible = true;
@@ -161,13 +173,14 @@ export class RutaComponent implements OnInit {
     this._marcadorService.obtener(id).subscribe(destino => {
       this.destino = destino;
       this.ruta.destino = this.destino;
-      this.ruta.nombre = this.origen.nombre + '>>' + this.destino.nombre;
-      this.ruta.codigo = this.origen.codigo + '::' + this.destino.codigo;
+      this.ruta.nombre = this.origen.nombre + '-' + this.destino.nombre;
+      this.ruta.codigo = this.origen.codigo + '-' + this.destino.codigo;
       this.ruta.puntosRef = [];
     });
   }
 
   cambiarPuntosRef(evento) {
+    
     this.ruta.puntosRef = evento.request.waypoints;
     //this.ruta.puntosControl = evento.routes['0'].legs['0'];
     this.ruta.distancia = evento.routes['0'].legs['0'].distance;
@@ -175,4 +188,8 @@ export class RutaComponent implements OnInit {
     this.ruta.pasos = evento.routes['0'].legs['0'].steps;
     //console.log('ruta:', this.ruta);
   }
+
+
+
+  
 }

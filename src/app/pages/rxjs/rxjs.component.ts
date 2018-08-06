@@ -19,15 +19,9 @@ export class RxjsComponent implements OnInit, OnDestroy {
 
     this.subscription = this.regresaObservable()
       .subscribe(
-          numero => {
-            //console.log( 'Subs', numero );
-          },
-          error => { 
-            //console.error('Error en el obs (dos veces)', error );
-          },
-          () =>{
-            //console.log( 'El observador termino!' );
-          } 
+          numero => console.log( 'Subs', numero ),
+          error => console.error('Error en el obs (dos veces)', error ),
+          () => console.log( 'El observador termino!' )
         );
 
 

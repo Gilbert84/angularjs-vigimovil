@@ -10,10 +10,10 @@ export class VariablePipe implements PipeTransform {
       //propeades de los pipe es value
       // args es otra propiedad y args1,args2 etc 
     if (value) {
-        //console.log('true', value);
+        console.log('true', value);
         return 'activo';
     }else {
-        //console.log('false', value);
+        console.log('fasle', value);
         return 'inactivo';
     }
 

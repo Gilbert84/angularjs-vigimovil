@@ -17,15 +17,15 @@ export class OperarioService {
     public _usuarioService: UsuarioService
   ) { }
 
-  cargarOperarios( desde: number = 0) {
+  cargarOperarios( desde: number = 0,hasta:number = 5) {
 
-    let url = URL_SERVICIOS + '/operario?desde='+ desde;
+
+    let url = URL_SERVICIOS + '/operario?desde='+ desde + '&hasta=' + hasta;
 
     return this.http.get( url )
               .map( (resp: any) => {
-
                 this.totalOperarios = resp.total;
-                return resp;
+                return resp.operarios;
               });
 
   }
@@ -75,7 +75,7 @@ export class OperarioService {
                   return resp.operario;
 
                 }).catch((err)=>{
-                  //console.log('err:',err);
+                  console.log('err:',err);
                   swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
                   return Observable.throw( err );
                 });
@@ -88,7 +88,7 @@ export class OperarioService {
                 swal('Operario Creado', operario.nombre, 'success');
                 return resp.operario;
               }).catch((err)=>{
-                //console.log('err:',err);
+                console.log('err:',err);
                 swal( err.error.mensaje, err.error.errors.errmsg, 'error' );
                 return Observable.throw( err );
               });

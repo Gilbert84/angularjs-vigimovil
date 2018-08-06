@@ -50,13 +50,13 @@ export class SocketIoService {
 
   sendMessageUser(msg: object) {
     this.io.emit('entrarChat', msg, (resp: any) => {
-      //console.log('Usuarios : ', resp);
+      console.log('Usuarios : ', resp);
     });
   }
 
   sendMessageDev(msg: object) {
     this.io.emit('entrarDev', msg, (resp: any) => {
-      //console.log('Dispositivos : ', resp);
+      console.log('Dispositivos : ', resp);
     });
   }
 

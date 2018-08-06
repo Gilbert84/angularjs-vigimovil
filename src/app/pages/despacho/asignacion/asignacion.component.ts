@@ -46,7 +46,7 @@ export class AsignacionComponent implements OnInit {
 
       if (id !== 'nueva') {
         this.titulo = 'Actualizar asignacion';
-        this.cargar(id);
+        this.cargarAsignacion(id);
       } else {
         this.titulo = 'Nueva asignacion';
         this.asignacion = new Asignacion();
@@ -62,20 +62,20 @@ export class AsignacionComponent implements OnInit {
 
   cargarServicios() {
     this.cargando = true;
-    this._vehiculoService.cargarVehiculos().subscribe(vehiculos => {
+    this._vehiculoService.cargarVehiculos(0,0).subscribe(vehiculos => {
       this.vehiculos = vehiculos;
-      //console.log('vehiculos', this.vehiculos);
-
-      this._operarioService.cargarOperarios().subscribe(resp => {
-        this.operarios = resp.operarios;
-        //console.log('operarios', this.operarios);
-        this.cargando = false;
-        init_plugin_select(); // se debe iniciar cuando ya este cargado todo los objetos !importante
-      });
+      this.cargando = false;
+      init_plugin_select(); // se debe iniciar cuando ya este cargado todo los objetos !importante
+    });
+    this.cargando = true;
+    this._operarioService.cargarOperarios(0,0).subscribe(operarios => {
+      this.operarios = operarios;
+      this.cargando = false;
+      init_plugin_select(); // se debe iniciar cuando ya este cargado todo los objetos !importante
     });
   }
 
-  cargar(id: string) {
+  cargarAsignacion(id: string) {
     this.cargando = true;
     this._asignacionService.obtener(id).subscribe(asignacion => {
       this.asignacion = asignacion;
@@ -84,8 +84,9 @@ export class AsignacionComponent implements OnInit {
       this.cambiarVehiculo(this.asignacion.vehiculo);
       this.cambiarOperario(this.asignacion.operario);
       this.cargando = false;
-      init_plugin_select(); 
+      this.cargarServicios();
     });
+
   }
 
   guardar(f: NgForm) {
@@ -101,7 +102,7 @@ export class AsignacionComponent implements OnInit {
       this._socketIoService.enviarEvento('actualizarAsignaciones').then();
       this.router.navigate(['/asignacion', asignacion._id]);
     }, (error) => {
-      //console.log(error);
+      console.log(error);
     });
   }
 

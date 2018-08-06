@@ -35,9 +35,9 @@ export class OperariosComponent implements OnInit {
     this.cargando = true;
 
     this._operarioService.cargarOperarios( this.desde )
-          .subscribe( (resp:any) => {
-            this.totalRegistros = resp.total;
-            this.operarios = resp.operarios 
+          .subscribe( (operarios:any) => {
+            this.totalRegistros = this._operarioService.totalOperarios;
+            this.operarios = operarios 
             this.cargando = false;
           });
             
