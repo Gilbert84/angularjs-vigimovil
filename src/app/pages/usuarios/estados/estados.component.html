@@ -1,0 +1,57 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar estados...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="text-right">
+                    <button (click)="crear()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                    <i class="fa fa-plus"></i> 
+                    Crear estado
+                  </button>
+                </div>
+
+                <h3 class="card-title">Roles registrados ( <small>  {{_estadoService.totalEstados}}  </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let estado of estados">
+                            <td>
+                                <input [(ngModel)]="estado.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del estado">
+                            </td>
+                            <td>
+                                <button (click)="guardar( estado )" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                              </button>
+
+                                <button (click)="borrar( estado )" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i>
+                              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

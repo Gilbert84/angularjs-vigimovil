@@ -1,0 +1,354 @@
+
+
+<div class="row animated fadeIn" *ngIf="cargando">
+  <div class="col-sm-12">
+      <div class="alert alert-warning text-center">
+          <strong>Cargando</strong>
+          <br>
+          <i class="fa fa-refresh fa-spin fa-2x"></i>
+          <br>
+          <span>Espere por favor</span>
+      </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row" *ngIf="!cargando">
+            <div class="col-md-8">
+                <div class="chat-right-aside">
+                    <div class="chat-main-header">
+                        <div class="p-20 b-b">
+                            <h3 class="box-title text-success"><strong>{{ruta.nombre}}</strong></h3>
+                        </div>
+                    </div>
+                    <div class="chat-rbox">
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" maxZoom="21" minZoom="12" mapTypeControl="true" streetViewControl="false" keyboardShortcuts="false" disableDoubleClickZoom="true">
+
+                            <!-- Marcador para el origen [label]="label" -->
+                            <agm-marker [latitude]="ruta.origen.lat" [longitude]="ruta.origen.lng" iconUrl="assets/images/icon/origen.png" [visible]="ruta.visible" [label]="ruta.origen.nombre" (markerClick)="marcadorSelOrigen(ruta)">
+                                <agm-info-window [disableAutoPan]="false">
+                                    <div class="card text-center">
+                                        <div class="card-header">
+                                            {{ruta.origen.direccion}}
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Origen : {{ruta.origen.nombre}}</h5>
+                                            <!--<p class="card-text">ruta info</p>-->
+                                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
+                                                        Borrar
+                                            </button>-->
+                                        </div>
+                                        <div class="card-footer bg-transparent border-success">
+                                            <h4>{{ruta.codigo}}</h4>
+                                        </div>
+                                    </div>
+                                </agm-info-window>
+                            </agm-marker>
+                    
+                            <!-- Marcador para el destino [label]="label" -->
+                            <agm-marker [latitude]="ruta.destino.lat" [longitude]="ruta.destino.lng" iconUrl="assets/images/icon/destino.png" [visible]="ruta.visible" [label]="ruta.destino.nombre" (markerClick)="marcadorSelDestino(ruta)">
+                                <agm-info-window [disableAutoPan]="false">
+                                    <div class="card text-center">
+                                        <div class="card-header">
+                                            {{ruta.destino.direccion}}
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Destino : {{ruta.destino.nombre}}</h5>
+                                            <!--<p class="card-text">ruta info</p>-->
+                                            <!--<button (click)="borrar()" class="pointer-cursor btn btn-outline-danger btn-block">
+                                                        Borrar
+                                                </button>-->
+                                        </div>
+                                        <div class="card-footer bg-transparent border-success">
+                                            <h4>{{ruta.codigo}}</h4>
+                                        </div>
+                                    </div>
+                                </agm-info-window>
+                            </agm-marker>
+                            <!-- [markerOptions]="markerOptions"  -->
+                            <agm-direction [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions" [optimizeWaypoints]="optimizeWaypoints" [provideRouteAlternatives]="provideRouteAlternatives">
+                            </agm-direction>
+                        </agm-map>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card m-b-4">
+                    <div class="chat-main-box">
+                            <div class="chat-left-inner">
+                                <div class="form-material">
+                                    <input class="form-control p-20" type="text" placeholder="Buscar Operario o Vehiculo">
+                                </div>
+                                <table class="table">
+                                        <thead>
+                                            <tr class="bg-info text-light">
+                                                <th>Operario</th>
+                                                <th>Vehiculo</th>
+                                            </tr>
+                                        </thead>
+                                </table>
+                                <div class="chatonline chat-list">
+                                        <table class="table table-hover">
+                                                <tbody>
+                          
+                                                    <tr>
+                                                        <td>
+                                                            <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                            <span>Varun Dhavan
+                                                                <small class="text-success">online</small>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            Vehiculo
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                            <td>
+                                                                <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                <span>Varun Dhavan
+                                                                    <small class="text-success">online</small>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                Vehiculo
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                                <td>
+                                                                    <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                    <span>Varun Dhavan
+                                                                        <small class="text-success">online</small>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    Vehiculo
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <td>
+                                                                        <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                        <span>Varun Dhavan
+                                                                            <small class="text-success">online</small>
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        Vehiculo
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>
+                                                                            <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                            <span>Varun Dhavan
+                                                                                <small class="text-success">online</small>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>
+                                                                            Vehiculo
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td>
+                                                                                <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                <span>Varun Dhavan
+                                                                                    <small class="text-success">online</small>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>
+                                                                                Vehiculo
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                                <td>
+                                                                                    <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                    <span>Varun Dhavan
+                                                                                        <small class="text-success">online</small>
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    Vehiculo
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <td>
+                                                                                        <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                        <span>Varun Dhavan
+                                                                                            <small class="text-success">online</small>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        Vehiculo
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                        <td>
+                                                                                            <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                            <span>Varun Dhavan
+                                                                                                <small class="text-success">online</small>
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            Vehiculo
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                            <td>
+                                                                                                <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                                <span>Varun Dhavan
+                                                                                                    <small class="text-success">online</small>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                Vehiculo
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                                <td>
+                                                                                                    <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                                    <span>Varun Dhavan
+                                                                                                        <small class="text-success">online</small>
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    Vehiculo
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                    <td>
+                                                                                                        <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                                        <span>Varun Dhavan
+                                                                                                            <small class="text-success">online</small>
+                                                                                                        </span>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        Vehiculo
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                        <td>
+                                                                                                            <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                                            <span>Varun Dhavan
+                                                                                                                <small class="text-success">online</small>
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            Vehiculo
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                            <td>
+                                                                                                                <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle img-50 pointer">
+                                                                                                                <span>Varun Dhavan
+                                                                                                                    <small class="text-success">online</small>
+                                                                                                                </span>
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                Vehiculo
+                                                                                                            </td>
+                                                                                                        </tr>
+            
+                                                </tbody>
+                                            </table>
+                                </div>
+
+                                <!-- <ul class="chatonline chat-list style-none p-20">
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle">
+                                            <span>Varun Dhavan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/2.jpg" alt="user-img" class="img-circle">
+                                            <span>Genelia Deshmukh
+                                                <small class="text-warning">Away</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/3.jpg" alt="user-img" class="img-circle">
+                                            <span>Ritesh Deshmukh
+                                                <small class="text-danger">Busy</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/4.jpg" alt="user-img" class="img-circle">
+                                            <span>Arijit Sinh
+                                                <small class="text-muted">Offline</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/5.jpg" alt="user-img" class="img-circle">
+                                            <span>Govinda Star
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/6.jpg" alt="user-img" class="img-circle">
+                                            <span>John Abraham
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/7.jpg" alt="user-img" class="img-circle">
+                                            <span>Hritik Roshan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle">
+                                            <span>Pwandeep rajan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle">
+                                            <span>Pwandeep rajan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle">
+                                            <span>Pwandeep rajan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle">
+                                            <span>Pwandeep rajan
+                                                <small class="text-success">online</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="p-20"></li>
+                                </ul> -->
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+
+</div>

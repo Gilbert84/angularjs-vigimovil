@@ -1,0 +1,160 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar ruta...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!cargando">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div *ngIf="_marcadorService.totalMarcadores >1" class="text-right">
+                    <button [routerLink]="['/ruta','nueva']" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                            <i class="fa fa-plus"></i> 
+                            Crear Ruta
+                          </button>
+                </div>
+
+                <h3 class="card-title">Rutas registradas ( <small>  {{totalRegistros}}  </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Visible</th>
+                            <th>Nombre</th>
+                            <th>codigo</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ruta of rutas;let posicion = index">
+                            <td>
+                                <div class="checkbox checkbox-primary pull-left p-t-0">
+                                    <input [(ngModel)]="ruta.visible" name="visible" [id]="ruta._id" type="checkbox" class="filled-in chk-col-light-blue">
+                                    <label [for]="ruta._id"></label>
+                                </div>
+                            </td>
+                            <td>
+                                {{ruta.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.origen.nombre}}
+                            </td>
+                            <td>
+                                {{ruta.destino.nombre}}
+                            </td>
+                            <td>
+                                <button [routerLink]="['/ruta', ruta._id ]" class="btn btn-primary">
+                                        <i class="fa fa-edit"></i>
+                                      </button>
+
+                                <button (click)="borrar( ruta._id )" class="btn btn-danger">
+                                        <i class="fa fa-trash-o"></i>
+                                      </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                            Anteriores
+                    </button>
+
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                            Siguientes
+                    </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="_marcadorService.totalMarcadores >1" class="row animated fadeIn">
+    <div class="col-md-12" style="width: 100%;">
+        <agm-map *ngIf="mostrar" [latitude]="lat" [longitude]="lng" [zoom]="zoom" maxZoom="19" minZoom="12" mapTypeControl="true" streetViewControl="false" keyboardShortcuts="false" disableDoubleClickZoom="true">
+            <!-- Marcador para el origen [label]="label" -->
+            <agm-marker *ngFor="let ruta of rutas; let posicion = index" [latitude]="ruta.origen.lat" [longitude]="ruta.origen.lng" [iconUrl]="ruta.origen.tipo.img | imagen:'tipo-marcadores'" [visible]="ruta.visible" (markerClick)="marcadorClickOrigen(ruta,posicion)">
+                <agm-info-window [disableAutoPan]="false">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            {{ruta.origen.direccion}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Origen : {{ruta.origen.nombre}}</h5>
+                            <h5 class="card-title">{{ruta.nombre}}</h5>
+                            <!--<p class="card-text">ruta info</p>-->
+                            <button (click)="borrar(ruta._id)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                  Borrar
+                          </button>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <h4>{{ruta.codigo}}</h4>
+                        </div>
+                    </div>
+                </agm-info-window>
+            </agm-marker>
+
+            <!-- Marcador para el destino [label]="label" -->
+            <agm-marker *ngFor="let ruta of rutas; let posicion = index" [latitude]="ruta.destino.lat" [longitude]="ruta.destino.lng" [iconUrl]="ruta.origen.tipo.img | imagen:'tipo-marcadores'" [visible]="ruta.visible" (markerClick)="marcadorClickDestino(ruta,posicion)">
+                <agm-info-window [disableAutoPan]="false">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            {{ruta.destino.direccion}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Destino : {{ruta.destino.nombre}}</h5>
+                            <h5 class="card-title">{{ruta.nombre}}</h5>
+                            <!--<p class="card-text">ruta info</p>-->
+                            <button (click)="borrar(ruta._id)" class="pointer-cursor btn btn-outline-danger btn-block">
+                                  Borrar
+                          </button>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <h4>{{ruta.codigo}}</h4>
+                        </div>
+                    </div>
+                </agm-info-window>
+            </agm-marker>
+            <!-- [markerOptions]="markerOptions"  -->
+            <agm-direction *ngFor="let ruta of rutas; let posicion = index" [origin]="ruta.origen" [destination]="ruta.destino" [waypoints]="ruta.puntosRef" [visible]="ruta.visible" [renderOptions]="renderOptions">
+            </agm-direction>
+            <!--<agm-data-layer [geoJson]="geoJsonObject" (layerClick)="clicked($event)" [style]="styleFunc">
+            </agm-data-layer>-->
+        </agm-map>
+    </div>
+</div>
+
+<div *ngIf="_marcadorService.totalMarcadores <=1" class="jumbotron">
+    <h1 class="display-4">Rutas</h1>
+    <p class="lead">Para crear rutas deben de haber mas de 2 marcadores</p>
+    <hr class="my-4">
+    <p>la pagina de rutas solo se muestra si hay mas de dos marcadores creados...</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">leer documentacion</a>
+</div>

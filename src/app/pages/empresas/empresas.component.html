@@ -1,0 +1,65 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarEmpresa( input.value )" type="text" class="form-control" placeholder="Buscar Empresa...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="text-right">
+                    <button (click)="crearEmpresa()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                      <i class="fa fa-plus"></i> 
+                      Crear Empresa
+                    </button>
+                </div>
+
+                <h3 class="card-title">Empresas registradas ( <small> {{ _empresaService.totalEmpresas }} </small> )</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Empresa</th>
+                            <th>Nit</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let empresa of empresas">
+                            <td>
+                                <img (click)="actualizarImagen( empresa )" [src]="empresa.img | imagen:'empresa'" class="img-50 pointer">
+                            </td>
+                            <td>
+                                <input [(ngModel)]="empresa.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del empresa">
+                            </td>
+                            <td>
+                                <input [(ngModel)]="empresa.nit" name="nit" type="text" class="form-control" placeholder="Nit de la empresa">
+                            </td>
+                            <td>
+                                <button (click)="guardarEmpresa( empresa )" class="btn btn-primary">
+                                  <i class="fa fa-save"></i>
+                                </button>
+
+                                <button (click)="borrarEmpresa( empresa )" class="btn btn-danger">
+                                  <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
