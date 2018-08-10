@@ -35,6 +35,9 @@ import { IndexDashboardComponent } from './dashboard/index-dashboard/index-dashb
 import { IndexDespachoComponent } from './despacho/index-despacho/index-despacho.component';
 import { AsignacionComponent } from './despacho/asignacion/asignacion.component';
 import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.component';
+import { ViajesComponent } from './despacho/viajes/viajes.component';
+import { MdrvBpcr2Component } from './monitoreo/mdrv-bpcr2/mdrv-bpcr2.component';
+import { IndexMonitoreoComponent } from './monitoreo/index-monitoreo/index-monitoreo.component';
 
 const pagesRoutes: Routes = [
     {
@@ -59,11 +62,14 @@ const pagesRoutes: Routes = [
         canActivate: [AdminGuard],
         data: { titulo: 'Mantenimiento' }
     },
-    { path: 'despacho', component: IndexDespachoComponent, data: { titulo: 'Gestion despacho' } },
+    { path: 'modulo-monitoreo', component: IndexMonitoreoComponent, data: { titulo: 'Modulo monitoero' } },
+    { path: 'mdrv-bpc-r2', component: MdrvBpcr2Component, data: { titulo: 'Monitoreo Vehiculos' } },
+    { path: 'modulo-despacho', component: IndexDespachoComponent, data: { titulo: 'Gestion despacho' } },
     { path: 'asignaciones', component: AsignacionesComponent, data: { titulo: 'Asignaciones de vehiculo' } },
     { path: 'asignacion/:id', component: AsignacionComponent, data: { titulo: 'Asignacion de vehiculo' } },
-    { path: 'viajes', component: DespachosComponent, data: { titulo: 'Asignacion de viaje' } },
-    { path: 'viaje/:id', component: DespachoComponent, data: { titulo: 'Asignacion de viaje' } },
+    { path: 'despachos', component: DespachosComponent, data: { titulo: 'Asignacion de viaje' } },
+    { path: 'despacho/:id', component: DespachoComponent, data: { titulo: 'Asignacion de viaje' } },
+    { path: 'viajes', component: ViajesComponent, data: { titulo: 'Viajes relalizados' } },
     { path: 'empresas', component: EmpresasComponent, data: { titulo: 'Mantenimiento de Empresas' } },
     { path: 'operarios', component: OperariosComponent, data: { titulo: 'Mantenimiento de Operarios' } },
     { path: 'operario/:id', component: OperarioComponent, data: { titulo: 'Mantenimiento Operario' } },

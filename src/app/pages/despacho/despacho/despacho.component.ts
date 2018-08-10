@@ -10,11 +10,13 @@ import {
 } from '../../../services/service.index';
 import { Asignacion, Viaje } from '../../../models/despacho/despacho.model';
 import { Ruta } from '../../../class/google-maps.class';
+import { Subscription } from 'rxjs/Subscription';
 
 
 declare function init_plugin_select();
 declare function init_plugin_clockpicker();
 declare function init_plugin_material_clock();
+import swal from 'sweetalert';
 
 
 
@@ -54,20 +56,21 @@ export class DespachoComponent implements OnInit {
 
   reloj: any;
 
+  confirmacion: Subscription = new Subscription();
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
     private despachoService: DespachoService,
-    private _rutaService: RutaService,
-    private _viajeService: ViajeService,
-    private _asignacionService: AsignacionService,
-    private _socketIoService: SocketIoService,
-    private elem: ElementRef
+    private rutaService: RutaService,
+    private viajeService: ViajeService,
+    private asignacionService: AsignacionService,
+    private socketIoService: SocketIoService
   ) {
     activatedRoute.params.subscribe(params => {
       let id = params['id']; 
       this.cargando = true;
-      this._asignacionService.obtener(id)
+      this.asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
         console.log('asignacion', this.asignacion);
@@ -96,7 +99,7 @@ export class DespachoComponent implements OnInit {
 
   
     this.cargando = true;
-    this._rutaService.cargarRutas(0,0).subscribe((rutas) => {
+    this.rutaService.cargarRutas(0,0).subscribe((rutas) => {
       this.rutas = rutas;
       init_plugin_select();
       init_plugin_clockpicker();
@@ -117,31 +120,36 @@ export class DespachoComponent implements OnInit {
                                     this.viaje.horaSalidaAsignada.getSeconds(),
                                     this.ruta.duraccion.value );
 
-    this._viajeService.guardar(this.viaje).subscribe(viaje => {
+    this.viajeService.guardar(this.viaje).subscribe(viaje => {
       this.viaje._id = viaje._id;
 
-      this._viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-          console.log('viaje atual', viajeActual);
+      this.viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+          //console.log('viaje atual', viajeActual);
           let para: any = this.asignacion.vehiculo;
 
           let mensaje = {
             para: para.dispositivo.socket_id,
-            viaje: viajeActual,
+            viaje: viajeActual
           };
     
-          this._socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
-            console.log('resp', resp);
+          this.socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
+            //console.log('resp', resp);
+            this.confirmacion = this.socketIoService.observar('confirmacionAsignacion').subscribe(res =>{
+              swal( 'Confirmacion despacho', 'al vehiculo le llego el despacho con exito', 'success' );
+              console.log(res);
+              this.confirmacion.unsubscribe();
+            });
           });
       });
 
-      this.router.navigate(['/viaje', this.asignacion._id]);
+      this.router.navigate(['/despacho', this.asignacion._id]);
     }, (error) => {
       console.log(error);
     });
   }
 
   cambiarRuta(id) {
-    this._rutaService.cargarRuta(id).subscribe((ruta) => {
+    this.rutaService.cargarRuta(id).subscribe((ruta) => {
         this.ruta = ruta;
     });
   }

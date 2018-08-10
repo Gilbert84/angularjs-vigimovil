@@ -13,7 +13,7 @@ export class ViajeService {
 
   constructor(
     public http: HttpClient,
-    public _usuarioService: UsuarioService
+    public _usuarioService: UsuarioService,
   ) { }
 
   cargar(desde: number = 0, hasta:number = 5) {

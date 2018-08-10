@@ -64,6 +64,9 @@ import { AsignacionComponent } from './despacho/asignacion/asignacion.component'
 import { AsignacionesComponent } from './despacho/asignaciones/asignaciones.component';
 
 import { ClockPickerDirective } from '../directives/clockpicker.directive';
+import { ViajesComponent } from './despacho/viajes/viajes.component';
+import { MdrvBpcr2Component } from './monitoreo/mdrv-bpcr2/mdrv-bpcr2.component';
+import { IndexMonitoreoComponent } from './monitoreo/index-monitoreo/index-monitoreo.component';
 
 
 
@@ -105,6 +108,9 @@ import { ClockPickerDirective } from '../directives/clockpicker.directive';
         DespachoComponent,
         AsignacionesComponent,
         ClockPickerDirective,
+        ViajesComponent,
+        MdrvBpcr2Component,
+        IndexMonitoreoComponent,
     ],
     exports: [
         DashboardComponent,

@@ -85,7 +85,7 @@ export class VehiculoComponent implements OnInit {
     if (f.invalid) {
       return;
     }
-
+    console.log(this.vehiculo);
     this._vehiculoService.guardarVehiculo(this.vehiculo).subscribe(vehiculo => {
       this.vehiculo._id = vehiculo._id;
       this.router.navigate(['/vehiculo', vehiculo._id]);

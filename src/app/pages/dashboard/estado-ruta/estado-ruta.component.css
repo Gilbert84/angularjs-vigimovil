@@ -4,5 +4,5 @@ agm-map {
 .chat-list {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    height: 600px !important;
+    height: 100% !important;
 }

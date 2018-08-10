@@ -30,6 +30,7 @@
                         <tr>
                             <th>Foto</th>
                             <th>Empresa</th>
+                            <th>Nit</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -41,6 +42,9 @@
                             </td>
                             <td>
                                 <input [(ngModel)]="empresa.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del empresa">
+                            </td>
+                            <td>
+                                <input [(ngModel)]="empresa.nit" name="nit" type="text" class="form-control" placeholder="Nit de la empresa">
                             </td>
                             <td>
                                 <button (click)="guardarEmpresa( empresa )" class="btn btn-primary">
