@@ -150,8 +150,11 @@ export class UsuarioService {
                   return true;
                 })
                 .catch( err => {
-
-                  swal( 'Error en el login', err.error.mensaje, 'error' );
+                  if( err.status === 0){
+                    swal( 'Error en el login', 'no hay comunicacion con el servidor', 'error' );
+                  }else{
+                    swal( 'Error en el login', err.error.mensaje, 'error' );
+                  }
                   return Observable.throw( err );
                 });
 

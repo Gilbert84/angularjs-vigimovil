@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit,OnDestroy, ElementRef} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -27,14 +27,14 @@ import swal from 'sweetalert';
   styleUrls: ['./despacho.component.css'],
   
 })
-export class DespachoComponent implements OnInit {
+export class DespachoComponent implements OnInit ,OnDestroy{
 
 
   
   titulo: string = 'Nueva Ruta';
   ruta: Ruta;
   rutas: Ruta [] = [];
-  asignacion: Asignacion;
+  asignacion: any;
   viaje: Viaje = new Viaje();
   cargando: boolean = false;
 
@@ -73,11 +73,10 @@ export class DespachoComponent implements OnInit {
       this.asignacionService.obtener(id)
       .subscribe(asignacion => {
         this.asignacion = asignacion;
-        console.log('asignacion', this.asignacion);
         this.viaje.asignacion = this.asignacion._id;
         this.cargando = false;        
       }, (error) => {
-        console.log('error', error);
+
       });
     });
 
@@ -86,7 +85,7 @@ export class DespachoComponent implements OnInit {
     const salir = setInterval(() => {
       this.contador -= 1;
       if (this.contador <= 0) {
-        this.router.navigate(['/viajes']);
+        this.router.navigate(['/despachos']);
         clearInterval(salir);
       }
     }, 1000);
@@ -106,6 +105,18 @@ export class DespachoComponent implements OnInit {
       init_plugin_material_clock();
       this.cargando = false;
     });
+
+    this.confirmacion = this.socketIoService.observar('confirmacionAsignacion').subscribe(res =>{
+      this.viajeService.guardar(this.viaje).subscribe((viajeGuardado)=>{
+        console.log(viajeGuardado);
+        swal( 'Confirmacion despacho', 'al vehiculo le llego el despacho con exito', 'success' );
+      });
+    });
+
+  }
+
+  ngOnDestroy(){
+    this.confirmacion.unsubscribe();
   }
 
   guardar(f: NgForm) {
@@ -120,32 +131,48 @@ export class DespachoComponent implements OnInit {
                                     this.viaje.horaSalidaAsignada.getSeconds(),
                                     this.ruta.duraccion.value );
 
-    this.viajeService.guardar(this.viaje).subscribe(viaje => {
-      this.viaje._id = viaje._id;
+    this.asignacionService.obtener(this.asignacion._id)
+    .subscribe(asignacion => {
 
-      this.viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
-          //console.log('viaje atual', viajeActual);
-          let para: any = this.asignacion.vehiculo;
+      this.asignacion.vehiculo.dispositivo.socket_id = asignacion.vehiculo.dispositivo.socket_id;
 
-          let mensaje = {
-            para: para.dispositivo.socket_id,
-            viaje: viajeActual
-          };
-    
-          this.socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp) => {
-            //console.log('resp', resp);
-            this.confirmacion = this.socketIoService.observar('confirmacionAsignacion').subscribe(res =>{
-              swal( 'Confirmacion despacho', 'al vehiculo le llego el despacho con exito', 'success' );
-              console.log(res);
-              this.confirmacion.unsubscribe();
+      if(!asignacion.vehiculo.dispositivo.disponible){
+        swal( 'Sin conexion', 'el vehiculo actualmente no se encuentra en linea', 'info' );
+        return;
+      }
+
+
+      this.viajeService.guardar(this.viaje).subscribe(viaje => {
+        this.viaje._id = viaje._id;
+  
+        this.viajeService.obtener(this.viaje._id).subscribe((viajeActual) => {
+            //console.log('viaje atual', viajeActual);
+            let para: any = this.asignacion.vehiculo;
+            this.viaje = viajeActual;
+  
+            let mensaje = {
+              para: para.dispositivo.socket_id,
+              viaje: this.viaje
+            };
+      
+            this.socketIoService.enviarEvento('asignarNuevoViaje', mensaje).then((resp:any) => {
+              console.log('resp', resp);
+              this.viaje.numeroDespacho = resp.server.despacho;
+              console.log(this.viaje);
             });
-          });
-      });
+        });
+  
+        this.router.navigate(['/despacho', this.asignacion._id]);
+      }, (error) => {
+        console.log(error);
+      }); 
 
-      this.router.navigate(['/despacho', this.asignacion._id]);
     }, (error) => {
-      console.log(error);
+      console.log('error', error);
     });
+
+
+
   }
 
   cambiarRuta(id) {

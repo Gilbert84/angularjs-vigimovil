@@ -18,6 +18,7 @@ declare function init_plugins();
 export class RegisterComponent implements OnInit {
 
   forma: FormGroup;
+  cargando:boolean;
 
   constructor(
     public _usuarioService: UsuarioService,
@@ -85,8 +86,13 @@ export class RegisterComponent implements OnInit {
       this.forma.value.password
     );
 
+    this.cargando = true;
+
     this._usuarioService.crearUsuario( usuario )
-              .subscribe( resp => this.router.navigate(['/login']));
+              .subscribe( resp => {
+                this.router.navigate(['/login']);
+                this.cargando = false;
+              });
 
 
   }

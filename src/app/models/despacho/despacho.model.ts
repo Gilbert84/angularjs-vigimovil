@@ -41,6 +41,7 @@ export class Viaje {
   public horallegadaOperario: Date;
   public horaSalidaAsignada: Date;
   public horaLlegadaAsignada: Date;
+  public numeroDespacho:number;
   public pasajeros?: Pasajeros;
   public estado?: Estado;
   public asignacion?: string;
@@ -57,6 +58,7 @@ export class Viaje {
     this.asignacion = this.asignacion;
     this.ruta = this.ruta;
     this._id = this._id;
+    this.numeroDespacho = this.numeroDespacho;
 
 
   }

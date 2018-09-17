@@ -83,7 +83,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>posicion</th>
                             <th>Foto</th>
                             <th>Operario</th>
                             <th>Vehiculo</th>
@@ -93,11 +92,9 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let asignacion of asignaciones;let posicion = index">
+
                             <td *ngIf="asignacion.disponible">
-                                {{posicion + 1}}
-                            </td>
-                            <td *ngIf="asignacion.disponible">
-                                <img [src]="asignacion.operario.img | imagen:'operario'" class="img-50 pointer">
+                                <img [src]="asignacion.operario.img | imagen:'operario'" class="img-40">
                             </td>
                             <td *ngIf="asignacion.disponible">
                                 {{ asignacion.operario.nombre }}

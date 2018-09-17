@@ -4,7 +4,7 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <section id="wrapper" class="login-register login-sidebar"  style="background-image:url(assets/images/background/navigation.jpg);">
-    <div class="login-box card ">
+    <div class="login-box card col-md-12">
         <div class="card-body">
 
 
@@ -12,17 +12,17 @@
                 <a href="javascript:void(0)" class="text-center db"><img class="img-responsive" src="assets/images/logo-bellanita.jpg" alt="Home" /><br/><br/></a>
                 <div class="form-group m-t-40">
                     <div class="col-md-12">
-                        <input [ngModel]="email" name="email" class="form-control" type="email" required placeholder="Correo del usuario">
+                        <input [ngModel]="email" name="email" class="form-control text-center" type="email" required placeholder="Correo del usuario">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-12">
-                        <input ngModel name="password" class="form-control" type="password" required placeholder="Contraseña">
+                        <input ngModel name="password" class="form-control text-center" type="password" required placeholder="Contraseña">
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group">
                     <div class="col-md-12">
-                        <div class="checkbox checkbox-primary pull-left p-t-0">
+                        <div class="checkbox checkbox-primary pull-left p-t-20">
                             <input [(ngModel)]="recuerdame" name="recuerdame" id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
                             <label for="checkbox-signup"> Recuérdame </label>
                         </div>
@@ -31,7 +31,8 @@
                 </div>
                 <div class="form-group text-center m-t-20">
                     <div class="col-md-12">
-                        <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Ingresar</button>
+                        <button *ngIf="!cargando" class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Ingresar</button>
+                        <button *ngIf="cargando" class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" disabled type="submit"><i class="fa fa-refresh fa-spin fa-2x"></i> Espere</button>
                     </div>
                 </div>
                 <!--

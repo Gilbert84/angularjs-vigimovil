@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
 
   auth2: any;
 
+  cargando:boolean;
+
   constructor(
     public router: Router,
     public _usuarioService: UsuarioService
@@ -74,14 +76,17 @@ export class LoginComponent implements OnInit {
     if ( forma.invalid ) {
       return;
     }
-
+    this.cargando = true;
     let usuario = new Usuario(null, forma.value.email, forma.value.password );
 
     this._usuarioService.login( usuario, forma.value.recuerdame )
                   .subscribe( correcto => {
                     if (correcto) {
                       this.router.navigate(['/dashboard']);
+                      this.cargando = false;
                     }
+                  },(err) =>{
+                    this.cargando= false;
                   });
 
   }

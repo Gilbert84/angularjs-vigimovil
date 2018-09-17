@@ -39,9 +39,10 @@ export class ViajeService {
 
   buscar( termino: string ) {
 
-    let url = URL_SERVICIOS + '/busqueda/coleccion/viaje/' + termino;
+    let url = URL_SERVICIOS + '/busqueda/coleccion/viajes/' + termino;
     return this.http.get( url )
                 .map( (resp: any) => {
+                  console.log(resp);
                   return resp.viajes; 
                 });
 
@@ -72,7 +73,7 @@ export class ViajeService {
 
       return this.http.put( url, viaje )
                 .map( (resp: any) => {
-                  swal('Viaje Actualizado', viaje.ruta, 'success');
+                  //swal('Viaje Actualizado', viaje.ruta, 'success');
                   return resp.viaje;
 
                 });
@@ -82,7 +83,7 @@ export class ViajeService {
       url += '?token=' + this._usuarioService.token;
       return this.http.post( url, viaje )
               .map( (resp: any) => {
-                swal('Viaje Creado', viaje.ruta, 'success');
+                //swal('Viaje Creado', viaje.ruta, 'success');
                 return resp.viaje;
               })
               .catch( err => {

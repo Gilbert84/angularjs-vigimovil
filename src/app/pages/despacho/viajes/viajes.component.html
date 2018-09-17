@@ -53,7 +53,7 @@
         <div class="card">
             <div class="card-body">
 
-                <input #input (keyup)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar por operario o vehiculo...">
+                <input #input (keyup)="buscarViaje( input.value )" type="text" class="form-control" placeholder="Buscar por operario,vehiculo,numero despacho ...">
 
             </div>
         </div>
@@ -82,23 +82,33 @@
 
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th>posicion</th>
+                        <tr class="bg-dark text-white">
+                            <th>Despacho No</th>
                             <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Foto</th>
                             <th>Operario</th>
                             <th>Vehiculo</th>
                             <th>Ruta</th>
-                            <th>Mas detalles</th>
+                            <th>ingresos PD</th>
+                            <th>salidas PD</th>
+                            <th>ingresos PT</th>
+                            <th>salidas PT</th>
+                            <th>ingresos PD y PT</th>
+                            <th>salidas PD y PT</th>
+                            <!-- <th>Mas detalles</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let viaje of viajes;let posicion = index">
                             <td>
-                                {{posicion + 1}}
+                                {{viaje.numeroDespacho}}
                             </td>
                             <td>
-                                {{viaje.fechaCreado | date: 'medium'}}
+                                {{viaje.fechaCreado | date: 'short'}}
+                            </td>
+                            <td>
+                                {{viaje.estado.mensaje}}
                             </td>
                             <td>
                                 <img [src]="viaje.asignacion.operario.img | imagen:'operario'" class="img-40">
@@ -113,15 +123,42 @@
                                 {{ viaje.ruta.nombre }}
                             </td>
                             <td>
+                                {{ viaje.pasajeros.ingresosPuerta1 }}
+                            </td>
+                            <td>
+                                {{ viaje.pasajeros.salidasPuerta1 }}
+                            </td>
+                            <td>
+                                {{ viaje.pasajeros.ingresosPuerta2 }}
+                            </td>
+                            <td>
+                                {{ viaje.pasajeros.salidasPuerta2 }}
+                            </td>
+
+                            <td>
+                                {{ viaje.pasajeros.ingresosPuerta1 + viaje.pasajeros.ingresosPuerta2 }}
+                            </td>
+
+                            <td>
+                                {{ viaje.pasajeros.salidasPuerta1 + viaje.pasajeros.salidasPuerta2 }}
+                            </td>
+
+                            <!-- <td> -->
                                     <!-- [routerLink]="['/viaje', viaje._id ]" -->
-                                <button  class="btn btn-primary btn-block">
+                                <!-- <button  class="btn btn-primary btn-block">
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </button>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
-
+                <button *ngIf="mostrar.anterior" (click)="cambiarDesde(-5)" class="btn btn-secondary">
+                    Anteriores
+                </button>
+  
+                <button *ngIf="mostrar.siguiente" (click)="cambiarDesde(5)" class="btn btn-secondary">
+                    Siguientes
+                </button>
             </div>
         </div>
     </div>
